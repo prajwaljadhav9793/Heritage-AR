@@ -175,6 +175,92 @@ button {
   width: 100%;
 }
 
+.hero-frame {
+  border: 1px solid rgba(221, 180, 103, 0.38);
+  bottom: 2.2rem;
+  left: 2.5vw;
+  pointer-events: none;
+  position: absolute;
+  right: 2.5vw;
+  top: 6.4rem;
+  z-index: 1;
+}
+
+.hero-frame::before,
+.hero-frame::after {
+  border-color: var(--brass);
+  border-style: solid;
+  content: "";
+  height: 1.5rem;
+  position: absolute;
+  width: 1.5rem;
+}
+
+.hero-frame::before {
+  border-width: 1px 0 0 1px;
+  left: -1px;
+  top: -1px;
+}
+
+.hero-frame::after {
+  border-width: 0 1px 1px 0;
+  bottom: -1px;
+  right: -1px;
+}
+
+.hero-location {
+  bottom: 3.1rem;
+  display: grid;
+  gap: 0.2rem;
+  left: 2.5vw;
+  position: absolute;
+  z-index: 1;
+}
+
+.hero-location span,
+.hero-location small {
+  color: #c8b9aa;
+  font-size: 0.52rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero-location strong {
+  color: var(--paper);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.hero-location small {
+  color: var(--brass);
+  font-size: 0.45rem;
+}
+
+.hero-disc {
+  border: 1px solid rgba(189, 129, 36, 0.55);
+  border-radius: 50%;
+  height: 15rem;
+  opacity: 0.35;
+  position: absolute;
+  right: 11%;
+  top: 21%;
+  width: 15rem;
+}
+
+.hero-disc::before,
+.hero-disc::after {
+  border: 1px solid rgba(189, 129, 36, 0.3);
+  border-radius: 50%;
+  content: "";
+  inset: 1.4rem;
+  position: absolute;
+}
+
+.hero-disc::after {
+  inset: 3rem;
+}
+
 .hero-copy {
   margin-top: 3rem;
   position: relative;
@@ -317,6 +403,28 @@ h2 {
   position: relative;
 }
 
+.card-image::after {
+  border: 1px solid rgba(242, 236, 227, 0.35);
+  content: "";
+  inset: 0.6rem;
+  pointer-events: none;
+  position: absolute;
+}
+
+.card-tag {
+  background: rgba(29, 18, 13, 0.82);
+  border-left: 1px solid var(--brass);
+  color: #e2d4c2;
+  font-size: 0.48rem;
+  left: 1rem;
+  letter-spacing: 0.15em;
+  padding: 0.45rem 0.6rem;
+  position: absolute;
+  text-transform: uppercase;
+  top: 1rem;
+  z-index: 1;
+}
+
 .image-discover {
   background-image:
     linear-gradient(0deg, rgba(29, 18, 13, 0.64), transparent 55%),
@@ -434,6 +542,25 @@ h3 {
   .hero {
     height: 42rem;
     min-height: 0;
+  }
+
+  .hero-frame {
+    bottom: 1.2rem;
+    left: 1.2rem;
+    right: 1.2rem;
+    top: 5rem;
+  }
+
+  .hero-location {
+    bottom: 2rem;
+    left: 1.2rem;
+  }
+
+  .hero-disc {
+    height: 11rem;
+    right: -2rem;
+    top: 16%;
+    width: 11rem;
   }
 
   .hero-copy {
