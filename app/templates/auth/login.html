@@ -1,1 +1,57 @@
-{% extends "base.html" %}{% block title %}Log in | HeritageAR{% endblock %}{% block content %}<h1>Log in</h1>{% endblock %}
+{% extends "base.html" %} {% block title %}Sign in | HeritageAR{% endblock %} {%
+block styles %}<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/auth.css') }}"
+/>{% endblock %} {% block content %}
+<main class="auth-page">
+  <a class="auth-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
+  <section class="auth-layout">
+    <div class="auth-visual">
+      <span class="auth-visual-label">Your archive awaits</span>
+      <h1>Return to<br /><em>the story.</em></h1>
+      <p>
+        Keep exploring India's living heritage, one remarkable place at a time.
+      </p>
+      <span class="auth-visual-mark">RAIGAD / 18.23° N, 73.44° E</span>
+    </div>
+    <div class="auth-card">
+      <p class="auth-kicker">Welcome back</p>
+      <h2>Sign in</h2>
+      <p class="auth-subtitle">Continue your journey through history.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if
+      messages %}{% for category, message in messages %}
+      <p class="form-message {{ category }}">{{ message }}</p>
+      {% endfor %}{% endif %}{% endwith %}
+      <form method="post" class="auth-form">
+        <label for="email">Email address</label
+        ><input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="you@example.com"
+        />
+        <div class="label-row">
+          <label for="password">Password</label><a href="#">Forgot password?</a>
+        </div>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          placeholder="Enter your password"
+        />
+        <button class="auth-submit" type="submit">
+          Sign in <span aria-hidden="true">-&gt;</span>
+        </button>
+      </form>
+      <p class="auth-switch">
+        New to HeritageAR?
+        <a href="{{ url_for('auth.register') }}">Create an account</a>
+      </p>
+    </div>
+  </section>
+</main>
+{% endblock %}

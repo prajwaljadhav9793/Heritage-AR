@@ -1,1 +1,66 @@
-{% extends "base.html" %}{% block title %}Register | HeritageAR{% endblock %}{% block content %}<h1>Register</h1>{% endblock %}
+{% extends "base.html" %} {% block title %}Create account | HeritageAR{%
+endblock %} {% block styles %}<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/auth.css') }}"
+/>{% endblock %} {% block content %}
+<main class="auth-page">
+  <a class="auth-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
+  <section class="auth-layout">
+    <div class="auth-visual">
+      <span class="auth-visual-label">Begin your archive</span>
+      <h1>History is<br /><em>waiting.</em></h1>
+      <p>
+        Create your personal collection of places, stories, and moments from
+        India's past.
+      </p>
+      <span class="auth-visual-mark">DISCOVER / REMEMBER / RETURN</span>
+    </div>
+    <div class="auth-card">
+      <p class="auth-kicker">Join the archive</p>
+      <h2>Create account</h2>
+      <p class="auth-subtitle">Make every heritage journey yours.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if
+      messages %}{% for category, message in messages %}
+      <p class="form-message {{ category }}">{{ message }}</p>
+      {% endfor %}{% endif %}{% endwith %}
+      <form method="post" class="auth-form">
+        <label for="name">Full name</label
+        ><input
+          id="name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          placeholder="Your name"
+        />
+        <label for="email">Email address</label
+        ><input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          placeholder="you@example.com"
+        />
+        <label for="password">Create password</label
+        ><input
+          id="password"
+          name="password"
+          type="password"
+          minlength="6"
+          autocomplete="new-password"
+          required
+          placeholder="At least 6 characters"
+        />
+        <button class="auth-submit" type="submit">
+          Create account <span aria-hidden="true">-&gt;</span>
+        </button>
+      </form>
+      <p class="auth-switch">
+        Already have an account?
+        <a href="{{ url_for('auth.login') }}">Sign in</a>
+      </p>
+    </div>
+  </section>
+</main>
+{% endblock %}

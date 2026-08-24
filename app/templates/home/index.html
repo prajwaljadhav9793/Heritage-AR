@@ -46,8 +46,8 @@ endblock %} {% block content %}
       </button>
       <div class="header-popover user-popover" id="user-menu" hidden>
         <strong>Welcome to HeritageAR</strong>
-        <a href="#about">Sign in</a>
-        <a href="#about">Create account</a>
+        <a href="{{ url_for('auth.login') }}">Sign in</a>
+        <a href="{{ url_for('auth.register') }}">Create account</a>
       </div>
     </div>
   </div>
