@@ -1,1 +1,83 @@
-{% extends "base.html" %}{% block content %}<h1>Timeline</h1>{% endblock %}
+{% extends "base.html" %} {% block title %}Raigad Through Time | HeritageAR{%
+endblock %} {% block styles %}<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/timeline.css') }}"
+/>{% endblock %} {% block content %}
+<header class="timeline-header">
+  <a class="timeline-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
+  <nav aria-label="Primary navigation">
+    <a href="{{ url_for('home.index') }}">Home</a>
+    <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+    <a href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
+    <a class="is-current" href="{{ url_for('timeline.timeline') }}">Timeline</a>
+    <a href="#world">3D World</a>
+    <a href="#ar">AR Experience</a>
+  </nav>
+  <div class="timeline-actions">
+    <span>Language</span><span aria-label="Profile">◉</span>
+  </div>
+</header>
+
+<main class="timeline-page">
+  <section class="timeline-intro">
+    <p class="timeline-kicker">Module 05</p>
+    <h1>Raigad Through<br />Time</h1>
+    <span class="timeline-rule"></span>
+  </section>
+  <section class="event-timeline" aria-label="Raigad historical timeline">
+    <div class="event-line"></div>
+    {% for event in events %}
+    <button
+      class="event-point{% if event.year == selected_event.year %} is-selected{% endif %}"
+      data-event-index="{{ loop.index0 }}"
+      type="button"
+    >
+      <span class="point-dot"></span><strong>{{ event.year }}</strong
+      ><small>{{ event.label }}</small>
+    </button>
+    {% endfor %}
+  </section>
+  <section class="event-feature">
+    <div class="event-art">
+      <span class="art-label">RAIGAD ARCHIVE / PLATE 05</span>
+      <img
+        class="art-image"
+        src="{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}"
+        alt="Shivaji Maharaj's coronation at Raigad Fort"
+      />
+      <div class="art-controls">
+        <span class="active"></span><span></span><span></span><span></span
+        ><span></span>
+      </div>
+    </div>
+    <article class="event-details">
+      <p class="event-type">Historical epoch</p>
+      <h2 data-event-title>{{ selected_event.title }}</h2>
+      <p data-event-description>{{ selected_event.description }}</p>
+      <button
+        class="reconstruction-button"
+        id="view-reconstruction"
+        type="button"
+      >
+        View reconstruction <span aria-hidden="true">-&gt;</span>
+      </button>
+      <p class="reconstruction-note" id="reconstruction-note" hidden>
+        Reconstruction mode is ready for this historical moment.
+      </p>
+    </article>
+  </section>
+</main>
+
+<footer class="timeline-footer">
+  <a href="{{ url_for('home.index') }}">HeritageAR</a
+  ><span
+    >Archives &nbsp;&nbsp; Institutional Credits &nbsp;&nbsp; Privacy Policy
+    &nbsp;&nbsp; Terms of Service</span
+  ><small>© 2024 HeritageAR Institutional Archives. All Rights Reserved.</small>
+</footer>
+{% endblock %} {% block scripts %}
+<script>
+  window.timelineEvents = {{ events | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/timeline.js') }}"></script>
+{% endblock %}

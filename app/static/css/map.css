@@ -1,1 +1,310 @@
-/* Map styles */
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow: hidden;
+}
+
+.map-header {
+  align-items: center;
+  background: #fffaf5;
+  border-bottom: 1px solid #eadfd3;
+  color: #1d1714;
+  display: flex;
+  height: 3.4rem;
+  justify-content: space-between;
+  padding: 0 2.5vw;
+  position: relative;
+  z-index: 10;
+}
+
+.map-wordmark {
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+}
+
+.map-nav {
+  display: flex;
+  gap: 1.8rem;
+}
+
+.map-nav a,
+.map-actions button,
+.start-button {
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.map-nav a {
+  padding: 1.25rem 0 1.05rem;
+}
+
+.map-nav a.is-current,
+.map-nav a:hover {
+  border-bottom: 2px solid #b57618;
+  color: #9e6415;
+}
+
+.map-actions {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.map-actions button {
+  background: none;
+  border: 0;
+  color: #302821;
+  cursor: pointer;
+  padding: 0.4rem;
+}
+
+.start-button {
+  background: #241a15;
+  color: #fffaf5;
+  padding: 0.7rem 1.2rem;
+}
+
+.map-page {
+  height: calc(100vh - 3.4rem);
+  position: relative;
+}
+
+.map-canvas,
+#heritage-map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-canvas {
+  position: relative;
+  z-index: 0;
+}
+
+#heritage-map {
+  background: #c9e9db;
+}
+
+.leaflet-tile {
+  filter: saturate(0.72) brightness(1.06);
+}
+
+.heritage-panel {
+  background: rgba(255, 252, 247, 0.96);
+  border: 1px solid #eadfd3;
+  box-shadow: 0 8px 24px rgba(54, 35, 20, 0.16);
+  color: #231b16;
+  left: 1.5rem;
+  min-height: 42rem;
+  padding: 1.4rem 0.8rem;
+  position: absolute;
+  top: 1.5rem;
+  width: 15rem;
+  z-index: 1001;
+}
+
+.panel-kicker {
+  color: #9e6415;
+  font-size: 0.59rem;
+  letter-spacing: 0.18em;
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+}
+
+.panel-region {
+  font-size: 0.76rem;
+  margin: 0;
+}
+
+.panel-rule {
+  border-top: 1px solid #ede1d4;
+  margin: 1.3rem 0 0.5rem;
+}
+
+.site-item {
+  align-items: center;
+  background: none;
+  border: 1px solid transparent;
+  border-bottom-color: #f0e6dc;
+  cursor: pointer;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: 3.1rem 1fr auto;
+  padding: 1rem 0.45rem;
+  text-align: left;
+  width: 100%;
+}
+
+.site-item:hover,
+.site-item.is-selected {
+  background: #fcf3e9;
+  border-color: #e6c99f;
+}
+
+.site-thumb {
+  background-position: center;
+  background-size: cover;
+  height: 3.1rem;
+  width: 3.1rem;
+}
+
+.thumb-ajanta {
+  background-image: url("https://images.unsplash.com/photo-1606298855672-3efb63017be8?auto=format&fit=crop&w=180&q=80");
+}
+
+.thumb-ellora {
+  background-image: url("https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=180&q=80");
+}
+
+.thumb-raigad {
+  background-image: url("/static/images/heritage/discover-fort.jpg");
+}
+
+.site-details {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.site-details strong {
+  font-size: 0.74rem;
+  font-weight: 500;
+}
+
+.site-item.is-selected .site-details strong {
+  color: #9e6415;
+  font-weight: 700;
+}
+
+.site-details small,
+.site-item em {
+  font-size: 0.53rem;
+  font-style: normal;
+}
+
+.site-item em {
+  color: #9e6415;
+  white-space: nowrap;
+}
+
+.map-overlay-title {
+  color: #3e342c;
+  left: 18rem;
+  position: absolute;
+  top: 1.5rem;
+  z-index: 4;
+}
+
+.map-overlay-title span {
+  color: #9e6415;
+  display: block;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.map-overlay-title strong {
+  font-family: Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.map-legend {
+  align-items: center;
+  background: rgba(255, 252, 247, 0.92);
+  bottom: 1.2rem;
+  color: #4d4239;
+  display: flex;
+  font-size: 0.58rem;
+  gap: 0.4rem;
+  left: 18rem;
+  padding: 0.65rem 0.8rem;
+  position: absolute;
+  z-index: 4;
+}
+
+.legend-dot {
+  background: #b57618;
+  border: 3px solid #fff8ed;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #b57618;
+  height: 0.7rem;
+  width: 0.7rem;
+}
+
+.legend-line {
+  border-top: 2px solid #b57618;
+  margin-left: 0.8rem;
+  width: 1.1rem;
+}
+
+.custom-pin {
+  background: #fffaf5;
+  border: 2px solid #b57618;
+  border-radius: 50% 50% 50% 0;
+  box-shadow: 0 2px 5px rgba(40, 25, 10, 0.25);
+  height: 1.5rem;
+  transform: rotate(-45deg);
+  width: 1.5rem;
+}
+
+.custom-pin::after {
+  background: #b57618;
+  border-radius: 50%;
+  content: "";
+  height: 0.38rem;
+  left: 0.4rem;
+  position: absolute;
+  top: 0.4rem;
+  width: 0.38rem;
+}
+
+@media (max-width: 700px) {
+  body {
+    overflow: auto;
+  }
+
+  .map-header {
+    height: auto;
+    min-height: 4rem;
+    padding: 0.7rem 1rem;
+  }
+
+  .map-nav {
+    display: none;
+  }
+
+  .map-actions button:first-child {
+    display: none;
+  }
+
+  .start-button {
+    font-size: 0.5rem;
+    padding: 0.65rem 0.7rem;
+  }
+
+  .map-page {
+    height: calc(100vh - 4rem);
+  }
+
+  .heritage-panel {
+    bottom: 1rem;
+    left: 1rem;
+    min-height: 0;
+    right: 1rem;
+    top: auto;
+    width: auto;
+  }
+
+  .site-item {
+    padding: 0.6rem 0.35rem;
+  }
+
+  .map-overlay-title,
+  .map-legend {
+    display: none;
+  }
+}

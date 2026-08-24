@@ -9,6 +9,9 @@ endblock %} {% block content %}
   >
   <nav class="primary-nav" aria-label="Primary navigation">
     <a class="is-active" href="#discover">Discover</a>
+    <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+    <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
+    <a href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
     <a href="#archive">Archive</a>
     <a href="#experience">AR Mode</a>
     <a href="#about">About</a>
@@ -70,7 +73,11 @@ endblock %} {% block content %}
         <a class="button button-primary" href="#experience"
           >Enter AR experience <span aria-hidden="true">-&gt;</span></a
         >
-        <a class="button button-secondary" href="#archive">Explore heritage</a>
+        <a
+          class="button button-secondary"
+          href="{{ url_for('map.heritage_map') }}"
+          >Explore heritage</a
+        >
       </div>
     </div>
     <div class="hero-scroll" aria-hidden="true">
