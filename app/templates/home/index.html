@@ -1,6 +1,133 @@
-{% extends "base.html" %}
-{% block title %}HeritageAR{% endblock %}
-{% block content %}
-<h1>HeritageAR</h1>
-<p>Explore history through augmented reality.</p>
+{% extends "base.html" %} {% block title %}HeritageAR | Experience History{%
+endblock %} {% block content %}
+<header class="site-header">
+  <a
+    class="wordmark"
+    href="{{ url_for('home.index') }}"
+    aria-label="HeritageAR home"
+    >HERITAGEAR</a
+  >
+  <nav class="primary-nav" aria-label="Primary navigation">
+    <a class="is-active" href="#discover">Discover</a>
+    <a href="#archive">Archive</a>
+    <a href="#experience">AR Mode</a>
+    <a href="#about">About</a>
+  </nav>
+  <div class="header-actions" aria-label="Account actions">
+    <div class="header-menu">
+      <button
+        class="menu-trigger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="language-menu"
+      >
+        LANG
+      </button>
+      <div class="header-popover" id="language-menu" hidden>
+        <button type="button" class="language-option is-selected">
+          English
+        </button>
+        <button type="button" class="language-option">Hindi</button>
+        <button type="button" class="language-option">Marathi</button>
+      </div>
+    </div>
+    <div class="header-menu">
+      <button
+        class="menu-trigger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="user-menu"
+      >
+        USER
+      </button>
+      <div class="header-popover user-popover" id="user-menu" hidden>
+        <strong>Welcome to HeritageAR</strong>
+        <a href="#about">Sign in</a>
+        <a href="#about">Create account</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="discover">
+    <div class="hero-copy">
+      <p class="eyebrow">Bringing India's past into the present.</p>
+      <h1>Experience<br />History<br /><em>Like Never Before.</em></h1>
+      <p class="hero-intro">
+        Discover India's heritage through augmented reality, reconstructed
+        worlds<br class="desktop-break" />
+        and stories from centuries past.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#experience"
+          >Enter AR experience <span aria-hidden="true">-&gt;</span></a
+        >
+        <a class="button button-secondary" href="#archive">Explore heritage</a>
+      </div>
+    </div>
+    <div class="hero-scroll" aria-hidden="true">
+      <span></span> Scroll to explore
+    </div>
+  </section>
+
+  <section class="pathway" id="experience">
+    <div class="section-heading">
+      <p class="eyebrow">A new way to remember</p>
+      <h2>The Past is Closer Than You Think</h2>
+      <span class="heading-rule"></span>
+    </div>
+    <div class="experience-grid">
+      <article class="experience-card">
+        <div class="card-image image-discover">
+          <span class="card-mark">FORT 01</span>
+        </div>
+        <div class="card-copy">
+          <p class="card-number">1</p>
+          <div>
+            <h3>Discover</h3>
+            <p>
+              Find the places where India's history was written. Curated maps
+              guide you to monumental sites of immense historical value.
+            </p>
+          </div>
+        </div>
+      </article>
+      <article class="experience-card">
+        <div class="card-image image-reconstruct">
+          <span class="card-mark">AR MODEL 02</span>
+        </div>
+        <div class="card-copy">
+          <p class="card-number">2</p>
+          <div>
+            <h3>Reconstruct</h3>
+            <p>
+              Rebuild lost temples and forts in augmented reality, using
+              researched details to reveal how these places once stood.
+            </p>
+          </div>
+        </div>
+      </article>
+      <article class="experience-card">
+        <div class="card-image image-experience">
+          <span class="card-mark">03</span>
+        </div>
+        <div class="card-copy">
+          <p class="card-number">3</p>
+          <div>
+            <h3>Experience</h3>
+            <p>
+              Step inside history. Our immersive augmented reality layers bring
+              the past into your immediate physical space.
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+    <a class="archive-link" id="archive" href="#discover"
+      >View the archive <span aria-hidden="true">-&gt;</span></a
+    >
+  </section>
+</main>
+
 {% endblock %}
