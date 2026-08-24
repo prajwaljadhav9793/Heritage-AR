@@ -1,1 +1,91 @@
-{% extends "base.html" %}{% block content %}<h1>AI Assistant</h1>{% endblock %}
+{% extends "base.html" %} {% block title %}Heritage AI | HeritageAR{% endblock
+%} {% block styles %}<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/assistant.css') }}"
+/>{% endblock %} {% block content %}
+<header class="assistant-header">
+  <a class="assistant-wordmark" href="{{ url_for('home.index') }}"
+    >HeritageAR</a
+  >
+  <nav aria-label="Primary navigation">
+    <a href="{{ url_for('home.index') }}">Home</a>
+    <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+    <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
+    <a href="{{ url_for('history.then_vs_now') }}">3D World</a>
+    <a class="is-current" href="{{ url_for('assistant.assistant') }}"
+      >AI Guide</a
+    >
+  </nav>
+  <div class="assistant-actions">
+    <span>Language</span><span aria-label="Profile">◉</span>
+  </div>
+</header>
+
+<main class="assistant-page">
+  <section class="assistant-intro">
+    <div class="assistant-emblem">⌂</div>
+    <p class="assistant-kicker">Your personal guide to India's past</p>
+    <h1>Heritage AI</h1>
+  </section>
+  <section class="assistant-shell">
+    <div class="chat-column">
+      <div class="question-bubble">
+        Why is Raigad Fort important?<small>You</small>
+      </div>
+      <div class="answer-row">
+        <span class="answer-icon">▥</span>
+        <p>
+          Raigad became the capital of the Maratha Empire and played a major
+          role in the political and military history of the region. It was
+          meticulously designed by architect Hiroji Indulkar under the direct
+          guidance of Chhatrapati Shivaji Maharaj.
+        </p>
+      </div>
+      <div class="source-grid">
+        <article>
+          <span>▣ &nbsp; Historical sources</span>
+          <p>"Shivabharat" composed by...</p>
+        </article>
+        <article>
+          <span>⌁ &nbsp; Archaeological findings</span>
+          <p>Excavations near the Darbar Hall reveal...</p>
+        </article>
+      </div>
+      <div class="prompt-chips">
+        <button type="button">Who built Raigad?</button
+        ><button type="button">What happened in 1674?</button
+        ><button type="button">Tell me a hidden story</button>
+      </div>
+      <form class="chat-form" id="assistant-form">
+        <input
+          id="assistant-input"
+          type="text"
+          placeholder="Ask HeritageAI anything..."
+          autocomplete="off"
+        /><button type="button" class="voice-button" aria-label="Voice input">
+          &#9835;</button
+        ><button type="button" class="image-button" aria-label="Attach image">
+          ▧</button
+        ><button class="send-button" type="submit" aria-label="Send question">
+          -&gt;
+        </button>
+      </form>
+    </div>
+    <aside class="artifact-rail">
+      <h2>Related Artifacts</h2>
+      <article class="artifact-card">
+        <div class="artifact-image artifact-sword"></div>
+        <strong>Shivaji's Ceremonial Sword</strong
+        ><small>17th century · Iron &amp; gold</small>
+      </article>
+      <article class="artifact-card">
+        <div class="artifact-image artifact-coin"></div>
+        <strong>Shivrai Copper Coin</strong><small>Minted at Raigad</small>
+      </article>
+    </aside>
+  </section>
+  <p class="assistant-status" id="assistant-status" aria-live="polite"></p>
+</main>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/assistant.js') }}"></script>
+{% endblock %}

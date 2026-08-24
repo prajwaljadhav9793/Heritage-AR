@@ -1,0 +1,17 @@
+{
+  "topics": [
+    {
+      "keywords": ["built", "who", "architect"],
+      "answer": "Raigad was developed under the direction of Chhatrapati Shivaji Maharaj, with architect Hiroji Indulkar shaping its remarkable capital complex."
+    },
+    {
+      "keywords": ["1674", "coronation", "crown"],
+      "answer": "On June 6, 1674, Shivaji Maharaj was crowned Chhatrapati at Raigad, establishing it as the capital of the Maratha Empire."
+    },
+    {
+      "keywords": ["hidden", "story", "secret", "darbar"],
+      "answer": "Look for the Maha Darwaja: its steep approach was designed so an approaching army could never see how the fort opened beyond it."
+    }
+  ],
+  "fallback": "Raigad is a hill fortress, royal capital, and living archive of the Maratha Empire. Ask me about its people, architecture, or turning points."
+}
