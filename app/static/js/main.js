@@ -40,4 +40,5 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.addEventListener("click", closeMenus);
+
 });
