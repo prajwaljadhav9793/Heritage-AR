@@ -88,10 +88,6 @@ body {
   background: #c9e9db;
 }
 
-.leaflet-tile {
-  filter: saturate(0.72) brightness(1.06);
-}
-
 .heritage-panel {
   background: rgba(255, 252, 247, 0.96);
   border: 1px solid #eadfd3;
@@ -152,11 +148,11 @@ body {
 }
 
 .thumb-ajanta {
-  background-image: url("https://images.unsplash.com/photo-1606298855672-3efb63017be8?auto=format&fit=crop&w=180&q=80");
+  background-image: url("/static/images/historical/then-fort.jpg");
 }
 
 .thumb-ellora {
-  background-image: url("https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=180&q=80");
+  background-image: url("/static/images/historical/now-fort.jpg");
 }
 
 .thumb-raigad {

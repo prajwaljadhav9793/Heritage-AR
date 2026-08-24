@@ -18,13 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const map = L.map("heritage-map", {
+    preferCanvas: true,
     zoomControl: false,
     minZoom: 6,
+    zoomAnimation: false,
+    fadeAnimation: false,
+    markerZoomAnimation: false,
   }).setView([19.2, 74.7], 7);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap contributors",
+    keepBuffer: 1,
     maxZoom: 18,
+    updateWhenIdle: true,
+    updateWhenZooming: false,
   }).addTo(map);
 
   const icon = L.divIcon({
@@ -49,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".site-item").forEach((item) => {
       item.classList.toggle("is-selected", item.dataset.site === id);
     });
-    map.flyTo(site.coordinates, 10, { duration: 0.8 });
+    map.setView(site.coordinates, 10, { animate: false });
     if (openPopup) markers[id].openPopup();
   };
 
