@@ -14,6 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
       name: "Raigad Fort",
       coordinates: [18.2345, 73.4407],
       description: "Historic hill fortress",
+      image: "/static/images/heritage/discover-fort.jpg",
+      eyebrow: "Capital of Swarajya",
+      era: "17th century - Maratha Empire",
+      elevation: "820 m above sea level",
+      significance:
+        "The hilltop capital where Chhatrapati Shivaji Maharaj was crowned in 1674.",
     },
   };
 
@@ -43,9 +49,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const markers = {};
   Object.entries(locations).forEach(([id, site]) => {
+    const popupContent = `
+      <article class="site-popup ${id === "raigad" ? "site-popup-raigad" : ""}">
+        ${site.image ? `<img class="site-popup-image" src="${site.image}" alt="Raigad Fort ruins" />` : ""}
+        <div class="site-popup-heading">
+          <span class="site-popup-eyebrow">${site.eyebrow || "Heritage site"}</span>
+          <button class="site-popup-close" type="button" aria-label="Close details">&times;</button>
+        </div>
+        <h2>${site.name}</h2>
+        <p class="site-popup-type">${site.description}</p>
+        ${
+          site.significance
+            ? `<p class="site-popup-significance">${site.significance}</p>
+               <dl class="site-popup-facts">
+                 <div><dt>Period</dt><dd>${site.era}</dd></div>
+                 <div><dt>Elevation</dt><dd>${site.elevation}</dd></div>
+               </dl>`
+            : ""
+        }
+        ${
+          id === "raigad"
+            ? `<a class="site-popup-link" href="${document.querySelector(".map-canvas").dataset.timelineUrl}">View more info <span aria-hidden="true">&rarr;</span></a>`
+            : ""
+        }
+      </article>`;
     const marker = L.marker(site.coordinates, { icon })
       .addTo(map)
-      .bindPopup(`<strong>${site.name}</strong><br>${site.description}`);
+      .bindPopup(popupContent, {
+        className: "heritage-popup",
+        closeButton: false,
+        offset: [0, -12],
+        autoPan: true,
+        autoPanPaddingTopLeft: [20, 88],
+        autoPanPaddingBottomRight: [20, 20],
+      });
+    let closeTimer;
+    const keepPopupOpen = () => {
+      window.clearTimeout(closeTimer);
+    };
+    const closeOnHoverEnd = () => {
+      closeTimer = window.setTimeout(() => marker.closePopup(), 180);
+    };
+    marker.on("mouseover", () => {
+      keepPopupOpen();
+      marker.openPopup();
+    });
+    marker.on("mouseout", closeOnHoverEnd);
+    marker.on("popupopen", (event) => {
+      const popupElement = event.popup.getElement();
+      popupElement.addEventListener("mouseenter", keepPopupOpen);
+      popupElement.addEventListener("mouseleave", closeOnHoverEnd);
+      const closeButton = popupElement.querySelector(".site-popup-close");
+      closeButton.addEventListener("click", () => marker.closePopup());
+    });
     marker.on("click", () => selectSite(id, false));
     markers[id] = marker;
   });

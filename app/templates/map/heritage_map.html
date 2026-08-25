@@ -48,7 +48,11 @@
       ><em>Selected</em>
     </button>
   </aside>
-  <section class="map-canvas" aria-label="Interactive Maharashtra heritage map">
+  <section
+    class="map-canvas"
+    aria-label="Interactive Maharashtra heritage map"
+    data-timeline-url="{{ url_for('timeline.timeline') }}"
+  >
     <div id="heritage-map"></div>
     <div class="map-overlay-title">
       <span>HERITAGEAR</span><strong>Explore the living archive</strong>
