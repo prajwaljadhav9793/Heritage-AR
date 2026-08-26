@@ -73,6 +73,49 @@ button {
   padding: 0.35rem 0 0.45rem;
 }
 
+header nav a,
+.header-actions button,
+.map-actions button,
+.timeline-actions span,
+.assistant-actions span {
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+header nav a:hover,
+header nav a:focus-visible,
+.header-actions button:hover,
+.header-actions button:focus-visible,
+.map-actions button:hover,
+.map-actions button:focus-visible,
+.timeline-actions span:hover,
+.assistant-actions span:hover {
+  color: var(--brass);
+  transform: translateY(-3px) scale(1.08);
+}
+
+header nav a {
+  position: relative;
+}
+
+header nav a::after {
+  background: var(--brass);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%) scaleX(0);
+  transition: transform 180ms ease;
+  width: 100%;
+}
+
+header nav a:hover::after,
+header nav a:focus-visible::after,
+header nav a.is-active::after,
+header nav a.is-current::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
 .primary-nav a.is-active {
   border-bottom: 1px solid var(--brass);
   color: var(--paper);
