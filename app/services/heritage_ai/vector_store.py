@@ -1,9 +1,12 @@
 import json
+from pathlib import Path
+
 import chromadb
 
 
-CHUNKS_PATH = "data/heritage_chunks.json"
-VECTOR_DB_PATH = "data/vector_db"
+PROJECT_DIR = Path(__file__).resolve().parents[3]
+CHUNKS_PATH = str(PROJECT_DIR / "data" / "heritage_chunks.json")
+VECTOR_DB_PATH = str(PROJECT_DIR / "data" / "vector_db")
 
 
 client = chromadb.PersistentClient(

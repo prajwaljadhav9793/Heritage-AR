@@ -1,4 +1,7 @@
 import re
+import os
+from pathlib import Path
+
 import chromadb
 import ollama
 
@@ -7,7 +10,7 @@ import ollama
 # CONFIGURATION
 # ==========================================================
 
-VECTOR_DB_PATH = "data/vector_db"
+VECTOR_DB_PATH = str(Path(__file__).resolve().parents[3] / "data" / "vector_db")
 
 # Based on your actual retrieval tests.
 # Genuine questions can reach around 0.92,
@@ -15,7 +18,9 @@ VECTOR_DB_PATH = "data/vector_db"
 # was above 1.03.
 MAX_DISTANCE = 0.95
 
-MODEL_NAME = "qwen2.5:0.5b"
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
+MODEL_NAME = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
+ollama_client = ollama.Client(host=OLLAMA_HOST)
 
 
 # ==========================================================
@@ -270,7 +275,7 @@ Answer ONLY using the HERITAGE CONTEXT.
     # OLLAMA
     # ------------------------------------------------------
 
-    response = ollama.chat(
+    response = ollama_client.chat(
 
         model=MODEL_NAME,
 
