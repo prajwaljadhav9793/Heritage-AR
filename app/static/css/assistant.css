@@ -280,7 +280,8 @@ body {
 }
 .assistant-header {
   background: rgba(31, 19, 13, .94);
-  box-shadow: 0 1px 0 rgba(239, 190, 94, .16);
+  border-bottom: 0;
+  box-shadow: none;
   position: relative;
   z-index: 2;
 }

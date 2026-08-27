@@ -119,4 +119,42 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".site-item").forEach((item) => {
     item.addEventListener("click", () => selectSite(item.dataset.site));
   });
+
+  const panel = document.querySelector(".heritage-panel");
+  const siteItems = [...document.querySelectorAll(".site-item")];
+  if (panel && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const effects = siteItems.map((item) => item.classList.contains("is-selected") ? 1 : 0);
+    const targets = [...effects];
+    let animationFrame;
+    let lastTime = performance.now();
+    const animatePanel = (now) => {
+      const easing = 1 - Math.exp(-Math.min(now - lastTime, 50) / 90);
+      lastTime = now;
+      let moving = false;
+      siteItems.forEach((item, index) => {
+        effects[index] += (targets[index] - effects[index]) * easing;
+        if (Math.abs(targets[index] - effects[index]) > .002) moving = true;
+        item.style.setProperty("--effect", effects[index].toFixed(3));
+      });
+      animationFrame = moving ? requestAnimationFrame(animatePanel) : undefined;
+    };
+    const start = () => { if (!animationFrame) animationFrame = requestAnimationFrame(animatePanel); };
+    panel.addEventListener("pointermove", (event) => {
+      siteItems.forEach((item, index) => {
+        const box = item.getBoundingClientRect();
+        const distance = Math.abs(event.clientY - (box.top + box.height / 2));
+        const proximity = Math.max(0, 1 - distance / 95);
+        targets[index] = proximity * proximity * (3 - 2 * proximity);
+      });
+      start();
+    });
+    panel.addEventListener("pointerleave", () => {
+      siteItems.forEach((item, index) => { targets[index] = item.classList.contains("is-selected") ? 1 : 0; });
+      start();
+    });
+    siteItems.forEach((item) => item.addEventListener("click", () => {
+      siteItems.forEach((site, index) => { targets[index] = site === item ? 1 : 0; });
+      start();
+    }));
+  }
 });
