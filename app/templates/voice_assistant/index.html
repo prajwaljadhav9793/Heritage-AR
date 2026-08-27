@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Voice Assistant | HeritageAR{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/voice-assistant.css') }}" />{% endblock %}
+{% block content %}
+<main class="voice-page" data-voice-assistant>
+  <header class="voice-header">
+    <a class="voice-brand" href="{{ url_for('home.index') }}"><span>H</span> HeritageAR</a>
+    <nav aria-label="Primary navigation">
+      <a href="{{ url_for('home.index') }}">Home</a>
+      <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+      <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
+      <a href="{{ url_for('assistant.assistant') }}">AI Guide</a>
+      <a class="is-current" href="{{ url_for('voice_assistant.voice_assistant') }}">Voice Assistant</a>
+    </nav>
+    <a class="voice-exit" href="{{ url_for('assistant.assistant') }}">Text mode</a>
+  </header>
+
+  <section class="voice-hero">
+    <div class="voice-intro">
+      <p class="voice-kicker">HeritageAR / Audio archive</p>
+      <h1>Ask history.<br /><em>Hear the answer.</em></h1>
+      <p class="voice-lede">Type a question or speak naturally. HeritageAI will search the archive and read the answer back to you.</p>
+    </div>
+
+    <section class="voice-console" aria-label="Voice assistant controls">
+      <div class="voice-orb" data-orb aria-hidden="true"><span></span><i></i><b></b></div>
+      <p class="voice-state" data-state>Voice mode ready</p>
+      <p class="voice-hint" data-hint>Ask about Raigad, the Maratha Empire, or any story in the archive.</p>
+      <form class="voice-form" data-voice-form>
+        <label class="sr-only" for="voice-question">Ask HeritageAI a question</label>
+        <input id="voice-question" data-voice-input type="text" placeholder="Type your question here..." autocomplete="off" />
+        <button class="mic-button" data-mic type="button" aria-label="Speak your question" title="Speak your question">&#9835;</button>
+        <button class="voice-send" type="submit" aria-label="Ask HeritageAI">Ask <span aria-hidden="true">-&gt;</span></button>
+      </form>
+      <div class="voice-answer" data-answer-panel hidden>
+        <span class="answer-eyebrow">HeritageAI response</span>
+        <p data-answer></p>
+        <button class="replay-button" data-replay type="button">Replay answer</button>
+      </div>
+    </section>
+  </section>
+  <p class="voice-status" data-status aria-live="polite"></p>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/voice-assistant.js') }}"></script>{% endblock %}

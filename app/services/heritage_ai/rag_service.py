@@ -16,7 +16,7 @@ VECTOR_DB_PATH = str(Path(__file__).resolve().parents[3] / "data" / "vector_db")
 # Genuine questions can reach around 0.92,
 # while the clearly unrelated favorite-food question
 # was above 1.03.
-MAX_DISTANCE = 0.95
+MAX_DISTANCE = 1.55
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 MODEL_NAME = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
@@ -94,7 +94,7 @@ STOP_WORDS = {
 def get_keywords(text):
 
     words = re.findall(
-        r"[a-zA-Z]+",
+        r"[a-zA-Z0-9]+",
         text.lower()
     )
 
@@ -106,6 +106,19 @@ def get_keywords(text):
     ]
 
     return set(keywords)
+
+
+def get_keyword_stems(text):
+    """Return simple stems so questions and source text can match paraphrases."""
+    stems = set()
+    for word in get_keywords(text):
+        stem = word
+        for suffix in ("ies", "ing", "ed", "es", "s"):
+            if len(stem) > 4 and stem.endswith(suffix):
+                stem = stem[: -len(suffix)]
+                break
+        stems.add(stem)
+    return stems
 
 
 # ==========================================================
@@ -149,7 +162,7 @@ def is_relevant(question, retrieved):
     if not retrieved:
         return False
 
-    question_keywords = get_keywords(question)
+    question_keywords = get_keyword_stems(question)
 
     # Check the best retrieved result first
     best_result = retrieved[0]
@@ -172,18 +185,22 @@ def is_relevant(question, retrieved):
         for item in retrieved
     ).lower()
 
-    matching_keywords = []
-
-    for keyword in question_keywords:
-
-        if keyword in combined_context:
-            matching_keywords.append(keyword)
+    context_keywords = get_keyword_stems(combined_context)
+    matching_keywords = question_keywords.intersection(context_keywords)
 
     # If the question contains useful words but
     # none of them occur in the retrieved context,
     # reject the context.
 
     if question_keywords and not matching_keywords:
+        return False
+
+    heritage_terms = {
+        "raigad", "fort", "shivaji", "maratha", "maharaj", "swaraj",
+        "coronation", "maha", "darwaja", "hirakani", "ropeway", "jijabai",
+    }
+    has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
+    if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:
         return False
 
     return True
