@@ -71,17 +71,18 @@
         </button>
       </form>
     </div>
-    <aside class="artifact-rail">
+    <aside class="artifact-rail" aria-live="polite">
       <h2>Related Artifacts</h2>
-      <article class="artifact-card">
-        <div class="artifact-image artifact-sword"></div>
-        <strong>Shivaji's Ceremonial Sword</strong
-        ><small>17th century · Iron &amp; gold</small>
-      </article>
-      <article class="artifact-card">
-        <div class="artifact-image artifact-coin"></div>
-        <strong>Shivrai Copper Coin</strong><small>Minted at Raigad</small>
-      </article>
+      <div class="artifact-list" id="artifact-list">
+        <article class="artifact-card">
+          <div class="artifact-image" style="background-image: url('{{ url_for('static', filename='images/historical/then-fort.jpg') }}');"></div>
+          <strong>Raigad Fort Gateway</strong><small>17th century · Architecture</small>
+        </article>
+        <article class="artifact-card">
+          <div class="artifact-image" style="background-image: url('{{ url_for('static', filename='images/heritage/discover-fort.jpg') }}');"></div>
+          <strong>Raigad Landscape</strong><small>Living heritage · Raigad</small>
+        </article>
+      </div>
     </aside>
   </section>
   <p class="assistant-status" id="assistant-status" aria-live="polite"></p>

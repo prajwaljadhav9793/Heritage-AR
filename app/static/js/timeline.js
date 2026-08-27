@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const points = document.querySelectorAll(".event-point");
   const title = document.querySelector("[data-event-title]");
   const description = document.querySelector("[data-event-description]");
+  const eventImage = document.querySelector("[data-event-image]");
   const note = document.querySelector("#reconstruction-note");
   const reconstructionButton = document.querySelector("#view-reconstruction");
 
@@ -14,6 +15,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     title.textContent = event.title;
     description.textContent = event.description;
+    if (eventImage) {
+      eventImage.classList.add("is-changing");
+      const nextImage = new Image();
+      nextImage.onload = () => {
+        eventImage.src = event.image;
+        eventImage.alt = `${event.title} at Raigad Fort`;
+        eventImage.classList.remove("is-changing");
+      };
+      nextImage.onerror = () => {
+        eventImage.src = event.fallback;
+        eventImage.alt = `${event.title} at Raigad Fort`;
+        eventImage.classList.remove("is-changing");
+      };
+      nextImage.src = event.image;
+    }
     note.hidden = true;
     reconstructionButton.textContent = "View reconstruction ->";
   };

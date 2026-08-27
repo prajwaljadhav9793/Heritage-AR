@@ -7,6 +7,57 @@ document.addEventListener("DOMContentLoaded", () => {
   const questionBubble = document.querySelector(".question-bubble");
   const answerText = document.querySelector(".answer-row p");
   const sourceGrid = document.querySelector(".source-grid");
+  const artifactList = document.querySelector("#artifact-list");
+
+  // Add your files to app/static/images/heritage/ai-guide/ and map them here.
+  const artifactSets = [
+    {
+      keywords: ["coronation", "1674", "crown", "shivaji"],
+      items: [
+        ["Coronation Regalia", "17th century · Royal ceremony", "../../historical/then-fort.jpg"],
+        ["Royal Court at Raigad", "1674 · Maratha history", "../../heritage/discover-fort.jpg"],
+      ],
+    },
+    {
+      keywords: ["coin", "money", "currency", "shivrai"],
+      items: [
+        ["Shivrai Copper Coin", "Minted at Raigad · Numismatics", "../../heritage/discover-fort.jpg"],
+        ["Maratha Inscription", "17th century · Epigraphy", "../../historical/then-fort.jpg"],
+      ],
+    },
+    {
+      keywords: ["fort", "gate", "built", "architecture", "capital"],
+      items: [
+        ["Raigad Fort Gateway", "17th century · Architecture", "../../historical/then-fort.jpg"],
+        ["Raigad Mountain Capital", "Living heritage · Raigad", "../../heritage/discover-fort.jpg"],
+      ],
+    },
+  ];
+
+  const defaultArtifacts = [
+    ["Raigad Fort Gateway", "17th century · Architecture", "../../historical/then-fort.jpg"],
+    ["Raigad Mountain Capital", "Living heritage · Raigad", "../../heritage/discover-fort.jpg"],
+  ];
+
+  const displayArtifacts = (question) => {
+    if (!artifactList) return;
+    const normalizedQuestion = question.toLowerCase();
+    const matchingSet = artifactSets.find((set) =>
+      set.keywords.some((keyword) => normalizedQuestion.includes(keyword)),
+    );
+    const items = matchingSet ? matchingSet.items : defaultArtifacts;
+
+    artifactList.innerHTML = items
+      .map(
+        ([title, detail, filename]) => `
+          <article class="artifact-card">
+            <div class="artifact-image" style="background-image: linear-gradient(0deg, rgba(28, 15, 7, .32), transparent), url('/static/images/heritage/ai-guide/${filename}');"></div>
+            <strong>${escapeHtml(title)}</strong><small>${escapeHtml(detail)}</small>
+          </article>
+        `,
+      )
+      .join("");
+  };
 
   const ask = async (question) => {
     const cleanQuestion = question.trim();
@@ -26,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Loading message
     status.textContent = "HeritageAI is consulting the archive...";
+    displayArtifacts(cleanQuestion);
 
     // Temporary answer
     if (answerText) {
