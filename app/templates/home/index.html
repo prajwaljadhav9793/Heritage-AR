@@ -1,151 +1,66 @@
-{% extends "base.html" %} {% block title %}HeritageAR | Experience History{%
-endblock %} {% block content %}
-<header class="site-header">
-  <a
-    class="wordmark"
-    href="{{ url_for('home.index') }}"
-    aria-label="HeritageAR home"
-    >HERITAGEAR</a
-  >
-  <nav class="primary-nav" aria-label="Primary navigation">
-    <a class="is-active" href="#discover">Discover</a>
-    <a href="{{ url_for('map.heritage_map') }}">Explore</a>
-    <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
-    <a href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
-    <a href="{{ url_for('assistant.assistant') }}">AI Guide</a>
-    <a href="#archive">Archive</a>
-    <a href="#experience">AR Mode</a>
-    <a href="#about">About</a>
-  </nav>
-  <div class="header-actions" aria-label="Account actions">
-    <div class="header-menu">
-      <button
-        class="menu-trigger"
-        type="button"
-        aria-expanded="false"
-        aria-controls="language-menu"
-      >
-        LANG
-      </button>
-      <div class="header-popover" id="language-menu" hidden>
-        <button type="button" class="language-option is-selected">
-          English
-        </button>
-        <button type="button" class="language-option">Hindi</button>
-        <button type="button" class="language-option">Marathi</button>
-      </div>
-    </div>
-    <div class="header-menu">
-      <button
-        class="menu-trigger"
-        type="button"
-        aria-expanded="false"
-        aria-controls="user-menu"
-      >
-        USER
-      </button>
-      <div class="header-popover user-popover" id="user-menu" hidden>
-        <strong>Welcome to HeritageAR</strong>
-        <a href="{{ url_for('auth.login') }}">Sign in</a>
-        <a href="{{ url_for('auth.register') }}">Create account</a>
-      </div>
-    </div>
-  </div>
-</header>
+{% extends "base.html" %}
 
-<main>
-  <section class="hero" id="discover">
-    <div class="hero-frame" aria-hidden="true"></div>
-    <div class="hero-location" aria-label="Featured location">
-      <span>Featured site</span>
-      <strong>Agra, India</strong>
-      <small>27.17° N &nbsp; 78.04° E</small>
-    </div>
-    <div class="hero-disc" aria-hidden="true"></div>
-    <div class="hero-copy">
-      <p class="eyebrow">Bringing India's past into the present.</p>
-      <h1>Experience<br />History<br /><em>Like Never Before.</em></h1>
-      <p class="hero-intro">
-        Discover India's heritage through augmented reality, reconstructed
-        worlds<br class="desktop-break" />
-        and stories from centuries past.
-      </p>
-      <div class="hero-actions">
-        <a class="button button-primary" href="#experience"
-          >Enter AR experience <span aria-hidden="true">-&gt;</span></a
-        >
-        <a
-          class="button button-secondary"
-          href="{{ url_for('map.heritage_map') }}"
-          >Explore heritage</a
-        >
-      </div>
-    </div>
-    <div class="hero-scroll" aria-hidden="true">
-      <span></span> Scroll to explore
-    </div>
-  </section>
+{% block title %}HeritageAR | Experience History{% endblock %}
 
-  <section class="pathway" id="experience">
-    <div class="section-heading">
-      <p class="eyebrow">A new way to remember</p>
-      <h2>The Past is Closer Than You Think</h2>
-      <span class="heading-rule"></span>
-    </div>
-    <div class="experience-grid">
-      <article class="experience-card">
-        <div class="card-image image-discover">
-          <span class="card-mark">FORT 01</span>
-          <span class="card-tag">Field archive</span>
-        </div>
-        <div class="card-copy">
-          <p class="card-number">1</p>
-          <div>
-            <h3>Discover</h3>
-            <p>
-              Find the places where India's history was written. Curated maps
-              guide you to monumental sites of immense historical value.
-            </p>
-          </div>
-        </div>
-      </article>
-      <article class="experience-card">
-        <div class="card-image image-reconstruct">
-          <span class="card-mark">AR MODEL 02</span>
-          <span class="card-tag">Digital study</span>
-        </div>
-        <div class="card-copy">
-          <p class="card-number">2</p>
-          <div>
-            <h3>Reconstruct</h3>
-            <p>
-              Rebuild lost temples and forts in augmented reality, using
-              researched details to reveal how these places once stood.
-            </p>
-          </div>
-        </div>
-      </article>
-      <article class="experience-card">
-        <div class="card-image image-experience">
-          <span class="card-mark">03</span>
-          <span class="card-tag">In the moment</span>
-        </div>
-        <div class="card-copy">
-          <p class="card-number">3</p>
-          <div>
-            <h3>Experience</h3>
-            <p>
-              Step inside history. Our immersive augmented reality layers bring
-              the past into your immediate physical space.
-            </p>
-          </div>
-        </div>
-      </article>
-    </div>
-    <a class="archive-link" id="archive" href="#discover"
-      >View the archive <span aria-hidden="true">-&gt;</span></a
-    >
-  </section>
-</main>
-
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />
 {% endblock %}
+
+{% block content %}
+<main class="heritage-home" data-heritage-carousel>
+  <div class="home-shell">
+    <header class="home-header">
+      <a class="home-brand" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+        <span class="brand-mark" aria-hidden="true">H</span><span>HeritageAR</span>
+      </a>
+      <nav class="home-nav" aria-label="Primary navigation">
+        <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+        <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
+        <a href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
+        <a href="{{ url_for('assistant.assistant') }}">AI Guide</a>
+      </nav>
+      <div class="home-actions">
+        <a class="search-button" href="{{ url_for('map.heritage_map') }}" aria-label="Search heritage sites"><span aria-hidden="true"></span></a>
+        <a class="profile-link" href="{{ url_for('auth.login') }}">Sign in</a>
+        <a class="register-link" href="{{ url_for('auth.register') }}">Register</a>
+      </div>
+    </header>
+
+    <div class="slide-rail" aria-label="Choose a featured story">
+      <span class="rail-line" aria-hidden="true"></span>
+      <button class="rail-dot is-active" type="button" data-go-to="0" aria-label="Show Raigad Fort"></button>
+      <button class="rail-dot" type="button" data-go-to="1" aria-label="Show the Coronation"></button>
+      <button class="rail-dot" type="button" data-go-to="2" aria-label="Show the reconstruction"></button>
+      <button class="rail-dot" type="button" data-go-to="3" aria-label="Show Raigad today"></button>
+      <span class="rail-count">01 / 04</span>
+    </div>
+
+    <section class="heritage-slides" aria-live="polite">
+      <article class="heritage-slide is-active" data-slide data-title="Raigad Fort" style="--slide-image: url('{{ url_for('static', filename='images/heritage/discover-fort.jpg') }}');">
+        <div class="slide-copy"><p class="slide-kicker">Maharashtra, India</p><h1>RAIGAD<br />FORT</h1><p>Walk through the mountain capital where the Maratha Empire rose. Discover its gates, halls and stories in a new dimension.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Explore the fort <span aria-hidden="true">→</span></a></div>
+      </article>
+      <article class="heritage-slide" data-slide data-title="The Coronation" style="--slide-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');">
+        <div class="slide-copy"><p class="slide-kicker">6 June 1674</p><h1>THE<br />CORONATION</h1><p>Return to the defining moment when Chhatrapati Shivaji Maharaj was crowned at Raigad and a sovereign kingdom was born.</p><a class="explore-button" href="{{ url_for('timeline.timeline') }}">View the timeline <span aria-hidden="true">→</span></a></div>
+      </article>
+      <article class="heritage-slide" data-slide data-title="Reconstructed Raigad" style="--slide-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');">
+        <div class="slide-copy"><p class="slide-kicker">Digital reconstruction</p><h1>RAIGAD,<br />REIMAGINED</h1><p>See a lost world take shape again through researched reconstruction, immersive detail and augmented reality.</p><a class="explore-button" href="{{ url_for('history.then_vs_now') }}">See then vs now <span aria-hidden="true">→</span></a></div>
+      </article>
+      <article class="heritage-slide" data-slide data-title="Raigad Today" style="--slide-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');">
+        <div class="slide-copy"><p class="slide-kicker">Living heritage</p><h1>THE FORT<br />TODAY</h1><p>Stand in the present and uncover what remains—then use HeritageAR to reveal the layers of history around you.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Plan your visit <span aria-hidden="true">→</span></a></div>
+      </article>
+    </section>
+
+    <aside class="story-deck" aria-label="Featured heritage stories">
+      <button class="story-card is-current" type="button" data-go-to="0" style="--card-image: url('{{ url_for('static', filename='images/heritage/discover-fort.jpg') }}');"><span class="story-label">Raigad Fort</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
+      <button class="story-card" type="button" data-go-to="1" style="--card-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');"><span class="story-label">The Coronation</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
+      <button class="story-card" type="button" data-go-to="2" style="--card-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');"><span class="story-label">Reimagined Raigad</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
+      <button class="story-card" type="button" data-go-to="3" style="--card-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');"><span class="story-label">Raigad Today</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
+    </aside>
+
+    <div class="carousel-controls"><button type="button" data-previous aria-label="Previous story">←</button><button type="button" data-next aria-label="Next story">→</button></div>
+    <p class="home-pagination"><span data-current-slide>01</span><i></i>04</p>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/home.js') }}"></script>{% endblock %}
