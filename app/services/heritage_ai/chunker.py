@@ -4,26 +4,22 @@ import os
 import re
 
 
-DOCX_PATH = "data/documents/RAIGAD FORT.docx"
-OUTPUT_PATH = "data/heritage_chunks.json"
+# ==========================================================
+# DOCUMENT REGISTRY
+# To add a new heritage place, add an entry here with its
+# docx file, unique ID prefix, site name and section headings,
+# then run:  python -m app.services.heritage_ai.chunker
+# and:       python -m app.services.heritage_ai.ingest
+# ==========================================================
 
-
-def clean_text(text):
-    """Clean unnecessary spaces and characters."""
-    text = re.sub(r"\s+", " ", text)
-    return text.strip()
-
-
-def is_heading(text):
-    """
-    Detect headings from the Raigad document.
-    """
-    text = text.strip()
-
-    if not text:
-        return False
-
-    headings = [
+DOCUMENTS = [
+    {
+        "key": "raigad",
+        "docx": "data/documents/RAIGAD FORT.docx",
+        "site": "Raigad Fort",
+        "prefix": "RG",
+        "source": "RAIGAD FORT.docx",
+        "headings": [
         "Major features",
         "Hirakani Buruj",
         "Raigad Ropeway",
@@ -68,13 +64,50 @@ def is_heading(text):
         "British Period",
         "Raigad After Independence",
         "Broken Parts",
-    ]
+        ],
+    },
+    {
+        "key": "hampi",
+        "docx": "data/documents/Hampi info.docx",
+        "site": "Hampi",
+        "prefix": "HM",
+        "source": "Hampi info.docx",
+        # Split on the document's real Heading 1/2/3 styles
+        # instead of a hard-coded heading list.
+        "use_styles": True,
+        "headings": [],
+    },
+]
+
+OUTPUT_PATH = "data/heritage_chunks.json"
+
+
+def clean_text(text):
+    """Clean unnecessary spaces and characters."""
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def is_heading(text, headings):
+    text = text.strip()
+
+    if not text:
+        return False
 
     return text.lower() in [h.lower() for h in headings]
 
 
-def load_document():
-    document = Document(DOCX_PATH)
+def is_style_heading(paragraph, doc_config):
+    """Detect headings by the document's Heading styles when enabled."""
+    if not doc_config.get("use_styles"):
+        return False
+
+    style = (paragraph.style.name or "").lower()
+    return style.startswith("heading")
+
+
+def load_document(doc_config):
+    document = Document(doc_config["docx"])
 
     sections = []
     current_section = "Introduction"
@@ -87,7 +120,7 @@ def load_document():
         if not text:
             continue
 
-        if is_heading(text):
+        if is_style_heading(paragraph, doc_config) or is_heading(text, doc_config["headings"]):
 
             if current_text:
                 sections.append({
@@ -111,8 +144,11 @@ def load_document():
     return sections
 
 
-def create_chunks(sections):
+def create_chunks(sections, doc_config):
     chunks = []
+    prefix = doc_config["prefix"]
+    site = doc_config["site"]
+    source = doc_config["source"]
 
     for index, section in enumerate(sections, start=1):
 
@@ -124,11 +160,11 @@ def create_chunks(sections):
         if len(content) <= max_length:
 
             chunks.append({
-                "id": f"RG-{index:03d}",
-                "site": "Raigad Fort",
+                "id": f"{prefix}-{index:03d}",
+                "site": site,
                 "section": section["section"],
                 "content": content,
-                "source": "RAIGAD FORT.docx"
+                "source": source
             })
 
         else:
@@ -144,11 +180,11 @@ def create_chunks(sections):
                 if current_length + len(word) + 1 > max_length:
 
                     chunks.append({
-                        "id": f"RG-{index:03d}-{part:02d}",
-                        "site": "Raigad Fort",
+                        "id": f"{prefix}-{index:03d}-{part:02d}",
+                        "site": site,
                         "section": section["section"],
                         "content": " ".join(current_chunk),
-                        "source": "RAIGAD FORT.docx"
+                        "source": source
                     })
 
                     current_chunk = []
@@ -161,27 +197,38 @@ def create_chunks(sections):
             if current_chunk:
 
                 chunks.append({
-                    "id": f"RG-{index:03d}-{part:02d}",
-                    "site": "Raigad Fort",
+                    "id": f"{prefix}-{index:03d}-{part:02d}",
+                    "site": site,
                     "section": section["section"],
                     "content": " ".join(current_chunk),
-                    "source": "RAIGAD FORT.docx"
+                    "source": source
                 })
 
     return chunks
 
 
-def main():
-
-    print("Reading Raigad document...")
-
-    sections = load_document()
-
-    print(f"Sections found: {len(sections)}")
-
-    chunks = create_chunks(sections)
+def main(selected_keys=None):
 
     os.makedirs("data", exist_ok=True)
+
+    all_chunks = []
+
+    for doc_config in DOCUMENTS:
+
+        if selected_keys and doc_config["key"] not in selected_keys:
+            continue
+
+        print(f"Reading {doc_config['docx']}...")
+
+        sections = load_document(doc_config)
+
+        print(f"Sections found: {len(sections)}")
+
+        chunks = create_chunks(sections, doc_config)
+
+        print(f"Chunks created for {doc_config['site']}: {len(chunks)}")
+
+        all_chunks.extend(chunks)
 
     with open(
         OUTPUT_PATH,
@@ -190,23 +237,14 @@ def main():
     ) as file:
 
         json.dump(
-            chunks,
+            all_chunks,
             file,
             ensure_ascii=False,
             indent=4
         )
 
-    print(f"Chunks created: {len(chunks)}")
+    print(f"Total chunks: {len(all_chunks)}")
     print(f"Dataset saved to: {OUTPUT_PATH}")
-
-    print("\nFirst 5 chunks:\n")
-
-    for chunk in chunks[:5]:
-
-        print("=" * 60)
-        print("ID:", chunk["id"])
-        print("Section:", chunk["section"])
-        print("Content:", chunk["content"][:300], "...")
 
 
 if __name__ == "__main__":

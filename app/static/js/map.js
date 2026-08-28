@@ -38,6 +38,22 @@ document.addEventListener("DOMContentLoaded", () => {
       significance:
         "The hilltop capital where Chhatrapati Shivaji Maharaj was crowned in 1674.",
     },
+    hampi: {
+      name: "Hampi",
+      label: "Hampi",
+      category: "UNESCO Heritage",
+      rating: "4.7",
+      reviews: "31.2k",
+      hours: "6:00 AM – 6:00 PM",
+      coordinates: [15.335, 76.46],
+      description: "Ruins of the Vijayanagara capital",
+      image: "/static/images/historical/then-fort.jpg",
+      eyebrow: "City of Victory",
+      era: "14th-16th century - Vijayanagara Empire",
+      elevation: "~470 m above sea level",
+      significance:
+        "The ruined capital of the Vijayanagara Empire on the banks of the Tungabhadra.",
+    },
   };
 
   const map = L.map("heritage-map", {

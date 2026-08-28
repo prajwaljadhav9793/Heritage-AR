@@ -198,6 +198,11 @@ def is_relevant(question, retrieved):
     heritage_terms = {
         "raigad", "fort", "shivaji", "maratha", "maharaj", "swaraj",
         "coronation", "maha", "darwaja", "hirakani", "ropeway", "jijabai",
+        # Hampi / Vijayanagara terms
+        "hampi", "vijayanagara", "tungabhadra", "krishnadevaraya",
+        "virupaksha", "vittala", "harihara", "bukka", "karnataka",
+        "talikota", "unesco", "bazaar", "chariot", "mandapa", "mantapa",
+        "zenana", "mahal", "stables", "dibba", "gopuram", "temple",
     }
     has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
     if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:

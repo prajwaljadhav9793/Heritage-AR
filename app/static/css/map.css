@@ -159,6 +159,10 @@ body {
   background-image: url("/static/images/heritage/discover-fort.jpg");
 }
 
+.thumb-hampi {
+  background-image: url("/static/images/historical/then-fort.jpg");
+}
+
 .site-details {
   display: grid;
   gap: 0.2rem;
