@@ -83,6 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const markers = {};
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${site.coordinates.join(",")}`;
+    const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
+    const siteLink = id === "raigad" || id === "hampi"
+      ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
+      : "";
     const popupContent = `
       <article class="site-popup ${id === "raigad" ? "site-popup-raigad" : ""}">
         <img class="site-popup-image" src="${site.image}" alt="${site.name}" />
@@ -93,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>${site.name}</h2>
         <p class="site-popup-type">${site.description}</p>
         <div class="site-popup-meta"><span><b>&#9733;</b> ${site.rating} <small>(${site.reviews})</small></span><span><b>&#9716;</b> ${site.hours}</span></div>
-        <div class="site-popup-actions"><a class="site-directions" href="${directionsUrl}" target="_blank" rel="noopener">Directions <span aria-hidden="true">&nearr;</span></a>${id === "raigad" ? `<a class="site-popup-link" href="${document.querySelector(".map-canvas").dataset.timelineUrl}">View more info <span aria-hidden="true">&rarr;</span></a>` : ""}</div>
+        <div class="site-popup-actions"><a class="site-directions" href="${directionsUrl}" target="_blank" rel="noopener">Directions <span aria-hidden="true">&nearr;</span></a>${siteLink}</div>
       </article>`;
     const marker = L.marker(site.coordinates, { icon })
       .addTo(map)

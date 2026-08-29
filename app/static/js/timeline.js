@@ -51,12 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
         siteNote.textContent = `${button.querySelector("strong").textContent} timeline is being added to the archive.`;
         return;
       }
+      // Available sites are links that navigate to ?site=...
+      if (button.tagName === "A") return;
       siteButtons.forEach((site) => {
         const active = site === button;
         site.classList.toggle("is-selected", active);
         site.setAttribute("aria-pressed", String(active));
       });
-      siteNote.textContent = "Raigad Fort archive is currently open.";
+      siteNote.textContent = `${button.querySelector("strong").textContent} archive is currently open.`;
       show(0);
     });
   });

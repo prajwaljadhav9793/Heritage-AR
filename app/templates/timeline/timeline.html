@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Raigad Through Time | HeritageAR{% endblock %}
+{% block title %}{{ site.name }} Through Time | HeritageAR{% endblock %}
 {% block styles %}<link rel="stylesheet" href="{{ url_for('static', filename='css/timeline.css') }}" />{% endblock %}
 {% block content %}
 <main class="history-timeline" data-timeline>
@@ -12,6 +12,12 @@
     <p class="picker-kicker">Nearby heritage</p>
     <p class="picker-region">Select a place to view its timeline</p>
     <div class="picker-rule"></div>
+    {% for key, s in sites.items() %}
+    <a class="timeline-site{% if key == site_key %} is-selected{% endif %}" href="{{ url_for('timeline.timeline', site=key) }}" data-site="{{ key }}" data-available="true"{% if key == site_key %} aria-pressed="true"{% endif %}>
+      <img src="{{ url_for('static', filename='images/heritage/discover-fort.jpg' if key == 'raigad' else 'images/historical/then-fort.jpg') }}" alt="" />
+      <span><strong>{{ s.name }}</strong><small>{{ s.subtitle }}</small></span><em>{{ 'Selected' if key == site_key else 'View' }}</em>
+    </a>
+    {% endfor %}
     <button class="timeline-site" type="button" data-site="ajanta" data-available="false">
       <img src="{{ url_for('static', filename='images/historical/then-fort.jpg') }}" alt="" />
       <span><strong>Ajanta Caves</strong><small>Buddhist rock-cut</small></span><em>Coming soon</em>
@@ -20,21 +26,17 @@
       <img src="{{ url_for('static', filename='images/historical/now-fort.jpg') }}" alt="" />
       <span><strong>Ellora Caves</strong><small>Monolithic temple</small></span><em>Coming soon</em>
     </button>
-    <button class="timeline-site is-selected" type="button" data-site="raigad" data-available="true" aria-pressed="true">
-      <img src="{{ url_for('static', filename='images/heritage/discover-fort.jpg') }}" alt="" />
-      <span><strong>Raigad Fort</strong><small>Hill fortress</small></span><em>Selected</em>
-    </button>
-    <p class="picker-note" data-site-note>Raigad Fort archive is currently open.</p>
+    <p class="picker-note" data-site-note>{{ site.note }}</p>
   </aside>
   <section class="timeline-stage">
-    <div class="timeline-heading"><p>HeritageAR / The Maratha archive</p><h1>RAIGAD<br />THROUGH TIME</h1><span>Drag or use arrows to move through history</span></div>
+    <div class="timeline-heading"><p>{{ site.kicker }}</p><h1>{{ site.heading | safe }}</h1><span>Drag or use arrows to move through history</span></div>
     <div class="timeline-scroller" data-scroller>
       <div class="timeline-track" data-track>
         {% for event in events %}
         <article class="era-card{% if loop.first %} is-active{% endif %}" data-era data-image="{{ event.image }}" tabindex="0" role="button" aria-label="View {{ event.year }}: {{ event.title }}">
           <div class="era-year"><strong>{{ event.year }}</strong><i></i></div>
-          <div class="era-image"><img src="{{ event.image }}" onerror="this.src='{{ event.fallback }}'" alt="{{ event.title }} at Raigad Fort" /></div>
-          <div class="era-panel"><p class="era-label">{{ event.label }}</p><h2>{{ event.title }}</h2><div class="era-copy"><p>{{ event.description }}</p><span>RAIGAD ARCHIVE · {{ "%02d"|format(loop.index) }}</span></div></div>
+          <div class="era-image"><img src="{{ event.image }}" onerror="this.src='{{ event.fallback }}'" alt="{{ event.title }} at {{ site.name }}" /></div>
+          <div class="era-panel"><p class="era-label">{{ event.label }}</p><h2>{{ event.title }}</h2><div class="era-copy"><p>{{ event.description }}</p><span>{{ site.name | upper }} ARCHIVE · {{ "%02d"|format(loop.index) }}</span></div></div>
         </article>
         {% endfor %}
       </div>
