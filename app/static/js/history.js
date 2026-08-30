@@ -3,6 +3,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const thenSide = document.querySelector(".comparison-then");
   const divider = document.querySelector("[data-divider]");
   const handle = document.querySelector(".comparison-handle");
+  const uploadInput = document.querySelector("#then-now-upload");
+  const thenImage = document.querySelector("#comparison-then-image");
+  const nowImage = document.querySelector("#comparison-now-image");
+  const modelViewer = document.querySelector("#history-model-viewer");
   let isDragging = false;
 
   const setPosition = (clientX) => {
@@ -20,20 +24,20 @@ document.addEventListener("DOMContentLoaded", () => {
     isDragging = false;
   };
 
-  handle.addEventListener("pointerdown", (event) => {
+  handle?.addEventListener("pointerdown", (event) => {
     isDragging = true;
     handle.setPointerCapture(event.pointerId);
   });
-  handle.addEventListener("pointermove", (event) => {
+  handle?.addEventListener("pointermove", (event) => {
     if (isDragging) setPosition(event.clientX);
   });
-  handle.addEventListener("pointerup", stopDragging);
-  handle.addEventListener("pointercancel", stopDragging);
-  comparison.addEventListener("click", (event) => {
+  handle?.addEventListener("pointerup", stopDragging);
+  handle?.addEventListener("pointercancel", stopDragging);
+  comparison?.addEventListener("click", (event) => {
     if (event.target !== handle) setPosition(event.clientX);
   });
 
-  handle.addEventListener("keydown", (event) => {
+  handle?.addEventListener("keydown", (event) => {
     const current = Number(handle.getAttribute("aria-valuenow"));
     if (event.key === "ArrowLeft")
       setPosition(
@@ -46,4 +50,23 @@ document.addEventListener("DOMContentLoaded", () => {
           comparison.offsetWidth * ((current + 5) / 100),
       );
   });
+
+  uploadInput?.addEventListener("change", (event) => {
+    const [file] = event.target.files || [];
+    if (!file || !thenImage) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      thenImage.src = String(reader.result);
+      thenImage.hidden = false;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  if (modelViewer) {
+    modelViewer.setAttribute("camera-orbit", "30deg 75deg auto");
+  }
+
+  if (nowImage) {
+    nowImage.src = nowImage.src || '{{ url_for("static", filename="models/raigad/royal-palace.glb") }}';
+  }
 });

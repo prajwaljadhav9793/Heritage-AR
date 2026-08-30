@@ -215,6 +215,36 @@ def is_relevant(question, retrieved):
 # HERITAGE AI
 # ==========================================================
 
+def build_context_fallback(question, retrieved):
+    """Produce a usable answer from the retrieved heritage content when the LLM is unavailable."""
+    if not retrieved:
+        return "I don't have this information in the HeritageAI knowledge base."
+
+    parts = []
+    seen = set()
+
+    for item in retrieved:
+        text = re.sub(r"\s+", " ", item["content"]).strip()
+        if text and text not in seen:
+            seen.add(text)
+            parts.append(text)
+
+    if not parts:
+        return "I don't have this information in the HeritageAI knowledge base."
+
+    answer = " ".join(parts[:2])
+    answer = answer.strip()
+
+    if not answer:
+        return "I don't have this information in the HeritageAI knowledge base."
+
+    # Keep the response concise but useful when the model is down.
+    if len(answer) > 500:
+        answer = answer[:497].rstrip() + "..."
+
+    return answer
+
+
 def ask_heritage_ai(question):
 
     retrieved = retrieve_context(question)
@@ -232,6 +262,14 @@ def ask_heritage_ai(question):
             ),
             "sources": []
         }
+
+    source_meta = [
+        {
+            "section": item["section"],
+            "source": item["source"]
+        }
+        for item in retrieved
+    ]
 
     # ------------------------------------------------------
     # BUILD CONTEXT
@@ -297,27 +335,27 @@ Answer ONLY using the HERITAGE CONTEXT.
     # OLLAMA
     # ------------------------------------------------------
 
-    response = ollama_client.chat(
-
-        model=MODEL_NAME,
-
-        messages=[
-            {
-                "role": "system",
-                "content": system_prompt
-            },
-            {
-                "role": "user",
-                "content": user_prompt
+    try:
+        response = ollama_client.chat(
+            model=MODEL_NAME,
+            messages=[
+                {
+                    "role": "system",
+                    "content": system_prompt
+                },
+                {
+                    "role": "user",
+                    "content": user_prompt
+                }
+            ],
+            options={
+                "temperature": 0
             }
-        ],
-
-        options={
-            "temperature": 0
-        }
-    )
-
-    answer = response["message"]["content"].strip()
+        )
+        answer = response["message"]["content"].strip()
+    except Exception as exc:
+        print(f"HeritageAI model unavailable: {exc}")
+        answer = build_context_fallback(question, retrieved)
 
     # ------------------------------------------------------
     # RETURN RESULT
@@ -325,13 +363,7 @@ Answer ONLY using the HERITAGE CONTEXT.
 
     return {
         "answer": answer,
-        "sources": [
-            {
-                "section": item["section"],
-                "source": item["source"]
-            }
-            for item in retrieved
-        ]
+        "sources": source_meta
     }
 
 

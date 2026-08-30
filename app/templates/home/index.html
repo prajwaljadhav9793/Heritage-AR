@@ -16,7 +16,7 @@
       <nav class="home-nav" aria-label="Primary navigation">
         <a href="{{ url_for('map.heritage_map') }}">Explore</a>
         <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
-        <a href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
+        <a href="{{ url_for('ar.experience') }}">AR Experience</a>
         <a href="{{ url_for('assistant.assistant') }}">AI Guide</a>
         <a href="{{ url_for('voice_assistant.voice_assistant') }}">Voice Assistant</a>
       </nav>
@@ -48,7 +48,7 @@
         <div class="slide-copy"><p class="slide-kicker">6 June 1674</p><h1>THE<br />CORONATION</h1><p>Return to the defining moment when Chhatrapati Shivaji Maharaj was crowned at Raigad and a sovereign kingdom was born.</p><a class="explore-button" href="{{ url_for('timeline.timeline') }}">View the timeline <span aria-hidden="true">→</span></a></div>
       </article>
       <article class="heritage-slide" data-slide data-title="Reconstructed Raigad" style="--slide-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Digital reconstruction</p><h1>RAIGAD,<br />REIMAGINED</h1><p>See a lost world take shape again through researched reconstruction, immersive detail and augmented reality.</p><a class="explore-button" href="{{ url_for('history.then_vs_now') }}">See then vs now <span aria-hidden="true">→</span></a></div>
+        <div class="slide-copy"><p class="slide-kicker">Digital reconstruction</p><h1>RAIGAD,<br />REIMAGINED</h1><p>See a lost world take shape again through researched reconstruction, immersive detail and augmented reality.</p><a class="explore-button" href="{{ url_for('ar.experience') }}">Open AR Experience <span aria-hidden="true">→</span></a></div>
       </article>
       <article class="heritage-slide" data-slide data-title="Raigad Today" style="--slide-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');">
         <div class="slide-copy"><p class="slide-kicker">Living heritage</p><h1>THE FORT<br />TODAY</h1><p>Stand in the present and uncover what remains—then use HeritageAR to reveal the layers of history around you.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Plan your visit <span aria-hidden="true">→</span></a></div>
