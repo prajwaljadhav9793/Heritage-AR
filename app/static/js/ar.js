@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoInput = document.querySelector("#monument-photo");
   const comparisonBefore = document.querySelector("#comparison-before");
   const comparisonBeforePlaceholder = document.querySelector("#comparison-before-placeholder");
-  const arState = window.heritageArState || (window.heritageArState = { selectedId: "royal-palace" });
+  const arState = window.heritageArState || (window.heritageArState = { selectedId: "royal-palace", canViewReconstruction: true });
+  arState.canViewReconstruction = arState.canViewReconstruction !== false;
   let selectedId = arState.selectedId;
   let cameraStream;
   let rotationEnabled = true;
@@ -127,10 +128,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (element) element.textContent = value;
   };
 
+  const unsupportedImageMessage =
+    "I can’t convert this image because that monument is not available in the heritage reconstruction database. Please upload or capture a photo of a known Raigad monument or select a supported model from the monument list.";
+
   const showError = (message = "") => {
     if (!error) return;
     error.hidden = !message;
     error.textContent = message;
+  };
+
+  let canViewReconstruction = true;
+
+  const markUnsupportedImage = (message = unsupportedImageMessage) => {
+    canViewReconstruction = false;
+    arState.canViewReconstruction = false;
+    showError(message);
+    if (cameraMessage) {
+      cameraMessage.textContent = message;
+      cameraMessage.classList.add("is-error");
+    }
+  };
+
+  const markSupportedImage = () => {
+    canViewReconstruction = true;
+    arState.canViewReconstruction = true;
+    showError();
+    if (cameraMessage) cameraMessage.classList.remove("is-error");
   };
 
   const setActiveNav = (view) => {
@@ -158,6 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     selectedId = id;
     arState.selectedId = id;
+    canViewReconstruction = true;
+    arState.canViewReconstruction = true;
     showError();
     cards.forEach((card) => {
       const selected = card.dataset.monument === id;
@@ -233,8 +258,22 @@ document.addEventListener("DOMContentLoaded", () => {
     setActiveNav("explore");
   };
 
-  const setCapturedImage = (source) => {
+  const setCapturedImage = (source, { validImage = true } = {}) => {
     if (!capturedPhoto || !cameraVideo) return;
+
+    if (!validImage) {
+      capturedPhoto.src = "";
+      capturedPhoto.hidden = true;
+      cameraVideo.hidden = false;
+      if (comparisonBefore) {
+        comparisonBefore.src = "";
+        comparisonBefore.hidden = true;
+      }
+      if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = false;
+      markUnsupportedImage();
+      return;
+    }
+
     capturedPhoto.src = source;
     capturedPhoto.hidden = false;
     cameraVideo.hidden = true;
@@ -243,6 +282,8 @@ document.addEventListener("DOMContentLoaded", () => {
       comparisonBefore.hidden = false;
     }
     if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = true;
+
+    markSupportedImage();
     cameraMessage.textContent = "Reference photo captured on this device. Open the reconstruction when you are ready.";
   };
 
@@ -273,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.width = cameraVideo.videoWidth;
     canvas.height = cameraVideo.videoHeight;
     canvas.getContext("2d")?.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
-    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9));
+    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9), { validImage: false });
     stopCamera();
   };
 
@@ -282,6 +323,11 @@ document.addEventListener("DOMContentLoaded", () => {
   startCameraButton?.addEventListener("click", startCamera);
   takePhotoButton?.addEventListener("click", takePhoto);
   document.querySelector("#show-reconstruction")?.addEventListener("click", () => {
+    if (!canViewReconstruction) {
+      markUnsupportedImage();
+      return;
+    }
+
     closeCamera();
     const openViewer = () => document.querySelector(".viewer-stage")?.scrollIntoView({ behavior: "smooth", block: "center" });
     if (typeof viewer?.activateAR !== "function") {
@@ -317,12 +363,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const matchedKey = Object.keys(monumentLookup).find((key) => fileName.includes(key));
-    if (matchedKey) {
-      selectModel(monumentLookup[matchedKey]);
+    if (!matchedKey) {
+      if (comparisonBefore) comparisonBefore.src = "";
+      if (comparisonBefore) comparisonBefore.hidden = true;
+      if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = false;
+      if (capturedPhoto) {
+        capturedPhoto.src = "";
+        capturedPhoto.hidden = true;
+      }
+      if (cameraVideo) cameraVideo.hidden = false;
+      markUnsupportedImage();
+      photoInput.value = "";
+      return;
     }
 
+    selectModel(monumentLookup[matchedKey]);
+
     const reader = new FileReader();
-    reader.addEventListener("load", () => setCapturedImage(String(reader.result)));
+    reader.addEventListener("load", () => setCapturedImage(String(reader.result), { validImage: true }));
     reader.readAsDataURL(image);
   });
   cameraWorkflow?.addEventListener("click", (event) => {
