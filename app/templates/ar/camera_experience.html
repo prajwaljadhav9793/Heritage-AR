@@ -217,10 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const showReconstructionBtn = document.querySelector("#show-reconstruction");
 
   const showModelView = () => {
-    const state = window.heritageArState || { canViewReconstruction: true };
-    if (state.canViewReconstruction === false) {
-      return;
-    }
     if (!cameraSection || !modelSection) return;
     cameraSection.hidden = true;
     modelSection.hidden = false;
