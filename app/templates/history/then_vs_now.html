@@ -1,65 +1,89 @@
-{% extends "base.html" %} {% block title %}Then vs Now | HeritageAR{% endblock
-%} {% block styles %}<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/history.css') }}"
-/>{% endblock %} {% block content %}
+{% extends "base.html" %}
+{% block title %}Then vs Now | HeritageAR{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}" />
+{% endblock %}
+{% block content %}
 <header class="history-header">
   <a class="history-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
   <nav aria-label="Primary navigation">
     <a href="{{ url_for('home.index') }}">Discover</a>
     <a href="{{ url_for('map.heritage_map') }}">Explore</a>
     <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
-    <a class="is-current" href="{{ url_for('history.then_vs_now') }}"
-      >AR Mode</a
-    >
-    <a href="#about">About</a>
+    <a href="{{ url_for('ar.experience') }}">AR Experience</a>
+    <a class="is-current" href="{{ url_for('history.then_vs_now') }}">Then vs Now</a>
   </nav>
   <div class="history-actions">
-    <span aria-label="Language">LANGUAGE</span
-    ><span aria-label="Profile">◉</span>
+    <span aria-label="Language">Language</span>
+    <label class="upload-trigger" for="then-now-upload">
+      <span>Upload image</span>
+      <input id="then-now-upload" type="file" accept="image/*" capture="environment" />
+    </label>
   </div>
 </header>
 
 <main class="history-page">
+  <a class="history-back-button" href="{{ url_for('ar.camera') }}">← Back to Camera</a>
   <div class="comparison" data-comparison>
     <div class="comparison-side comparison-now">
-      <img
-        src="{{ url_for('static', filename='images/historical/now-fort.jpg') }}"
-        alt="Historic fort ruins in the present day"
-      />
-      <span class="comparison-label label-now">Now - Present day</span>
+      <model-viewer
+        id="comparison-now-model"
+        src="{{ url_for('static', filename='models/raigad/royal-palace.glb') }}"
+        alt="Reconstructed heritage model"
+        camera-controls
+        auto-rotate
+        rotation-per-second="12deg"
+        shadow-intensity="1"
+        shadow-softness="0.9"
+        environment-image="neutral"
+        exposure="1"
+        interaction-prompt="auto"
+        camera-orbit="30deg 75deg auto"
+        min-camera-orbit="auto auto 55%"
+        max-camera-orbit="auto auto 240%"
+        loading="eager"
+      ></model-viewer>
+      <span class="comparison-label label-now">Now · Reconstructed model</span>
     </div>
     <div class="comparison-side comparison-then">
-      <img
-        src="{{ url_for('static', filename='images/historical/then-fort.jpg') }}"
-        alt="Historic fort gateway from the past"
-      />
-      <span class="comparison-label label-then">Then - Historical archive</span>
+      <img id="comparison-then-image" src="{{ url_for('static', filename='images/historical/then-fort.jpg') }}" alt="Uploaded monument reference" />
+      <span class="comparison-label label-then">Then · Uploaded image</span>
     </div>
     <div class="comparison-divider" data-divider>
-      <button
-        type="button"
-        role="slider"
-        class="comparison-handle"
-        aria-label="Drag to compare Then and Now"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="50"
-      >
+      <button type="button" role="slider" class="comparison-handle" aria-label="Drag to compare Then and Now" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
         <span>◀</span><span>▶</span>
       </button>
     </div>
-    <div class="comparison-caption">Drag the slider to compare</div>
+    <div class="comparison-caption">Drag the slider to compare · upload a photo to replace the then-side image</div>
   </div>
   <section class="history-intro">
     <p class="history-kicker">Module 06 / Visual archive</p>
     <h1>Then <em>vs</em> Now</h1>
-    <p>
-      Stand at the meeting point of memory and place. Compare the world
-      preserved in historical records with the monument that remains today.
-    </p>
+    <p>Upload the current ruined monument image on the left and compare it with the reconstructed model on the right.</p>
   </section>
+
+  <div class="comparison-model-panel">
+    <model-viewer
+      id="history-model-viewer"
+      src="{{ url_for('static', filename='models/raigad/royal-palace.glb') }}"
+      alt="Reconstructed heritage model"
+      camera-controls
+      auto-rotate
+      rotation-per-second="12deg"
+      shadow-intensity="1"
+      shadow-softness="0.9"
+      environment-image="neutral"
+      exposure="1"
+      interaction-prompt="auto"
+      camera-orbit="30deg 75deg auto"
+      min-camera-orbit="auto auto 55%"
+      max-camera-orbit="auto auto 240%"
+      loading="eager"
+    ></model-viewer>
+  </div>
 </main>
-{% endblock %} {% block scripts %}
+{% endblock %}
+{% block scripts %}
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="{{ url_for('static', filename='js/history.js') }}"></script>
 {% endblock %}

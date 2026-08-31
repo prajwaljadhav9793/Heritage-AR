@@ -23,6 +23,21 @@ body {
   z-index: 10;
 }
 
+.history-back-button {
+  background: #d9b66a;
+  border: 1px solid rgba(255, 244, 221, 0.45);
+  border-radius: 0.6rem;
+  color: #1b120d;
+  font-size: 0.8rem;
+  font-weight: 700;
+  left: 1.25rem;
+  padding: 0.8rem 1.2rem;
+  position: absolute;
+  text-decoration: none;
+  top: 5.25rem;
+  z-index: 12;
+}
+
 .history-wordmark {
   font-family: Georgia, serif;
   font-size: 1.45rem;
@@ -73,7 +88,8 @@ body {
   position: absolute;
 }
 
-.comparison-side img {
+.comparison-side img,
+.comparison-side model-viewer {
   height: 100%;
   object-fit: cover;
   object-position: center;
