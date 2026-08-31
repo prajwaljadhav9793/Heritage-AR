@@ -6,3 +6,8 @@ venv/
 *.db
 .pytest_cache/
 .vscode/
+*.log
+__pycache__/
+*.pickle
+data/vector_db/
+data/documents/Nalanda*.docx
