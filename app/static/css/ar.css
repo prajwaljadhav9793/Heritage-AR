@@ -362,6 +362,8 @@
 .camera-guide::after { border-width: 0 2px 2px 0; bottom: -2px; right: -2px; }
 .camera-guide b { background: rgba(17, 12, 9, 0.76); bottom: -0.6rem; color: #eed5a6; font-family: "DM Sans", sans-serif; font-size: 0.5rem; font-weight: 700; left: 50%; letter-spacing: 0.1em; padding: 0.35rem 0.55rem; position: absolute; text-transform: uppercase; transform: translateX(-50%); white-space: nowrap; }
 .camera-message { color: #d6b873; font-family: "DM Sans", sans-serif; font-size: 0.64rem; left: 1rem; line-height: 1.4; margin: 0; position: absolute; right: 1rem; text-align: center; top: 50%; transform: translateY(-50%); }
+
+.camera-message.is-error { color: #ff6b6b; font-weight: 700; background: rgba(255, 107, 107, 0.08); border-left: 3px solid #ff6b6b; padding-left: 0.8rem; border-radius: 4px; }
 .camera-side { padding: 0.3rem 0; }
 .camera-side h3 { color: #f6e7d3; font-size: 1.55rem; font-weight: 600; line-height: 0.9; margin: 0 0 0.7rem; }
 .camera-side > p { color: #b8a899; font-size: 0.7rem; line-height: 1.55; margin: 0 0 1.2rem; }

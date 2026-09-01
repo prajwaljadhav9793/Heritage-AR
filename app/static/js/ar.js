@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoInput = document.querySelector("#monument-photo");
   const comparisonBefore = document.querySelector("#comparison-before");
   const comparisonBeforePlaceholder = document.querySelector("#comparison-before-placeholder");
-  const arState = window.heritageArState || (window.heritageArState = { selectedId: "royal-palace" });
+  const arState = window.heritageArState || (window.heritageArState = { selectedId: "royal-palace", isValidUpload: false });
   let selectedId = arState.selectedId;
   let cameraStream;
   let rotationEnabled = true;
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
       comparisonBefore.hidden = false;
     }
     if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = true;
-    cameraMessage.textContent = "Reference photo captured on this device. Open the reconstruction when you are ready.";
+    cameraMessage.textContent = "";
   };
 
   const startCamera = async () => {
@@ -273,6 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.width = cameraVideo.videoWidth;
     canvas.height = cameraVideo.videoHeight;
     canvas.getContext("2d")?.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+    // Camera capture captured - but validation happens when user uploads file
+    // Do NOT set isValidUpload here - user must upload/match a known monument
     setCapturedImage(canvas.toDataURL("image/jpeg", 0.9));
     stopCamera();
   };
@@ -282,6 +284,15 @@ document.addEventListener("DOMContentLoaded", () => {
   startCameraButton?.addEventListener("click", startCamera);
   takePhotoButton?.addEventListener("click", takePhoto);
   document.querySelector("#show-reconstruction")?.addEventListener("click", () => {
+    // Block reconstruction view if no valid monument image was uploaded
+    if (!arState.isValidUpload) {
+      if (cameraMessage) {
+        cameraMessage.textContent = "I can't convert this image because that monument is not available in the heritage reconstruction database. Please upload another image.";
+        cameraMessage.classList.add("is-error");
+      }
+      return; // Block the action
+    }
+    
     closeCamera();
     const openViewer = () => document.querySelector(".viewer-stage")?.scrollIntoView({ behavior: "smooth", block: "center" });
     if (typeof viewer?.activateAR !== "function") {
@@ -317,8 +328,23 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const matchedKey = Object.keys(monumentLookup).find((key) => fileName.includes(key));
-    if (matchedKey) {
-      selectModel(monumentLookup[matchedKey]);
+    
+    if (!matchedKey) {
+      // Invalid upload - show error and block capture
+      arState.isValidUpload = false;
+      if (cameraMessage) {
+        cameraMessage.textContent = "I can't convert this image because that monument is not available in the heritage reconstruction database. Please upload another image.";
+        cameraMessage.classList.add("is-error");
+      }
+      return; // Stop processing - don't capture image
+    }
+
+    // Valid upload - proceed normally
+    arState.isValidUpload = true;
+    selectModel(monumentLookup[matchedKey]);
+    
+    if (cameraMessage) {
+      cameraMessage.classList.remove("is-error");
     }
 
     const reader = new FileReader();

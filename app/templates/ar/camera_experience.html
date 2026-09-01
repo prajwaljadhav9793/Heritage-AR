@@ -215,8 +215,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const modelSection = document.querySelector("#model-display-section");
   const backButton = document.querySelector("#back-to-camera");
   const showReconstructionBtn = document.querySelector("#show-reconstruction");
+  const cameraMessage = document.querySelector("#camera-message");
 
   const showModelView = () => {
+    // Check if a valid upload was processed before allowing the view transition
+    if (!window.heritageArState?.isValidUpload) {
+      if (cameraMessage) {
+        cameraMessage.textContent = "I can't convert this image because that monument is not available in the heritage reconstruction database. Please upload another image.";
+        cameraMessage.classList.add("is-error");
+      }
+      return; // Prevent transition
+    }
+    
     if (!cameraSection || !modelSection) return;
     cameraSection.hidden = true;
     modelSection.hidden = false;
