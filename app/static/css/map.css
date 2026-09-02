@@ -167,6 +167,10 @@ body {
   background-image: url("/static/images/heritage/nalanda-ruins.jpg");
 }
 
+.thumb-konark {
+  background-image: url("/static/images/timeline/konark-01.jpg");
+}
+
 .site-details {
   display: grid;
   gap: 0.2rem;

@@ -32,6 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ["Raigad Mountain Capital", "Living heritage · Raigad", "../../heritage/discover-fort.jpg"],
       ],
     },
+    {
+      keywords: ["konark", "sun temple", "surya", "wheel", "chariot"],
+      items: [
+        ["Konark Sun Temple", "13th century · Odisha heritage", "../../timeline/konark-01.jpg"],
+        ["The Stone Wheel", "Astronomy and architecture", "../../timeline/konark-02.jpg"],
+      ],
+    },
   ];
 
   const defaultArtifacts = [

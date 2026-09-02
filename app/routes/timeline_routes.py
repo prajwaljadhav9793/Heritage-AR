@@ -28,6 +28,15 @@ NALANDA_EVENTS = [
 	{"year": "2016", "label": "UNESCO recognition", "title": "A World Heritage Site", "description": "Nalanda Mahavihara is inscribed as a UNESCO World Heritage Site, recognizing its global importance as an ancient centre of learning and culture.", "image": "/static/images/timeline/images.jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
 ]
 
+KONARK_EVENTS = [
+	{"year": "13th c.", "label": "Eastern Ganga dynasty", "title": "The Sun Temple Rises", "description": "King Narasimhadeva I commissions a monumental temple dedicated to Surya on the coast of Odisha.", "image": "/static/images/timeline/konark-07.png", "fallback": "/static/images/timeline/konark-01.jpg"},
+	{"year": "13th c.", "label": "Chariot architecture", "title": "A Temple Built as the Sun's Chariot", "description": "The temple is conceived as Surya's stone chariot, with richly carved walls, horses and 24 monumental wheels.", "image": "/static/images/timeline/konark-01.jpg", "fallback": "/static/images/timeline/konark-07.png"},
+	{"year": "13th c.", "label": "Astronomy in stone", "title": "The Wheels Read the Sun", "description": "The carved wheels express movement, time and solar symbolism, combining architectural detail with astronomical ideas.", "image": "/static/images/timeline/konark-02.jpg", "fallback": "/static/images/timeline/konark-04.png"},
+	{"year": "Later centuries", "label": "Coastal exposure", "title": "Stone, Salt and Time", "description": "Monsoon rain, salty coastal air, strong winds, sand and structural weakness gradually damage the temple complex.", "image": "/static/images/timeline/konark-03.png", "fallback": "/static/images/timeline/konark-05.png"},
+	{"year": "20th c.", "label": "Conservation", "title": "A Monument Carefully Preserved", "description": "The surviving ruins and sculptures are protected and studied as an exceptional example of Kalinga architecture.", "image": "/static/images/timeline/konark-05.png", "fallback": "/static/images/timeline/konark-06.png"},
+	{"year": "1984", "label": "UNESCO recognition", "title": "A World Heritage Site", "description": "UNESCO recognizes the Konark Sun Temple for its outstanding architecture, sculpture and cultural importance.", "image": "/static/images/timeline/konark-01.jpg", "fallback": "/static/images/timeline/konark-07.png"},
+]
+
 SITES = {
 	"raigad": {
 		"name": "Raigad Fort",
@@ -54,6 +63,15 @@ SITES = {
 		"kicker": "HeritageAR / The Nalanda archive",
 		"note": "Nalanda Mahavihara archive is currently open.",
 		"events": NALANDA_EVENTS,
+		"default_event": 1,
+	},
+	"konark": {
+		"name": "Konark Sun Temple",
+		"subtitle": "13th-century chariot temple",
+		"heading": "KONARK<br />THROUGH TIME",
+		"kicker": "HeritageAR / The Konark archive",
+		"note": "Konark Sun Temple archive is currently open.",
+		"events": KONARK_EVENTS,
 		"default_event": 1,
 	},
 }

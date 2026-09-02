@@ -86,6 +86,15 @@ DOCUMENTS = [
         "use_styles": True,
         "headings": [],
     },
+    {
+        "key": "konark",
+        "docx": "data/documents/Konark Sun Temple.docx",
+        "site": "Konark Sun Temple",
+        "prefix": "KS",
+        "source": "Konark Sun Temple.docx",
+        "use_styles": True,
+        "headings": [],
+    },
 ]
 
 OUTPUT_PATH = "data/heritage_chunks.json"

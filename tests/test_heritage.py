@@ -16,6 +16,13 @@ def test_nalanda_famous_question_prioritizes_faq_answer():
     assert results[0]["section"] == "2. Why is Nalanda famous?"
 
 
+def test_konark_builder_question_prioritizes_direct_archive_context():
+    results = retrieve_context("Who built the Konark Sun Temple?")
+
+    assert results
+    assert "Who built the Konark Sun Temple" in results[0]["content"]
+
+
 def test_heritage_ai_falls_back_without_ollama(monkeypatch):
     sample_context = [{
         "section": "Hampi overview",

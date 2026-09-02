@@ -70,6 +70,18 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "Ancient centre of learning",
       image: "/static/images/heritage/nalanda-ruins.jpg",
     },
+    konark: {
+      name: "Konark Sun Temple",
+      label: "Konark Sun Temple",
+      category: "UNESCO Heritage",
+      rating: "4.8",
+      reviews: "8.2k",
+      hours: "6:00 AM - 8:00 PM",
+      coordinates: [19.8876, 86.0945],
+      directionsDestination: "Konark Sun Temple, Odisha, India",
+      description: "13th-century chariot temple",
+      image: "/static/images/timeline/konark-01.jpg",
+    },
   };
 
   const map = L.map("heritage-map", {
@@ -100,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
     const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
-    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda"
+    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
       : "";
     const popupContent = `
