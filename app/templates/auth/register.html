@@ -3,11 +3,12 @@ endblock %} {% block styles %}<link
   rel="stylesheet"
   href="{{ url_for('static', filename='css/auth.css') }}"
 />{% endblock %} {% block content %}
-<main class="auth-page">
+<main class="auth-page auth-register">
   <a class="auth-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
   <section class="auth-layout">
-    <div class="auth-visual">
+    <div class="auth-visual" data-auth-visual>
       <span class="auth-visual-label">Begin your archive</span>
+      <span class="auth-visual-index">B / 02</span>
       <h1>History is<br /><em>waiting.</em></h1>
       <p>
         Create your personal collection of places, stories, and moments from
@@ -42,16 +43,18 @@ endblock %} {% block styles %}<link
           required
           placeholder="you@example.com"
         />
-        <label for="password">Create password</label
-        ><input
-          id="password"
-          name="password"
-          type="password"
-          minlength="6"
-          autocomplete="new-password"
-          required
-          placeholder="At least 6 characters"
-        />
+        <label for="password">Create password</label>
+        <div class="password-field">
+          <input
+            id="password"
+            name="password"
+            type="password"
+            minlength="6"
+            autocomplete="new-password"
+            required
+            placeholder="At least 6 characters"
+          /><button class="password-toggle" type="button" data-password-toggle aria-label="Show password">Show</button>
+        </div>
         <button class="auth-submit" type="submit">
           Create account <span aria-hidden="true">-&gt;</span>
         </button>
@@ -64,3 +67,4 @@ endblock %} {% block styles %}<link
   </section>
 </main>
 {% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/auth.js') }}"></script>{% endblock %}

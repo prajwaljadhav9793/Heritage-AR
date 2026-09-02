@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hours: "9:00 AM – 5:00 PM",
       image: "/static/images/historical/then-fort.jpg",
       coordinates: [20.5519, 75.7033],
+      directionsDestination: "Ajanta Caves, Maharashtra, India",
       description: "Buddhist rock-cut caves",
     },
     ellora: {
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       hours: "6:00 AM – 6:00 PM",
       image: "/static/images/historical/now-fort.jpg",
       coordinates: [20.0268, 75.1782],
+      directionsDestination: "Ellora Caves, Maharashtra, India",
       description: "Monolithic temple complex",
     },
     raigad: {
@@ -30,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       reviews: "9.6k",
       hours: "8:00 AM – 6:00 PM",
       coordinates: [18.2345, 73.4407],
+      directionsDestination: "Raigad Fort, Maharashtra, India",
       description: "Historic hill fortress",
       image: "/static/images/heritage/discover-fort.jpg",
       eyebrow: "Capital of Swarajya",
@@ -46,6 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
       reviews: "31.2k",
       hours: "6:00 AM – 6:00 PM",
       coordinates: [15.335, 76.46],
+      directionsDestination: "Hampi, Karnataka, India",
       description: "Ruins of the Vijayanagara capital",
       image: "/static/images/historical/then-fort.jpg",
       eyebrow: "City of Victory",
@@ -82,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const markers = {};
   Object.entries(locations).forEach(([id, site]) => {
-    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${site.coordinates.join(",")}`;
+    const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
     const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
     const siteLink = id === "raigad" || id === "hampi"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
@@ -97,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <h2>${site.name}</h2>
         <p class="site-popup-type">${site.description}</p>
         <div class="site-popup-meta"><span><b>&#9733;</b> ${site.rating} <small>(${site.reviews})</small></span><span><b>&#9716;</b> ${site.hours}</span></div>
-        <div class="site-popup-actions"><a class="site-directions" href="${directionsUrl}" target="_blank" rel="noopener">Directions <span aria-hidden="true">&nearr;</span></a>${siteLink}</div>
+        <div class="site-popup-actions"><a class="site-directions" href="${directionsUrl}" target="_blank" rel="noopener noreferrer">Directions <span aria-hidden="true">&nearr;</span></a>${siteLink}</div>
       </article>`;
     const marker = L.marker(site.coordinates, { icon })
       .addTo(map)

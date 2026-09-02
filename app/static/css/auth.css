@@ -1,216 +1,394 @@
-body {
-  background: #24150f;
-  color: #2d1d15;
+:root {
+  --auth-ink: #17243b;
+  --auth-muted: #687184;
+  --auth-paper: #f7f4ed;
+  --auth-line: #d8d8d0;
+  --auth-saffron: #c77935;
+  --auth-saffron-light: #f2d4aa;
+  --auth-night: #101b2d;
 }
+
+body {
+  background: var(--auth-paper);
+  color: var(--auth-ink);
+}
+
 .auth-page {
   background:
-    radial-gradient(
-      circle at 20% 15%,
-      rgba(190, 130, 42, 0.12),
-      transparent 35%
-    ),
-    #24150f;
+    linear-gradient(135deg, rgba(255, 255, 255, .7), transparent 44%),
+    var(--auth-paper);
   min-height: 100vh;
-  padding: 2rem 4vw;
-}
-.auth-wordmark {
-  color: #d39a32;
-  font-family: Georgia, serif;
-  font-size: 1.35rem;
-  letter-spacing: 0.08em;
-}
-.auth-layout {
-  display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  margin: 2rem auto;
-  max-width: 70rem;
-  min-height: 40rem;
-}
-.auth-visual {
-  background:
-    linear-gradient(180deg, rgba(29, 18, 13, 0.05), rgba(29, 18, 13, 0.85)),
-    url("/static/images/heritage/discover-fort.jpg") center / cover;
-  color: #f7efe4;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 40rem;
-  padding: 3rem;
+  padding: 1.5rem 4vw 3rem;
   position: relative;
 }
-.auth-visual-label {
-  color: #e0ad55;
-  font-size: 0.56rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
+
+.auth-page::after {
+  background-image: linear-gradient(rgba(23, 36, 59, .035) 1px, transparent 1px), linear-gradient(90deg, rgba(23, 36, 59, .035) 1px, transparent 1px);
+  background-size: 2.4rem 2.4rem;
+  content: "";
+  inset: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000, transparent 52%);
+  mask-image: linear-gradient(90deg, #000, transparent 52%);
+  pointer-events: none;
   position: absolute;
-  text-transform: uppercase;
-  top: 2rem;
 }
-.auth-visual h1 {
-  font-family: Georgia, serif;
-  font-size: clamp(3.8rem, 7vw, 6.5rem);
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  line-height: 0.82;
-  margin: 0;
-  text-transform: uppercase;
+
+.auth-page::before {
+  border: 1px solid rgba(199, 121, 53, .3);
+  content: "";
+  inset: .75rem;
+  pointer-events: none;
+  position: absolute;
 }
-.auth-visual h1 em {
-  color: #d39a32;
-  font-style: italic;
-}
-.auth-visual p {
-  color: #d8c9b7;
-  font-size: 0.78rem;
-  line-height: 1.6;
-  margin: 1.8rem 0 3rem;
-  max-width: 19rem;
-}
-.auth-visual-mark {
-  color: #d39a32;
-  font-size: 0.52rem;
-  letter-spacing: 0.2em;
-}
-.auth-card {
-  align-self: center;
-  background: #f4ecdf;
-  box-shadow: 20px 20px 0 rgba(190, 130, 42, 0.13);
-  margin-left: -1rem;
-  max-width: 28rem;
-  padding: 3rem;
+
+.auth-wordmark {
+  color: var(--auth-ink);
+  display: inline-block;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: .04em;
   position: relative;
   z-index: 1;
 }
-.auth-kicker {
-  color: #9c681e;
-  font-size: 0.57rem;
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(25rem, .95fr);
+  margin: 2.5rem auto 0;
+  max-width: 76rem;
+  min-height: 38rem;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-visual {
+  background:
+    linear-gradient(160deg, rgba(16, 27, 45, .12) 10%, rgba(16, 27, 45, .9) 83%),
+    url("/static/images/heritage/discover-fort.jpg") center / cover;
+  color: #fffaf1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 38rem;
+  overflow: hidden;
+  padding: 3.5rem;
+  position: relative;
+  transform: translate3d(0, 0, 0);
+  transition: transform .5s cubic-bezier(.2, .8, .2, 1);
+}
+
+.auth-visual:hover {
+  transform: translate3d(var(--parallax-x, 0), var(--parallax-y, 0), 0);
+}
+
+.auth-visual-index {
+  color: rgba(255, 250, 241, .72);
+  font-size: .6rem;
+  letter-spacing: .16em;
+  position: absolute;
+  right: 3.5rem;
+  top: 3.5rem;
+}
+
+.auth-visual::after {
+  border: 1px solid rgba(242, 212, 170, .55);
+  content: "";
+  inset: 1.1rem;
+  pointer-events: none;
+  position: absolute;
+}
+
+.auth-visual-label,
+.auth-visual-mark {
+  color: var(--auth-saffron-light);
+  font-size: .6rem;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.auth-visual-label {
+  left: 3.5rem;
+  position: absolute;
+  top: 3.5rem;
+}
+
+.auth-visual h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(4.2rem, 8vw, 7rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: .78;
+  margin: 0;
+  max-width: 31rem;
+  position: relative;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+.auth-visual h1 em {
+  color: var(--auth-saffron-light);
+  font-style: italic;
+  text-transform: none;
+}
+
+.auth-visual p {
+  color: #e1e2dd;
+  font-size: .82rem;
+  line-height: 1.65;
+  margin: 2rem 0 3rem;
+  max-width: 21rem;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-visual-mark {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card {
+  align-self: center;
+  background: #fffdf8;
+  border-left: 5px solid var(--auth-saffron);
+  box-shadow: 1.1rem 1.1rem 0 rgba(16, 27, 45, .1);
+  margin-left: -2rem;
+  max-width: 30rem;
+  padding: 3.2rem 3.4rem;
+  position: relative;
+  z-index: 2;
+  animation: auth-card-in .7s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+@keyframes auth-card-in {
+  from { opacity: 0; transform: translateY(1.3rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.auth-card::before {
+  color: var(--auth-saffron);
+  content: "01";
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  position: absolute;
+  right: 2rem;
+  top: 2rem;
+}
+
+.auth-register .auth-card::before {
+  content: "02";
+}
+
+.auth-kicker {
+  color: var(--auth-saffron);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .2em;
   margin: 0 0 1rem;
   text-transform: uppercase;
 }
+
 .auth-card h2 {
-  color: #2d1d15;
-  font-family: Georgia, serif;
-  font-size: 3rem;
-  font-weight: 500;
-  line-height: 1;
+  color: var(--auth-ink);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3.8rem;
+  font-weight: 600;
+  line-height: .85;
   margin: 0;
 }
+
 .auth-subtitle {
-  color: #756355;
-  font-size: 0.78rem;
-  margin: 0.8rem 0 2rem;
+  color: var(--auth-muted);
+  font-size: .8rem;
+  margin: 1rem 0 2.2rem;
 }
+
 .auth-form {
   display: grid;
-  gap: 0.55rem;
+  gap: .55rem;
 }
+
 .auth-form label {
-  color: #493426;
-  font-size: 0.59rem;
+  color: var(--auth-ink);
+  font-size: .6rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-top: 0.65rem;
+  letter-spacing: .12em;
+  margin-top: .7rem;
   text-transform: uppercase;
 }
+
 .label-row {
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-top: 0.65rem;
+  margin-top: .7rem;
 }
+
 .label-row label {
   margin: 0;
 }
+
 .label-row a {
-  color: #9c681e;
-  font-size: 0.59rem;
+  color: var(--auth-saffron);
+  font-size: .62rem;
 }
+
 .auth-form input {
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid #d6c5ad;
+  background: #f7f7f3;
+  border: 1px solid var(--auth-line);
   border-radius: 0;
-  color: #2d1d15;
+  color: var(--auth-ink);
   font: inherit;
-  font-size: 0.78rem;
+  font-size: .8rem;
   outline: none;
-  padding: 0.85rem 0.8rem;
+  padding: .95rem .85rem;
 }
-.auth-form input:focus {
-  border-color: #a66c1c;
-  box-shadow: 0 0 0 2px rgba(166, 108, 28, 0.12);
+
+.password-field {
+  position: relative;
 }
-.auth-form input::placeholder {
-  color: #a49688;
+
+.password-field input {
+  padding-right: 4rem;
+  width: 100%;
 }
-.auth-submit {
-  background: #342117;
+
+.password-toggle {
+  background: transparent;
   border: 0;
-  color: #f8eee1;
+  color: var(--auth-saffron);
   cursor: pointer;
-  font-size: 0.61rem;
+  font-size: .58rem;
   font-weight: 700;
-  letter-spacing: 0.13em;
-  margin-top: 1.3rem;
-  padding: 1rem;
+  letter-spacing: .1em;
+  padding: .4rem;
+  position: absolute;
+  right: .55rem;
   text-transform: uppercase;
+  top: 50%;
+  transform: translateY(-50%);
 }
+
+.password-toggle:hover {
+  color: var(--auth-ink);
+}
+
+.auth-form input:focus {
+  border-color: var(--auth-saffron);
+  box-shadow: 0 0 0 3px rgba(199, 121, 53, .14);
+}
+
+.auth-form input::placeholder {
+  color: #9da3ad;
+}
+
+.auth-submit {
+  background: var(--auth-night);
+  border: 0;
+  color: #fffaf1;
+  cursor: pointer;
+  font-size: .64rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  margin-top: 1.45rem;
+  padding: 1.05rem;
+  text-transform: uppercase;
+  transition: background .2s ease, transform .2s ease;
+}
+
 .auth-submit:hover {
-  background: #9c681e;
+  background: var(--auth-saffron);
+  transform: translateY(-2px);
 }
+
 .auth-switch {
-  color: #756355;
-  font-size: 0.72rem;
-  margin: 2rem 0 0;
+  border-top: 1px solid var(--auth-line);
+  color: var(--auth-muted);
+  font-size: .72rem;
+  margin: 2.2rem 0 0;
+  padding-top: 1.2rem;
   text-align: center;
 }
+
 .auth-switch a {
-  color: #9c681e;
+  color: var(--auth-saffron);
   font-weight: 700;
 }
+
 .form-message {
-  font-size: 0.7rem;
+  font-size: .7rem;
   line-height: 1.4;
   margin: 1rem 0;
-  padding: 0.7rem;
+  padding: .7rem;
 }
+
 .form-message.error {
-  background: #f3d8ca;
-  color: #8c321e;
+  background: #f6ded2;
+  color: #943e28;
 }
+
 .form-message.success {
-  background: #dbe8d5;
-  color: #35652e;
+  background: #dcebdc;
+  color: #32663a;
 }
-@media (max-width: 700px) {
+
+@media (max-width: 800px) {
   .auth-page {
-    padding: 1.4rem 1rem;
+    padding: 1.4rem 1.2rem 2rem;
   }
+
   .auth-layout {
     display: block;
-    margin-top: 1.5rem;
+    margin-top: 1.8rem;
   }
+
   .auth-visual {
-    min-height: 16rem;
-    padding: 1.5rem;
+    min-height: 20rem;
+    padding: 2rem;
   }
+
+  .auth-visual::after {
+    inset: .8rem;
+  }
+
   .auth-visual-label {
-    top: 1.3rem;
+    left: 2rem;
+    top: 2rem;
   }
+
+  .auth-visual-index {
+    right: 2rem;
+    top: 2rem;
+  }
+
   .auth-visual h1 {
-    font-size: 3rem;
+    font-size: clamp(3.4rem, 14vw, 5rem);
   }
+
   .auth-visual p {
-    font-size: 0.7rem;
-    margin: 1rem 0 1.5rem;
+    font-size: .72rem;
+    margin: 1.3rem 0 1.6rem;
   }
+
   .auth-card {
-    margin: -1rem 0.7rem 0;
-    padding: 2rem 1.4rem;
+    margin: -1rem .7rem 0;
+    max-width: none;
+    padding: 2.4rem 1.5rem;
   }
+
   .auth-card h2 {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-card {
+    animation: none;
+  }
+
+  .auth-visual {
+    transition: none;
   }
 }

@@ -15,14 +15,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let lastAnswer = "";
   let recognition;
+  let isRecognizing = false;
+  let recognitionError = false;
+
+  const getSpeechVoice = () => {
+    const voices = window.speechSynthesis.getVoices();
+    return voices.find((voice) => voice.lang.toLowerCase() === "en-in")
+      || voices.find((voice) => voice.lang.toLowerCase().startsWith("en-in"))
+      || voices.find((voice) => voice.lang.toLowerCase() === "en-gb")
+      || voices.find((voice) => voice.lang.toLowerCase().startsWith("en"));
+  };
+
+  const cleanSpeechText = (text) => text
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u2013\u2014]/g, "-")
+    .replace(/\s+/g, " ")
+    .trim();
 
   const speak = (text) => {
     if (!("speechSynthesis" in window) || !text) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
+    const utterance = new SpeechSynthesisUtterance(cleanSpeechText(text));
     utterance.lang = "en-IN";
-    utterance.rate = 0.94;
-    utterance.pitch = 1;
+    utterance.rate = 0.86;
+    utterance.pitch = 0.98;
+    utterance.volume = 1;
+    utterance.voice = getSpeechVoice() || null;
     window.speechSynthesis.speak(utterance);
   };
 
@@ -39,7 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
     recognition.lang = "en-IN";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-    recognition.onstart = () => setListening(true);
+    recognition.onstart = () => {
+      isRecognizing = true;
+      recognitionError = false;
+      setListening(true);
+      status.textContent = "Listening for your question...";
+    };
     recognition.onresult = (event) => {
       input.value = event.results[0][0].transcript;
       input.focus();
@@ -47,21 +71,52 @@ document.addEventListener("DOMContentLoaded", () => {
       hint.textContent = "Review your question, then press Ask to hear the answer.";
       status.textContent = "Your spoken question is ready to send.";
     };
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      isRecognizing = false;
+      recognitionError = true;
       setListening(false);
-      status.textContent = "Microphone unavailable. You can type your question instead.";
+      const message = event.error === "not-allowed"
+        ? "Microphone permission was denied. Allow microphone access, then try again."
+        : "Microphone unavailable. Check your microphone, then try again.";
+      state.textContent = "Microphone unavailable";
+      status.textContent = message;
     };
-    recognition.onend = () => setListening(false);
+    recognition.onend = () => {
+      isRecognizing = false;
+      if (!recognitionError) setListening(false);
+      mic.classList.remove("is-listening");
+      orb.classList.remove("is-listening");
+      mic.setAttribute("aria-label", "Speak your question");
+    };
   } else {
     mic.disabled = true;
     mic.title = "Speech input is not supported in this browser";
     hint.textContent = "Type your question below. Your answer will still be spoken aloud.";
   }
 
-  mic.addEventListener("click", () => {
+  mic.addEventListener("click", async () => {
     if (!recognition) return;
-    if (orb.classList.contains("is-listening")) recognition.stop();
-    else recognition.start();
+    if (isRecognizing) {
+      recognition.stop();
+      return;
+    }
+
+    if (navigator.mediaDevices?.getUserMedia) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach((track) => track.stop());
+      } catch (error) {
+        state.textContent = "Microphone unavailable";
+        status.textContent = "Allow microphone access in your browser, then try again.";
+        return;
+      }
+    }
+
+    try {
+      recognition.start();
+    } catch (error) {
+      status.textContent = "Microphone could not start. Please try again.";
+    }
   });
 
   const ask = async (question) => {
