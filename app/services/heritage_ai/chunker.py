@@ -77,6 +77,15 @@ DOCUMENTS = [
         "use_styles": True,
         "headings": [],
     },
+    {
+        "key": "nalanda",
+        "docx": "data/documents/Nalanda .docx",
+        "site": "Nalanda Mahavihara",
+        "prefix": "NL",
+        "source": "Nalanda .docx",
+        "use_styles": True,
+        "headings": [],
+    },
 ]
 
 OUTPUT_PATH = "data/heritage_chunks.json"

@@ -1,4 +1,19 @@
-from app.services.heritage_ai.rag_service import ask_heritage_ai
+from app.services.heritage_ai.rag_service import ask_heritage_ai, retrieve_context
+
+
+def test_nalanda_foundation_question_prioritizes_foundation_section():
+    results = retrieve_context("Who founded Nalanda Mahavihara?")
+
+    assert results
+    assert results[0]["section"] in {"Gupta Period", "History"}
+    assert "Kumaragupta" in results[0]["content"]
+
+
+def test_nalanda_famous_question_prioritizes_faq_answer():
+    results = retrieve_context("Why is Nalanda famous?")
+
+    assert results
+    assert results[0]["section"] == "2. Why is Nalanda famous?"
 
 
 def test_heritage_ai_falls_back_without_ollama(monkeypatch):

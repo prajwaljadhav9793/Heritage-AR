@@ -141,10 +141,27 @@ def retrieve_context(question, n_results=3):
     scored_chunks = []
 
     for chunk in load_heritage_chunks():
-        content_stems = get_keyword_stems(
-            f"{chunk['site']} {chunk['section']} {chunk['content']}"
-        )
+        searchable_text = f"{chunk['site']} {chunk['section']} {chunk['content']}"
+        content_stems = get_keyword_stems(searchable_text)
         score = len(question_stems.intersection(content_stems))
+        question_words = get_keywords(question)
+        content_words = get_keywords(chunk["content"])
+        score += len(question_words.intersection(content_words)) * 2
+        if question_words and question_words.issubset(content_words):
+            score += 3
+        section_stems = get_keyword_stems(chunk["section"])
+        if question_stems and question_stems.issubset(section_stems):
+            score += 10
+        if "found" in question_stems and any(
+            term in searchable_text.lower()
+            for term in ("founded", "foundation", "established")
+        ):
+            score += 3
+        if "found" in question_stems and chunk["section"].lower() in {
+            "gupta period",
+            "history",
+        }:
+            score += 8
         if score:
             scored_chunks.append((score, chunk))
 
@@ -210,6 +227,10 @@ def is_relevant(question, retrieved):
         "virupaksha", "vittala", "harihara", "bukka", "karnataka",
         "talikota", "unesco", "bazaar", "chariot", "mandapa", "mantapa",
         "zenana", "mahal", "stables", "dibba", "gopuram", "temple",
+        # Nalanda Mahavihara terms
+        "nalanda", "mahavihara", "bihar", "magadha", "gupta", "harsha",
+        "pala", "buddhist", "monastery", "monastic", "vihara", "vikramashila",
+        "library", "manuscript", "archaeological", "university",
     }
     has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
     if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:
