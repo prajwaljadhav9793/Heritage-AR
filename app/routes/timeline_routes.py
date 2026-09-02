@@ -20,6 +20,14 @@ HAMPI_EVENTS = [
 	{"year": "1986", "label": "UNESCO recognition", "title": "A World Heritage Site", "description": "UNESCO inscribes the Group of Monuments at Hampi on the World Heritage List, securing its place among the great heritage sites of the world.", "image": "/static/images/timeline/virupaksha.jpg", "fallback": "/static/images/heritage/reconstruct.png"},
 ]
 
+NALANDA_EVENTS = [
+	{"year": "5th c.", "label": "Gupta foundation", "title": "A Mahavihara Takes Shape", "description": "Nalanda develops as a major Buddhist centre of learning in the Gupta period, traditionally associated with Kumaragupta I.", "image": "/static/images/timeline/images.jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
+	{"year": "7th c.", "label": "Harsha's patronage", "title": "Scholars Gather from Asia", "description": "Under Harshavardhana and other patrons, Nalanda flourishes and attracts scholars including the Chinese Buddhist traveller Xuanzang.", "image": "/static/images/timeline/9f75259e9233645e4c07bc46c926289f.jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
+	{"year": "8th-12th c.", "label": "Pala period", "title": "The Scholarly Centre Expands", "description": "Pala rulers support Nalanda's monasteries, scholarship and connections with other Buddhist centres such as Vikramashila and Odantapuri.", "image": "/static/images/timeline/nalanda-ruins.jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
+	{"year": "c. 1200", "label": "Invasions and decline", "title": "A Long Tradition Falls Silent", "description": "Attacks, political change and the loss of royal patronage damage Nalanda and eventually end its role as a major residential centre of learning.", "image": "/static/images/timeline/images (1).jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
+	{"year": "2016", "label": "UNESCO recognition", "title": "A World Heritage Site", "description": "Nalanda Mahavihara is inscribed as a UNESCO World Heritage Site, recognizing its global importance as an ancient centre of learning and culture.", "image": "/static/images/timeline/images.jpg", "fallback": "/static/images/heritage/nalanda-ruins.jpg"},
+]
+
 SITES = {
 	"raigad": {
 		"name": "Raigad Fort",
@@ -37,6 +45,15 @@ SITES = {
 		"kicker": "HeritageAR / The Vijayanagara archive",
 		"note": "Hampi archive is currently open.",
 		"events": HAMPI_EVENTS,
+		"default_event": 1,
+	},
+	"nalanda": {
+		"name": "Nalanda Mahavihara",
+		"subtitle": "Ancient centre of learning",
+		"heading": "NALANDA<br />THROUGH TIME",
+		"kicker": "HeritageAR / The Nalanda archive",
+		"note": "Nalanda Mahavihara archive is currently open.",
+		"events": NALANDA_EVENTS,
 		"default_event": 1,
 	},
 }

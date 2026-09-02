@@ -58,6 +58,18 @@ document.addEventListener("DOMContentLoaded", () => {
       significance:
         "The ruined capital of the Vijayanagara Empire on the banks of the Tungabhadra.",
     },
+    nalanda: {
+      name: "Nalanda Mahavihara",
+      label: "Nalanda Mahavihara",
+      category: "Buddhist Heritage",
+      rating: "4.7",
+      reviews: "6.8k",
+      hours: "9:00 AM - 5:00 PM",
+      coordinates: [25.14, 85.44],
+      directionsDestination: "Nalanda Mahavihara, Bihar, India",
+      description: "Ancient centre of learning",
+      image: "/static/images/heritage/nalanda-ruins.jpg",
+    },
   };
 
   const map = L.map("heritage-map", {
@@ -88,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
     const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
-    const siteLink = id === "raigad" || id === "hampi"
+    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
       : "";
     const popupContent = `
