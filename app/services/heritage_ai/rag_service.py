@@ -1,5 +1,7 @@
 import re
 import os
+import json
+from functools import lru_cache
 from pathlib import Path
 
 import chromadb
@@ -11,6 +13,7 @@ import ollama
 # ==========================================================
 
 VECTOR_DB_PATH = str(Path(__file__).resolve().parents[3] / "data" / "vector_db")
+CHUNKS_PATH = Path(__file__).resolve().parents[3] / "data" / "heritage_chunks.json"
 
 # Based on your actual retrieval tests.
 # Genuine questions can reach around 0.92,
@@ -20,7 +23,8 @@ MAX_DISTANCE = 1.55
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 MODEL_NAME = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
-ollama_client = ollama.Client(host=OLLAMA_HOST)
+OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT", "5"))
+ollama_client = ollama.Client(host=OLLAMA_HOST, timeout=OLLAMA_TIMEOUT)
 
 
 # ==========================================================
@@ -125,32 +129,35 @@ def get_keyword_stems(text):
 # RETRIEVE FROM CHROMADB
 # ==========================================================
 
+@lru_cache(maxsize=1)
+def load_heritage_chunks():
+    with CHUNKS_PATH.open(encoding="utf-8") as file:
+        return json.load(file)
+
+
 def retrieve_context(question, n_results=3):
+    """Retrieve locally without triggering Chroma's first-use model download."""
+    question_stems = get_keyword_stems(question)
+    scored_chunks = []
 
-    results = collection.query(
-        query_texts=[question],
-        n_results=n_results,
-        include=[
-            "documents",
-            "metadatas",
-            "distances"
-        ]
-    )
+    for chunk in load_heritage_chunks():
+        content_stems = get_keyword_stems(
+            f"{chunk['site']} {chunk['section']} {chunk['content']}"
+        )
+        score = len(question_stems.intersection(content_stems))
+        if score:
+            scored_chunks.append((score, chunk))
 
-    retrieved = []
-
-    for i, document in enumerate(
-        results["documents"][0]
-    ):
-
-        retrieved.append({
-            "content": document,
-            "section": results["metadatas"][0][i]["section"],
-            "source": results["metadatas"][0][i]["source"],
-            "distance": results["distances"][0][i]
-        })
-
-    return retrieved
+    scored_chunks.sort(key=lambda item: item[0], reverse=True)
+    return [
+        {
+            "content": chunk["content"],
+            "section": chunk["section"],
+            "source": chunk["source"],
+            "distance": 0.0,
+        }
+        for _, chunk in scored_chunks[:n_results]
+    ]
 
 
 # ==========================================================
