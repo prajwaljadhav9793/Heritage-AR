@@ -37,6 +37,14 @@ KONARK_EVENTS = [
 	{"year": "1984", "label": "UNESCO recognition", "title": "A World Heritage Site", "description": "UNESCO recognizes the Konark Sun Temple for its outstanding architecture, sculpture and cultural importance.", "image": "/static/images/timeline/konark-01.jpg", "fallback": "/static/images/timeline/konark-07.png"},
 ]
 
+MARTAND_EVENTS = [
+	{"year": "8th c.", "label": "Karkota dynasty", "title": "A Sun Temple in Kashmir", "description": "King Lalitaditya Muktapida commissions Martand as a monumental temple dedicated to Surya in the Kashmir Valley.", "image": "/static/images/timeline/martand-01.png", "fallback": "/static/images/timeline/martand-02.jpg"},
+	{"year": "8th c.", "label": "Central shrine", "title": "Architecture of the Main Temple", "description": "The temple is built around a central shrine and an expansive colonnaded courtyard, combining sacred space with a powerful mountain setting.", "image": "/static/images/timeline/martand-04.png", "fallback": "/static/images/timeline/martand-01.png"},
+	{"year": "8th c.", "label": "Stone craftsmanship", "title": "Pillars, Arches and Carvings", "description": "Stone pillars, gateways, arches and carved panels reveal the scale and craftsmanship of the early medieval Kashmiri temple complex.", "image": "/static/images/timeline/martand-03.png", "fallback": "/static/images/timeline/martand-06.png"},
+	{"year": "Later centuries", "label": "Damage and abandonment", "title": "A Sacred Complex Falls Silent", "description": "The complex was damaged and eventually abandoned, leaving its surviving walls, shrines and courtyard as an archaeological record of Kashmir's past.", "image": "/static/images/timeline/martand-05.jpg", "fallback": "/static/images/timeline/martand-08.jpg"},
+	{"year": "Today", "label": "Protected heritage", "title": "Ruins in the Kashmir Valley", "description": "Martand remains an important heritage site, valued for its architecture, history, landscape and connection to the region's solar traditions.", "image": "/static/images/timeline/martand-02.jpg", "fallback": "/static/images/timeline/martand-11.jpg"},
+]
+
 SITES = {
 	"raigad": {
 		"name": "Raigad Fort",
@@ -72,6 +80,15 @@ SITES = {
 		"kicker": "HeritageAR / The Konark archive",
 		"note": "Konark Sun Temple archive is currently open.",
 		"events": KONARK_EVENTS,
+		"default_event": 1,
+	},
+	"martand": {
+		"name": "Martand Sun Temple",
+		"subtitle": "Ancient Kashmiri Sun temple",
+		"heading": "MARTAND<br />THROUGH TIME",
+		"kicker": "HeritageAR / The Martand archive",
+		"note": "Martand Sun Temple archive is currently open.",
+		"events": MARTAND_EVENTS,
 		"default_event": 1,
 	},
 }

@@ -39,6 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
         ["The Stone Wheel", "Astronomy and architecture", "../../timeline/konark-02.jpg"],
       ],
     },
+    {
+      keywords: ["martand", "kashmir", "anantnag", "lalitaditya", "muktapida"],
+      items: [
+        ["Martand Sun Temple", "8th century · Kashmir heritage", "../../timeline/martand-01.png"],
+        ["Martand Colonnade", "Early medieval architecture", "../../timeline/martand-02.jpg"],
+      ],
+    },
   ];
 
   const defaultArtifacts = [

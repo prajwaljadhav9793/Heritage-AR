@@ -95,6 +95,15 @@ DOCUMENTS = [
         "use_styles": True,
         "headings": [],
     },
+    {
+        "key": "martand",
+        "docx": "data/documents/Martand sun temple.docx",
+        "site": "Martand Sun Temple",
+        "prefix": "MT",
+        "source": "Martand sun temple.docx",
+        "use_styles": True,
+        "headings": [],
+    },
 ]
 
 OUTPUT_PATH = "data/heritage_chunks.json"

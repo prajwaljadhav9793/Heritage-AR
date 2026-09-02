@@ -82,6 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "13th-century chariot temple",
       image: "/static/images/timeline/konark-01.jpg",
     },
+    martand: {
+      name: "Martand Sun Temple",
+      label: "Martand Sun Temple",
+      category: "Kashmir Heritage",
+      rating: "4.8",
+      reviews: "5.4k",
+      hours: "8:00 AM - 7:00 PM",
+      coordinates: [33.7462, 75.2206],
+      directionsDestination: "Martand Sun Temple, Anantnag, Jammu and Kashmir, India",
+      description: "Ancient Kashmiri Sun temple",
+      image: "/static/images/timeline/martand-01.png",
+    },
   };
 
   const map = L.map("heritage-map", {
@@ -112,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
     const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
-    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark"
+    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark" || id === "martand"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
       : "";
     const popupContent = `

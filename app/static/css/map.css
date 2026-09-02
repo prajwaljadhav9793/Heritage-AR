@@ -171,6 +171,10 @@ body {
   background-image: url("/static/images/timeline/konark-01.jpg");
 }
 
+.thumb-martand {
+  background-image: url("/static/images/timeline/martand-01.png");
+}
+
 .site-details {
   display: grid;
   gap: 0.2rem;

@@ -14,7 +14,7 @@
     <div class="picker-rule"></div>
     {% for key, s in sites.items() %}
     <a class="timeline-site{% if key == site_key %} is-selected{% endif %}" href="{{ url_for('timeline.timeline', site=key) }}" data-site="{{ key }}" data-available="true"{% if key == site_key %} aria-pressed="true"{% endif %}>
-      <img src="{{ url_for('static', filename='images/heritage/discover-fort.jpg' if key == 'raigad' else ('images/heritage/nalanda-ruins.jpg' if key == 'nalanda' else ('images/timeline/konark-01.jpg' if key == 'konark' else 'images/historical/then-fort.jpg'))) }}" alt="" />
+      <img src="{{ url_for('static', filename='images/heritage/discover-fort.jpg' if key == 'raigad' else ('images/heritage/nalanda-ruins.jpg' if key == 'nalanda' else ('images/timeline/konark-01.jpg' if key == 'konark' else ('images/timeline/martand-01.png' if key == 'martand' else 'images/historical/then-fort.jpg')))) }}" alt="" />
       <span><strong>{{ s.name }}</strong><small>{{ s.subtitle }}</small></span><em>{{ 'Selected' if key == site_key else 'View' }}</em>
     </a>
     {% endfor %}

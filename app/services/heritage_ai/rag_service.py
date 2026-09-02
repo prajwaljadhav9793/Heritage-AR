@@ -138,9 +138,17 @@ def load_heritage_chunks():
 def retrieve_context(question, n_results=3):
     """Retrieve locally without triggering Chroma's first-use model download."""
     question_stems = get_keyword_stems(question)
+    normalized_question = question.lower()
+    requested_site = next(
+        (site for site in ("raigad", "hampi", "nalanda", "konark", "martand")
+         if site in normalized_question),
+        None,
+    )
     scored_chunks = []
 
     for chunk in load_heritage_chunks():
+        if requested_site and requested_site not in chunk["site"].lower():
+            continue
         searchable_text = f"{chunk['site']} {chunk['section']} {chunk['content']}"
         content_stems = get_keyword_stems(searchable_text)
         score = len(question_stems.intersection(content_stems))
@@ -243,6 +251,9 @@ def is_relevant(question, retrieved):
         # Konark Sun Temple terms
         "konark", "surya", "sun", "odisha", "odissi", "ganga", "narasimhadeva",
         "chariot", "wheel", "temple", "kalinga", "unesco", "odisha",
+        # Martand Sun Temple terms
+        "martand", "kashmir", "anantnag", "lalitaditya", "muktapida", "surya",
+        "courtyard", "colonnade", "shrine", "pradakshina", "blackstone",
     }
     has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
     if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:

@@ -23,6 +23,13 @@ def test_konark_builder_question_prioritizes_direct_archive_context():
     assert "Who built the Konark Sun Temple" in results[0]["content"]
 
 
+def test_martand_question_does_not_mix_konark_context():
+    results = retrieve_context("Who built Martand Sun Temple?")
+
+    assert results
+    assert all(result["source"] == "Martand sun temple.docx" for result in results)
+
+
 def test_heritage_ai_falls_back_without_ollama(monkeypatch):
     sample_context = [{
         "section": "Hampi overview",
