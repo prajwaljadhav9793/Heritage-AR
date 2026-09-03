@@ -182,6 +182,11 @@
   padding: 0.5rem 0 1rem;
 }
 
+.site-switcher { border-bottom: 1px solid var(--ar-line); display: grid; grid-template-columns: repeat(3, 1fr); padding: 0.85rem 0.85rem 0.7rem; gap: 0.3rem; }
+.site-tab { background: transparent; border: 1px solid transparent; color: #9f9182; cursor: pointer; font-family: "DM Sans", sans-serif; font-size: 0.55rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.62rem 0.25rem; text-transform: uppercase; transition: background 180ms ease, border-color 180ms ease, color 180ms ease; }
+.site-tab:hover { color: #fff5e6; }
+.site-tab.is-selected { background: rgba(222, 173, 87, 0.13); border-color: rgba(222, 173, 87, 0.55); color: var(--ar-gold-soft); }
+
 .monument-card {
   align-items: center;
   background: transparent;
@@ -354,7 +359,13 @@
 .camera-frame { aspect-ratio: 1.25 / 1; background: #100d0b; overflow: hidden; position: relative; }
 .camera-frame video,
 .camera-frame img { height: 100%; object-fit: cover; width: 100%; }
-.camera-frame video:empty { display: none; }
+.camera-frame video { background: #100d0b; display: block; }
+.camera-frame video[hidden],
+.camera-frame img[hidden] { display: none; }
+.camera-frame video:not([hidden]),
+.camera-frame img:not([hidden]) { display: block; }
+.camera-frame.is-live { outline: 1px solid rgba(222, 173, 87, 0.65); outline-offset: -1px; }
+.camera-frame.is-captured::after { border: 1px solid rgba(243, 217, 163, 0.72); content: "PHOTO CAPTURED"; color: #f3d9a3; font-family: "DM Sans", sans-serif; font-size: 0.52rem; font-weight: 700; left: 1rem; letter-spacing: 0.15em; padding: 0.4rem 0.55rem; position: absolute; text-transform: uppercase; top: 1rem; }
 .camera-guide { border: 1px solid rgba(245, 214, 159, 0.56); inset: 12%; pointer-events: none; position: absolute; }
 .camera-guide::before,
 .camera-guide::after { border-color: var(--ar-gold); border-style: solid; content: ""; height: 1.2rem; position: absolute; width: 1.2rem; }
@@ -374,6 +385,7 @@
 .camera-secondary:hover,
 .camera-file:hover { background: rgba(226, 174, 84, 0.11); }
 .camera-secondary:disabled { cursor: not-allowed; opacity: 0.4; }
+.camera-primary:disabled { cursor: not-allowed; opacity: 0.45; }
 .camera-file input { height: 1px; opacity: 0; position: absolute; width: 1px; }
 .camera-footnote { border-top: 1px solid var(--ar-line); color: #938274; font-size: 0.59rem; line-height: 1.5; margin: 1.5rem 0 0; padding-top: 1rem; }
 
@@ -403,6 +415,7 @@
   .sidebar-heading small { display: none; }
   .sidebar-rule { margin: 0.85rem 0 0; }
   .monument-list { display: flex; overflow-x: auto; padding: 0.55rem 0.5rem; }
+  .site-switcher { padding: 0.65rem 0.5rem; }
   .monument-card { border-bottom: 2px solid transparent; border-left: 0; display: flex; flex: 0 0 9.75rem; padding: 0.62rem; }
   .monument-card.is-selected { border-bottom-color: var(--ar-gold); border-left-color: transparent; }
   .monument-card i { display: none; }

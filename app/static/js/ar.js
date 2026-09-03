@@ -99,6 +99,20 @@ document.addEventListener("DOMContentLoaded", () => {
       status: "Reconstruction of the strategic defensive tower.",
       arNote: "Rotate the bastion to see the defensive form from all sides, then place it in AR on a supported phone.",
     },
+    "achyutaraya-temple": { number: "01", title: "Achyutaraya Temple", category: "Sacred architecture · reconstructed model", file: "Achyutaraya Temple.glb", description: "A reconstructed view of Achyutaraya Temple in the Hampi collection.", survival: "Archaeological temple remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Achyutaraya Temple.", arNote: "Explore the temple from every angle." },
+    "hazara-rama-temple": { number: "02", title: "Hazara Rama Temple", category: "Sacred architecture · reconstructed model", file: "Hazara Rama Temple.glb", description: "A reconstructed view of Hazara Rama Temple in the Hampi collection.", survival: "Archaeological temple remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Hazara Rama Temple.", arNote: "Explore the temple from every angle." },
+    "krishna-temple": { number: "03", title: "Krishna Temple", category: "Sacred architecture · reconstructed model", file: "Krishna Temple.glb", description: "A reconstructed view of Krishna Temple in the Hampi collection.", survival: "Archaeological temple remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Krishna Temple.", arNote: "Explore the temple from every angle." },
+    "lotus-mahal": { number: "04", title: "Lotus Mahal", category: "Royal enclosure · reconstructed model", file: "Lotus Mahal.glb", description: "A reconstructed view of Lotus Mahal in the Hampi collection.", survival: "Archaeological palace remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Lotus Mahal.", arNote: "Explore the palace from every angle." },
+    "mahanavami-dibba": { number: "05", title: "Mahanavami Dibba", category: "Ceremonial platform · reconstructed model", file: "Mahanavami Dibba.glb", description: "A reconstructed view of Mahanavami Dibba in the Hampi collection.", survival: "Ceremonial platform remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Mahanavami Dibba.", arNote: "Explore the platform from every angle." },
+    "hampi-royal-palace": { number: "06", title: "Royal Palace", category: "Royal enclosure · reconstructed model", file: "Royal Palace.glb", description: "A reconstructed view of the Royal Palace in the Hampi collection.", survival: "Archaeological palace remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of the Hampi Royal Palace.", arNote: "Explore the palace from every angle." },
+    "vittala-temple": { number: "07", title: "Vittala Temple", category: "Sacred architecture · reconstructed model", file: "Vittala Temple.glb", description: "A reconstructed view of Vittala Temple in the Hampi collection.", survival: "Archaeological temple remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Vittala Temple.", arNote: "Explore the temple from every angle." },
+    "zanana-enclosure": { number: "08", title: "Zanana Enclosure", category: "Royal enclosure · reconstructed model", file: "Zanana Enclosure.glb", description: "A reconstructed view of Zanana Enclosure in the Hampi collection.", survival: "Archaeological enclosure remains", era: "14th–16th Century Vijayanagara Empire", status: "Reconstruction of Zanana Enclosure.", arNote: "Explore the enclosure from every angle." },
+    "assembly-areas": { number: "01", title: "Assembly Areas", category: "Monastic campus · reconstructed model", file: "Assembly Areas.glb", description: "A reconstructed view of Nalanda's assembly areas.", survival: "Monastic campus remains", era: "5th–12th Century CE", status: "Reconstruction of the Nalanda assembly areas.", arNote: "Explore the campus from every angle." },
+    "entrance-gateways": { number: "02", title: "Entrance Gateways", category: "Monastic campus · reconstructed model", file: "Entrance Gateways.glb", description: "A reconstructed view of Nalanda's entrance gateways.", survival: "Gateway remains", era: "5th–12th Century CE", status: "Reconstruction of Nalanda's entrance gateways.", arNote: "Explore the gateways from every angle." },
+    "library-buildings": { number: "03", title: "Library Buildings", category: "Learning centre · reconstructed model", file: "Library Buildings.glb", description: "A reconstructed view of Nalanda's library buildings.", survival: "Library complex remains", era: "5th–12th Century CE", status: "Reconstruction of Nalanda's library buildings.", arNote: "Explore the library complex from every angle." },
+    "main-shrine": { number: "04", title: "Main Shrine", category: "Sacred architecture · reconstructed model", file: "Main Shrine.glb", description: "A reconstructed view of Nalanda's main shrine.", survival: "Shrine remains", era: "5th–12th Century CE", status: "Reconstruction of Nalanda's main shrine.", arNote: "Explore the shrine from every angle." },
+    "residential-cells": { number: "05", title: "Residential Cells", category: "Monastic campus · reconstructed model", file: "Residential Cells.glb", description: "A reconstructed view of Nalanda's residential cells.", survival: "Residential monastery remains", era: "5th–12th Century CE", status: "Reconstruction of Nalanda's residential cells.", arNote: "Explore the cells from every angle." },
+    "temple-complexes": { number: "06", title: "Temple Complexes", category: "Sacred architecture · reconstructed model", file: "Temple Complexes.glb", description: "A reconstructed view of Nalanda's temple complexes.", survival: "Temple complex remains", era: "5th–12th Century CE", status: "Reconstruction of Nalanda's temple complexes.", arNote: "Explore the complexes from every angle." },
   };
 
   const viewer = document.querySelector("#heritage-model");
@@ -109,14 +123,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const rotationButton = document.querySelector("#toggle-rotation");
   const resetButton = document.querySelector("#reset-model");
   const cameraWorkflow = document.querySelector("#camera-workflow");
+  const cameraFrame = document.querySelector("#camera-frame");
   const cameraVideo = document.querySelector("#camera-video");
   const capturedPhoto = document.querySelector("#captured-photo");
   const cameraMessage = document.querySelector("#camera-message");
   const startCameraButton = document.querySelector("#start-camera");
   const takePhotoButton = document.querySelector("#take-photo");
+  const showReconstructionButton = document.querySelector("#show-reconstruction");
   const photoInput = document.querySelector("#monument-photo");
   const comparisonBefore = document.querySelector("#comparison-before");
   const comparisonBeforePlaceholder = document.querySelector("#comparison-before-placeholder");
+  const modelDisplaySection = document.querySelector("#model-display-section");
   const arState = window.heritageArState || (window.heritageArState = { selectedId: "royal-palace", isValidUpload: false });
   let selectedId = arState.selectedId;
   let cameraStream;
@@ -170,7 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
     viewer.setAttribute("alt", `Interactive 3D reconstruction of ${model.title} at Raigad Fort`);
     // Set attributes rather than element properties so selection also works while
     // the model-viewer web component is still finishing its initial load.
-    viewer.setAttribute("src", `/static/models/raigad/${model.file}`);
+    const folder = ["achyutaraya-temple", "hazara-rama-temple", "krishna-temple", "lotus-mahal", "mahanavami-dibba", "hampi-royal-palace", "vittala-temple", "zanana-enclosure"].includes(id) ? "hampi" : ["assembly-areas", "entrance-gateways", "library-buildings", "main-shrine", "residential-cells", "temple-complexes"].includes(id) ? "nalanda" : "raigad";
+    viewer.setAttribute("src", `/static/models/${folder}/${encodeURIComponent(model.file)}`);
     viewer.setAttribute("camera-orbit", "45deg 70deg auto");
     if (typeof viewer.jumpCameraToGoal === "function") viewer.jumpCameraToGoal();
   };
@@ -233,17 +251,34 @@ document.addEventListener("DOMContentLoaded", () => {
     setActiveNav("explore");
   };
 
-  const setCapturedImage = (source) => {
+  const setCapturedImage = (source, isValid = true) => {
     if (!capturedPhoto || !cameraVideo) return;
     capturedPhoto.src = source;
     capturedPhoto.hidden = false;
+    capturedPhoto.style.display = "block";
     cameraVideo.hidden = true;
+    cameraVideo.style.display = "none";
+    cameraFrame?.classList.remove("is-live");
+    cameraFrame?.classList.add("is-captured");
     if (comparisonBefore) {
       comparisonBefore.src = source;
       comparisonBefore.hidden = false;
     }
     if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = true;
-    cameraMessage.textContent = "";
+    cameraMessage.textContent = isValid
+      ? "Photo captured. Start the camera again to retake it, or continue to the reconstruction."
+      : "Sorry, I can't convert this image. Please upload a valid, relevant heritage-site image.";
+    cameraMessage.classList.toggle("is-error", !isValid);
+    if (showReconstructionButton) showReconstructionButton.disabled = !isValid;
+    if (!isValid && modelDisplaySection) { modelDisplaySection.hidden = true; modelDisplaySection.style.display = "none"; }
+  };
+
+  const clearCapturedImage = () => {
+    if (capturedPhoto) { capturedPhoto.src = ""; capturedPhoto.hidden = true; capturedPhoto.style.display = "none"; }
+    if (comparisonBefore) { comparisonBefore.src = ""; comparisonBefore.hidden = true; }
+    if (comparisonBeforePlaceholder) comparisonBeforePlaceholder.hidden = false;
+    if (showReconstructionButton) showReconstructionButton.disabled = true;
+    if (modelDisplaySection) { modelDisplaySection.hidden = true; modelDisplaySection.style.display = "none"; }
   };
 
   const startCamera = async () => {
@@ -259,8 +294,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       cameraVideo.srcObject = cameraStream;
       cameraVideo.hidden = false;
+      cameraVideo.style.display = "block";
+      cameraFrame?.classList.remove("is-captured");
+      cameraFrame?.classList.add("is-live");
       capturedPhoto.hidden = true;
+      capturedPhoto.style.display = "none";
       takePhotoButton.disabled = false;
+      await cameraVideo.play();
       cameraMessage.textContent = "Camera ready. Frame the visible remains, then take a reference photo.";
     } catch (cameraError) {
       cameraMessage.textContent = "Camera permission was not granted. Choose a photo instead, or allow camera access and try again.";
@@ -268,14 +308,18 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const takePhoto = () => {
-    if (!cameraVideo?.videoWidth || !cameraVideo?.videoHeight) return;
+    if (!cameraVideo?.videoWidth || !cameraVideo?.videoHeight || cameraVideo.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+      cameraMessage.textContent = "The live preview is still starting. Wait a moment, then try again.";
+      return;
+    }
     const canvas = document.createElement("canvas");
     canvas.width = cameraVideo.videoWidth;
     canvas.height = cameraVideo.videoHeight;
     canvas.getContext("2d")?.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
-    // Camera capture captured - but validation happens when user uploads file
-    // Do NOT set isValidUpload here - user must upload/match a known monument
-    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9));
+    // A camera frame has no source filename, so it cannot be verified against
+    // the bundled reference images. Keep it visible, but do not authorize AR.
+    arState.isValidUpload = false;
+    setCapturedImage(canvas.toDataURL("image/jpeg", 0.9), false);
     stopCamera();
   };
 
@@ -309,8 +353,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fileName = image.name.toLowerCase();
     const monumentLookup = {
+      "royal palace destructed": "hampi-royal-palace",
       "royal palace": "royal-palace",
       "royalpalace": "royal-palace",
+      "achyutaraya temple": "achyutaraya-temple",
+      "hazara rama temple": "hazara-rama-temple",
+      "krishna temple": "krishna-temple",
+      "lotus mahal": "lotus-mahal",
+      "mahanavami dibba": "mahanavami-dibba",
+      "vittala temple complex": "vittala-temple",
+      "vittala temple": "vittala-temple",
+      "zanana enclosure": "zanana-enclosure",
+      "assembly areas": "assembly-areas",
+      "entrance gateways": "entrance-gateways",
+      "library buildings": "library-buildings",
+      "main shrine": "main-shrine",
+      "residential cells": "residential-cells",
+      "temple complexes": "temple-complexes",
       "queen's palace": "queens-palace",
       "queens palace": "queens-palace",
       "queens_palace": "queens-palace",
@@ -327,16 +386,22 @@ document.addEventListener("DOMContentLoaded", () => {
       "buruj": "khublada-buruj",
     };
 
-    const matchedKey = Object.keys(monumentLookup).find((key) => fileName.includes(key));
+    const rawFileStem = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
+    const fileStem = rawFileStem.replace(/\s+(destructed|reconstructed)$/, "").trim();
+    const matchedKey = monumentLookup[rawFileStem]
+      ? rawFileStem
+      : Object.keys(monumentLookup).find((key) => fileStem === key);
     
     if (!matchedKey) {
-      // Invalid upload - show error and block capture
       arState.isValidUpload = false;
+      clearCapturedImage();
+      stopCamera();
       if (cameraMessage) {
         cameraMessage.textContent = "I can't convert this image because that monument is not available in the heritage reconstruction database. Please upload another image.";
         cameraMessage.classList.add("is-error");
+        cameraWorkflow.hidden = false;
       }
-      return; // Stop processing - don't capture image
+      return;
     }
 
     // Valid upload - proceed normally

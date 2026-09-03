@@ -27,32 +27,12 @@
         <span class="sidebar-rule"></span>
         <small>Rotate and zoom through complete 3D reconstructions of heritage sites. View each model in detail from all angles.</small>
       </div>
-      <div class="monument-list" role="list" aria-label="3D reconstructed heritage models">
-        <button type="button" class="monument-card is-selected" role="listitem" data-monument="royal-palace" aria-pressed="true">
-          <span class="monument-index">01</span><span><strong>Royal Palace</strong><small>Raigad · Royal precinct</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="queens-palace" aria-pressed="false">
-          <span class="monument-index">02</span><span><strong>Queen's Palace</strong><small>Raigad · Royal precinct</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="royal-complex" aria-pressed="false">
-          <span class="monument-index">03</span><span><strong>Royal Complex</strong><small>Raigad · Royal precinct</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="marketplace" aria-pressed="false">
-          <span class="monument-index">04</span><span><strong>Marketplace</strong><small>Raigad · Civic life</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="manore" aria-pressed="false">
-          <span class="monument-index">05</span><span><strong>Manore</strong><small>Raigad · Historic pavilion</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="pleasure-pavilions" aria-pressed="false">
-          <span class="monument-index">06</span><span><strong>Pleasure Pavilions</strong><small>Raigad · Historic pavilion</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="wadeshwar-temple" aria-pressed="false">
-          <span class="monument-index">07</span><span><strong>Wadeshwar Temple</strong><small>Raigad · Religious precinct</small></span><i aria-hidden="true">↗</i>
-        </button>
-        <button type="button" class="monument-card" role="listitem" data-monument="khublada-buruj" aria-pressed="false">
-          <span class="monument-index">08</span><span><strong>Khublada Buruj</strong><small>Raigad · Defensive tower</small></span><i aria-hidden="true">↗</i>
-        </button>
+      <div class="site-switcher" role="tablist" aria-label="Heritage sites">
+        <button type="button" class="site-tab is-selected" role="tab" data-site="raigad" aria-selected="true">Raigad</button>
+        <button type="button" class="site-tab" role="tab" data-site="hampi" aria-selected="false">Hampi</button>
+        <button type="button" class="site-tab" role="tab" data-site="nalanda" aria-selected="false">Nalanda</button>
       </div>
+      <div class="monument-list" id="monument-list" role="list" aria-label="3D reconstructed heritage models"></div>
     </aside>
 
     <section class="viewer-stage">
@@ -122,5 +102,5 @@
 
 {% block scripts %}
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script src="{{ url_for('static', filename='js/ar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/3d-world.js') }}"></script>
 {% endblock %}

@@ -136,7 +136,7 @@
             <span class="step-label">Step 2</span>
             <h3>View reconstruction</h3>
             <p id="camera-selected-model">Royal Palace is selected. Choose a different monument if you want to compare a different structure.</p>
-            <button type="button" class="camera-primary" id="show-reconstruction">View 3D reconstruction</button>
+            <button type="button" class="camera-primary" id="show-reconstruction" disabled>View 3D reconstruction</button>
           </div>
         </div>
         <p class="camera-footnote">On supported phones, place the reconstruction in your space using AR after viewing it.</p>
@@ -223,6 +223,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (cameraMessage) {
         cameraMessage.textContent = "I can't convert this image because that monument is not available in the heritage reconstruction database. Please upload another image.";
         cameraMessage.classList.add("is-error");
+      }
+      if (modelSection) {
+        modelSection.hidden = true;
+        modelSection.style.display = "none";
       }
       return; // Prevent transition
     }
