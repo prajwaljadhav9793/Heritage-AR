@@ -113,6 +113,15 @@ DOCUMENTS = [
         "use_styles": True,
         "headings": [],
     },
+    {
+        "key": "meenakshi",
+        "docx": "data/documents/Meenakshi Temple.docx",
+        "site": "Meenakshi Temple",
+        "prefix": "MK",
+        "source": "Meenakshi Temple.docx",
+        "use_styles": True,
+        "headings": [],
+    },
 ]
 
 OUTPUT_PATH = "data/heritage_chunks.json"

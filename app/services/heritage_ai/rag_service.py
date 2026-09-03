@@ -1,6 +1,8 @@
 import re
 import os
 import json
+import time
+import threading
 from functools import lru_cache
 from pathlib import Path
 
@@ -23,7 +25,7 @@ MAX_DISTANCE = 1.55
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 MODEL_NAME = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
-OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT", "5"))
+OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT", "4"))
 ollama_client = ollama.Client(host=OLLAMA_HOST, timeout=OLLAMA_TIMEOUT)
 
 
@@ -135,12 +137,17 @@ def load_heritage_chunks():
         return json.load(file)
 
 
+@lru_cache(maxsize=128)
+def retrieve_context_cached(question, n_results=3):
+    return retrieve_context(question, n_results)
+
+
 def retrieve_context(question, n_results=3):
     """Retrieve locally without triggering Chroma's first-use model download."""
     question_stems = get_keyword_stems(question)
     normalized_question = question.lower()
     requested_site = next(
-        (site for site in ("raigad", "hampi", "nalanda", "konark", "martand")
+        (site for site in ("raigad", "hampi", "nalanda", "konark", "martand", "khajuraho", "meenakshi")
          if site in normalized_question),
         None,
     )
@@ -164,11 +171,19 @@ def retrieve_context(question, n_results=3):
         normalized_content = re.sub(r"[^a-z0-9 ]", "", chunk["content"].lower())
         if normalized_question in normalized_content:
             score += 12
-        if "built" in question_stems and any(
-            phrase in normalized_content
-            for phrase in ("built by king narasimhadeva", "commissioned in the 13th century")
-        ):
-            score += 8
+        if "built" in question_stems or "builder" in question_stems or "architect" in question_stems:
+            construction_phrases = (
+                "built by king narasimhadeva",
+                "commissioned in the 13th century",
+                "oversaw the construction and development",
+                "chief engineer hiroji indulkar",
+                "laitaditya muktapida commissions",
+                "harihara i and bukka raya i found",
+            )
+            if any(phrase in normalized_content for phrase in construction_phrases):
+                score += 8
+            if any(name in normalized_content for name in ("hiroji indulkar", "narasimhadeva", "lalitaditya", "harihara")):
+                score += 4
         if "found" in question_stems and any(
             term in searchable_text.lower()
             for term in ("founded", "foundation", "established")
@@ -254,6 +269,10 @@ def is_relevant(question, retrieved):
         # Martand Sun Temple terms
         "martand", "kashmir", "anantnag", "lalitaditya", "muktapida", "surya",
         "courtyard", "colonnade", "shrine", "pradakshina", "blackstone",
+        # Meenakshi Amman Temple terms
+        "meenakshi", "madurai", "sundareshwarar", "vaigai", "gopuram", "gopurams",
+        "pandya", "thousand", "pillar", "potramarai", "kulam", "mandapa", "mandapam",
+        "parvati", "shiva", "tamil", "nadu", "dravidian", "prakara",
     }
     has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
     if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:
@@ -267,46 +286,96 @@ def is_relevant(question, retrieved):
 # ==========================================================
 
 def build_context_fallback(question, retrieved):
-    """Produce a usable answer from the retrieved heritage content when the LLM is unavailable."""
+    """Produce a focused answer by scoring individual sentences against the
+    question, so the response contains the sentences that actually answer it
+    (e.g. the 'who built it' sentence, not generic intro text)."""
     if not retrieved:
         return "I don't have this information in the HeritageAI knowledge base."
 
-    parts = []
-    seen = set()
+    question_stems = get_keyword_stems(question)
+    question_words = get_keywords(question)
 
-    for item in retrieved:
+    scored_sentences = []
+    for rank, item in enumerate(retrieved):
         text = re.sub(r"\s+", " ", item["content"]).strip()
-        question_pattern = re.escape(question.strip())
-        answer_match = re.search(
-            rf"{question_pattern}\s*(.*?)(?=\s+\d+\.\s|$)",
-            text,
-            re.IGNORECASE,
-        )
-        if answer_match and answer_match.group(1).strip():
-            text = answer_match.group(1).strip()
-        if text and text not in seen:
-            seen.add(text)
-            parts.append(text)
+        sentences = [
+            s.strip() for s in re.split(r"(?<=[.!?])\s+", text)
+            if len(s.strip()) > 25 and not s.strip().endswith("?")
+        ]
+        chunk_bonus = max(0, 3 - rank)  # earlier (higher-ranked) chunks score higher
+        for position, sentence in enumerate(sentences):
+            sent_stems = get_keyword_stems(sentence)
+            overlap = len(question_stems.intersection(sent_stems))
+            if overlap == 0:
+                continue
+            score = overlap * 2 + chunk_bonus - position * 0.05
+            scored_sentences.append((score, position, sentence))
 
-    if not parts:
-        return "I don't have this information in the HeritageAI knowledge base."
+    if not scored_sentences:
+        # No sentence matched - fall back to the start of the top chunk.
+        top = re.sub(r"\s+", " ", retrieved[0]["content"]).strip()
+        return top[:400] + ("..." if len(top) > 400 else "")
 
-    answer = " ".join(parts[:2])
-    answer = answer.strip()
+    # Keep sentences in their original reading order for a coherent answer.
+    scored_sentences.sort(key=lambda item: (-item[0], item[1]))
+    selected = []
+    used_positions = set()
+    total_len = 0
+    for score, position, sentence in scored_sentences:
+        if position in used_positions:
+            continue
+        if total_len + len(sentence) > 500 and selected:
+            break
+        selected.append(sentence)
+        used_positions.add(position)
+        total_len += len(sentence)
+        if total_len > 350 and len(selected) >= 2:
+            break
 
-    if not answer:
-        return "I don't have this information in the HeritageAI knowledge base."
+    selected.sort(key=lambda s: scored_sentences[[x[2] for x in scored_sentences].index(s)][1])
+    return " ".join(selected)
 
-    # Keep the response concise but useful when the model is down.
-    if len(answer) > 500:
-        answer = answer[:497].rstrip() + "..."
 
-    return answer
+def _warm_up_model():
+    """Pre-load the Ollama model in the background so user questions are fast."""
+    def warm():
+        try:
+            ollama_client.chat(
+                model=MODEL_NAME,
+                messages=[{"role": "user", "content": "hi"}],
+                options={"temperature": 0, "num_predict": 1},
+                keep_alive="30m",
+            )
+        except Exception:
+            pass
+
+    threading.Thread(target=warm, daemon=True).start()
+
+
+_warm_up_model()
+
+
+_llm_state = {"healthy": True, "retry_after": 0.0}
+_LLM_RETRY_SECONDS = 60.0
+
+
+def _llm_available():
+    return _llm_state["healthy"] or time.time() >= _llm_state["retry_after"]
+
+
+def _mark_llm_unhealthy():
+    _llm_state["healthy"] = False
+    _llm_state["retry_after"] = time.time() + _LLM_RETRY_SECONDS
+
+
+def _mark_llm_healthy():
+    _llm_state["healthy"] = True
 
 
 def ask_heritage_ai(question):
 
-    retrieved = retrieve_context(question)
+    question = (question or "").strip()
+    retrieved = retrieve_context_cached(question)
 
     # ------------------------------------------------------
     # RELEVANCE GATE
@@ -394,26 +463,35 @@ Answer ONLY using the HERITAGE CONTEXT.
     # OLLAMA
     # ------------------------------------------------------
 
-    try:
-        response = ollama_client.chat(
-            model=MODEL_NAME,
-            messages=[
-                {
-                    "role": "system",
-                    "content": system_prompt
+    if _llm_available():
+        try:
+            response = ollama_client.chat(
+                model=MODEL_NAME,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": system_prompt
+                    },
+                    {
+                        "role": "user",
+                        "content": user_prompt
+                    }
+                ],
+                options={
+                    "temperature": 0,
+                    "num_predict": 300,
                 },
-                {
-                    "role": "user",
-                    "content": user_prompt
-                }
-            ],
-            options={
-                "temperature": 0
-            }
-        )
-        answer = response["message"]["content"].strip()
-    except Exception as exc:
-        print(f"HeritageAI model unavailable: {exc}")
+                keep_alive="30m",
+            )
+            answer = response["message"]["content"].strip()
+            _mark_llm_healthy()
+            if answer.lower().startswith("i don't have this information") or not answer:
+                answer = build_context_fallback(question, retrieved)
+        except Exception as exc:
+            _mark_llm_unhealthy()
+            print(f"HeritageAI model unavailable: {exc}")
+            answer = build_context_fallback(question, retrieved)
+    else:
         answer = build_context_fallback(question, retrieved)
 
     # ------------------------------------------------------
