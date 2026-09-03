@@ -383,10 +383,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "wadeshwar temple": "wadeshwar-temple",
       "khublada": "khublada-buruj",
       "khublada buruj": "khublada-buruj",
+      "khublada burj": "khublada-buruj",
       "buruj": "khublada-buruj",
     };
 
-    const rawFileStem = fileName.replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").trim();
+    const rawFileStem = fileName.replace(/[\u200b-\u200d\u2060\ufeff]/g, "").replace(/\.[^.]+$/, "").replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
     const fileStem = rawFileStem.replace(/\s+(destructed|reconstructed)$/, "").trim();
     const matchedKey = monumentLookup[rawFileStem]
       ? rawFileStem
