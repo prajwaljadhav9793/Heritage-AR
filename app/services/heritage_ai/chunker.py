@@ -96,6 +96,15 @@ DOCUMENTS = [
         "headings": [],
     },
     {
+        "key": "khajuraho",
+        "docx": "data/documents/Khajuraho Group of Monuments.docx",
+        "site": "Khajuraho Group of Monuments",
+        "prefix": "KH",
+        "source": "Khajuraho Group of Monuments.docx",
+        "use_styles": True,
+        "headings": [],
+    },
+    {
         "key": "martand",
         "docx": "data/documents/Martand sun temple.docx",
         "site": "Martand Sun Temple",
