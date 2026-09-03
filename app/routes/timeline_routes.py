@@ -45,6 +45,22 @@ MARTAND_EVENTS = [
 	{"year": "Today", "label": "Protected heritage", "title": "Ruins in the Kashmir Valley", "description": "Martand remains an important heritage site, valued for its architecture, history, landscape and connection to the region's solar traditions.", "image": "/static/images/timeline/martand-02.jpg", "fallback": "/static/images/timeline/martand-11.jpg"},
 ]
 
+MEENAKSHI_EVENTS = [
+	{"year": "6th c. CE", "label": "Sangam-era origins", "title": "A Goddess on the Vaigai", "description": "Tamil texts from the 6th century CE first reference the temple city of Madurai, where Meenakshi, a form of Parvati, and Sundareswarar, a form of Shiva, come to be worshipped.", "image": "/static/images/timeline/meenakshi-shrine.jpg", "fallback": "/static/images/timeline/meenakshi-gopuram.jpg"},
+	{"year": "12th-13th c.", "label": "Pandya expansion", "title": "The Pandya Kings Build", "description": "The temple is expanded under the Pandya dynasty, notably Maravarman Sundara Pandyan, growing into one of the largest temple complexes in South India.", "image": "/static/images/timeline/meenakshi-gopuram.jpg", "fallback": "/static/images/timeline/meenakshi-aerial.jpg"},
+	{"year": "16th-17th c.", "label": "Nayak rebuilding", "title": "The Nayak Golden Age", "description": "Under the Nayaka rulers and prime minister Ariyanatha Mudaliar, the towering gopurams and the famous Thousand Pillar Hall are rebuilt and added.", "image": "/static/images/timeline/meenakshi-corridor.jpg", "fallback": "/static/images/timeline/meenakshi-gopuram.jpg"},
+	{"year": "16th c.", "label": "Sacred geography", "title": "Gopurams, Shrines and the Golden Lotus Pond", "description": "Concentric enclosures, fourteen gopurams and the Potramarai Kulam give the temple its monumental Dravidian form on the southern bank of the Vaigai.", "image": "/static/images/timeline/meenakshi-gopuram.jpg", "fallback": "/static/images/timeline/meenakshi-corridor.jpg"},
+	{"year": "Today", "label": "Living heritage", "title": "A Temple City Alive", "description": "Meenakshi Amman Temple remains one of India's most celebrated living temples, famed for its festivals, sculptures and vibrant Tamil tradition.", "image": "/static/images/timeline/meenakshi-aerial.jpg", "fallback": "/static/images/timeline/meenakshi-gopuram.jpg"},
+]
+
+HOYSALESHWARA_EVENTS = [
+	{"year": "12th c.", "label": "Hoysala patronage", "title": "Vishnuvardhana's Vision", "description": "The temple rises on the banks of a man-made lake at Halebidu, built during the Hoysala period under King Vishnuvardhana and dedicated to Shiva as Hoysaleshwara.", "image": "/static/images/timeline/halebidu-temple-exterior.jpg", "fallback": "/static/images/timeline/halebidu-entrance.jpg"},
+	{"year": "12th c.", "label": "Master craftsmen", "title": "Sculpture in Soapstone", "description": "Artists carve the outer walls with friezes of the Ramayana, deities such as Harihara, Ganesha and Saraswati, and the graceful madanika bracket figures in soft chloritic schist.", "image": "/static/images/timeline/halebidu-deities-frieze.jpg", "fallback": "/static/images/timeline/halebidu-temple-exterior.jpg"},
+	{"year": "12th c.", "label": "Temple layout", "title": "Twin Shrines and Nandi Pavilions", "description": "Two sanctums face Nandi shrines across a pillared mantapa, creating one of the finest ensembles of Hoysala sacred architecture.", "image": "/static/images/timeline/halebidu-sanctum-interior.jpg", "fallback": "/static/images/timeline/halebidu-entrance.jpg"},
+	{"year": "1311-1326", "label": "Invasions", "title": "The Raids of Malik Kafur and the Sack of Halebidu", "description": "Two catastrophic raids by Malik Kafur's armies breach the Hoysala capital, toppling the superstructure towers and defacing the temple's sculptures.", "image": "/static/images/timeline/halebidu-entrance.jpg", "fallback": "/static/images/timeline/halebidu-deities-frieze.jpg"},
+	{"year": "Today", "label": "UNESCO heritage", "title": "Belur and Halebidu Protected", "description": "The temple stands as the largest monument in Halebidu, part of the sacred ensembles recognized among UNESCO World Heritage sites, celebrated for its unmatched sculptural detail.", "image": "/static/images/timeline/halebidu-temple-exterior.jpg", "fallback": "/static/images/timeline/halebidu-sanctum-interior.jpg"},
+]
+
 SITES = {
 	"raigad": {
 		"name": "Raigad Fort",
@@ -89,6 +105,24 @@ SITES = {
 		"kicker": "HeritageAR / The Martand archive",
 		"note": "Martand Sun Temple archive is currently open.",
 		"events": MARTAND_EVENTS,
+		"default_event": 1,
+	},
+	"meenakshi": {
+		"name": "Meenakshi Temple",
+		"subtitle": "Temple city of Madurai",
+		"heading": "MEENAKSHI<br />THROUGH TIME",
+		"kicker": "HeritageAR / The Madurai archive",
+		"note": "Meenakshi Temple archive is currently open.",
+		"events": MEENAKSHI_EVENTS,
+		"default_event": 1,
+	},
+	"hoysaleshwara": {
+		"name": "Hoysaleshwara Temple",
+		"subtitle": "12th-century Hoysala temple",
+		"heading": "HOYSALESHWARA<br />THROUGH TIME",
+		"kicker": "HeritageAR / The Halebidu archive",
+		"note": "Hoysaleshwara Temple archive is currently open.",
+		"events": HOYSALESHWARA_EVENTS,
 		"default_event": 1,
 	},
 }

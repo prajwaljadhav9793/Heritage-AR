@@ -175,6 +175,14 @@ body {
   background-image: url("/static/images/timeline/martand-01.png");
 }
 
+.thumb-meenakshi {
+  background-image: url("/static/images/timeline/meenakshi-gopuram.jpg");
+}
+
+.thumb-hoysaleshwara {
+  background-image: url("/static/images/timeline/halebidu-temple-exterior.jpg");
+}
+
 .site-details {
   display: grid;
   gap: 0.2rem;

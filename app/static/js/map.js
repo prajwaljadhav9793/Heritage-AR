@@ -94,6 +94,30 @@ document.addEventListener("DOMContentLoaded", () => {
       description: "Ancient Kashmiri Sun temple",
       image: "/static/images/timeline/martand-01.png",
     },
+    meenakshi: {
+      name: "Meenakshi Temple",
+      label: "Meenakshi Temple",
+      category: "Tamil Heritage",
+      rating: "4.8",
+      reviews: "9.1k",
+      hours: "5:00 AM - 12:30 PM, 4:00 PM - 9:30 PM",
+      coordinates: [9.9195, 78.1193],
+      directionsDestination: "Meenakshi Amman Temple, Madurai, Tamil Nadu, India",
+      description: "Dravidian temple of Madurai",
+      image: "/static/images/timeline/meenakshi-gopuram.jpg",
+    },
+    hoysaleshwara: {
+      name: "Hoysaleshwara Temple",
+      label: "Hoysaleshwara Temple",
+      category: "Karnataka Heritage",
+      rating: "4.7",
+      reviews: "4.9k",
+      hours: "6:00 AM - 6:00 PM",
+      coordinates: [13.2158, 75.9941],
+      directionsDestination: "Hoysaleshwara Temple, Halebidu, Karnataka, India",
+      description: "12th-century Hoysala temple",
+      image: "/static/images/timeline/halebidu-temple-exterior.jpg",
+    },
   };
 
   const map = L.map("heritage-map", {
@@ -124,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
     const timelineUrl = document.querySelector(".map-canvas").dataset.timelineUrl;
-    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark" || id === "martand"
+    const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark" || id === "martand" || id === "meenakshi" || id === "hoysaleshwara"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
       : "";
     const popupContent = `
