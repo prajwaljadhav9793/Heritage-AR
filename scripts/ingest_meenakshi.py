@@ -12,11 +12,11 @@ import chromadb
 import docx
 from chromadb.utils.embedding_functions import ONNXMiniLM_L6_V2
 
-DOC_PATH = Path("data/documents/Meenakshi Temple.docx")
+DOC_PATH = Path("data/documents/Hoysaleshwara temple.docx")
 CHUNKS_PATH = Path("data/heritage_chunks.json")
-SITE = "Meenakshi Temple"
-SOURCE = "Meenakshi Temple.docx"
-ID_PREFIX = "MT"
+SITE = "Hoysaleshwara Temple"
+SOURCE = "Hoysaleshwara temple.docx"
+ID_PREFIX = "HW"
 
 MIN_CHUNK_CHARS = 300
 MAX_CHUNK_CHARS = 1500

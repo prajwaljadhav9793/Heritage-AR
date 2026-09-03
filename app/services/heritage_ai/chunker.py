@@ -122,6 +122,15 @@ DOCUMENTS = [
         "use_styles": True,
         "headings": [],
     },
+    {
+        "key": "hoysaleshwara",
+        "docx": "data/documents/Hoysaleshwara temple.docx",
+        "site": "Hoysaleshwara Temple",
+        "prefix": "HW",
+        "source": "Hoysaleshwara temple.docx",
+        "use_styles": True,
+        "headings": [],
+    },
 ]
 
 OUTPUT_PATH = "data/heritage_chunks.json"

@@ -146,11 +146,22 @@ def retrieve_context(question, n_results=3):
     """Retrieve locally without triggering Chroma's first-use model download."""
     question_stems = get_keyword_stems(question)
     normalized_question = question.lower()
+    site_aliases = {
+        "halebidu": "hoysaleshwara",
+        "meenakshi amman": "meenakshi",
+        "martand sun": "martand",
+        "konark sun": "konark",
+    }
     requested_site = next(
-        (site for site in ("raigad", "hampi", "nalanda", "konark", "martand", "khajuraho", "meenakshi")
+        (site for site in ("raigad", "hampi", "nalanda", "konark", "martand", "khajuraho", "meenakshi", "hoysaleshwara")
          if site in normalized_question),
         None,
     )
+    if not requested_site:
+        for alias, site in site_aliases.items():
+            if alias in normalized_question:
+                requested_site = site
+                break
     scored_chunks = []
 
     for chunk in load_heritage_chunks():
@@ -273,6 +284,10 @@ def is_relevant(question, retrieved):
         "meenakshi", "madurai", "sundareshwarar", "vaigai", "gopuram", "gopurams",
         "pandya", "thousand", "pillar", "potramarai", "kulam", "mandapa", "mandapam",
         "parvati", "shiva", "tamil", "nadu", "dravidian", "prakara",
+        # Hoysaleshwara Temple terms
+        "hoysaleshwara", "hoysala", "halebidu", "belur", "karnataka",
+        "nandi", "madanika", "madanikas", "garbhagriha", "vimana", "shikhara",
+        "soapstone", "ketamalla", "vishnuvardhana", "malik", "kafur",
     }
     has_historical_year = any(keyword.isdigit() and len(keyword) == 4 for keyword in matching_keywords)
     if not question_keywords.intersection(heritage_terms) and not has_historical_year and len(matching_keywords) < 2:
