@@ -13,6 +13,7 @@ def create_app() -> Flask:
     from app.routes.timeline_routes import timeline_bp
     from app.routes.voice_assistant_routes import voice_assistant_bp
     from app.routes.ar_routes import ar_bp
+    from app.routes.profile_routes import profile_bp
     app.register_blueprint(home_bp)
     app.register_blueprint(history_bp)
     app.register_blueprint(assistant_bp)
@@ -21,4 +22,5 @@ def create_app() -> Flask:
     app.register_blueprint(timeline_bp)
     app.register_blueprint(voice_assistant_bp)
     app.register_blueprint(ar_bp)
+    app.register_blueprint(profile_bp)
     return app

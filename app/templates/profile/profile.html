@@ -1,0 +1,444 @@
+{% extends "base.html" %}
+
+{% block title %}My Heritage Journey | HeritageAR{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}" />
+{% endblock %}
+
+{% block content %}
+<main class="profile-page">
+  <!-- ============ TOP NAVIGATION BAR ============ -->
+  <header class="profile-nav-bar">
+    <a class="nav-brand" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+      <span class="nav-brand-mark" aria-hidden="true">H</span>
+      <span>HeritageAR</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="{{ url_for('home.index') }}">Home</a>
+      <a href="{{ url_for('map.heritage_map') }}">Explore</a>
+      <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
+      <a href="{{ url_for('ar.experience') }}">AR Experience</a>
+      <a href="{{ url_for('assistant.assistant') }}">AI Guide</a>
+      <a href="{{ url_for('voice_assistant.voice_assistant') }}">Voice Assistant</a>
+      <a class="is-active" href="{{ url_for('profile.view_profile') }}">My Profile</a>
+    </nav>
+    <div class="nav-user-actions">
+      <a class="btn-signout" href="{{ url_for('auth.logout') }}">Sign out</a>
+    </div>
+  </header>
+
+  <div class="profile-shell">
+    <!-- ============ FLASH NOTIFICATIONS ============ -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages" style="margin-bottom: 1.5rem;">
+          {% for category, message in messages %}
+            <div class="meta-chip" style="display: flex; background: rgba(197, 141, 52, 0.15); border-color: var(--brass); padding: 0.75rem 1.2rem; margin-bottom: 0.5rem; font-size: 0.88rem; color: var(--paper);">
+              <span>🏛️ {{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- ============ PROFILE HERO HEADER ============ -->
+    <header class="profile-hero" data-reveal>
+      <div class="profile-hero-motif" aria-hidden="true"></div>
+      <div class="profile-identity">
+        <div class="identity-left">
+          <div class="avatar-ring">
+            <img
+              class="avatar-img"
+              src="{{ profile.profilePic or url_for('static', filename='images/heritage/raigad-statue.jpg') }}"
+              alt="Profile picture of {{ profile.name or user.name }}"
+            />
+            <form class="avatar-upload-form" action="{{ url_for('profile.upload_picture') }}" method="post" enctype="multipart/form-data">
+              <input type="file" name="picture" accept="image/png,image/jpeg,image/webp" id="avatar-input" hidden />
+              <button type="button" class="avatar-cam-btn" data-avatar-pick aria-label="Change profile picture" title="Upload new photo">
+                📷
+              </button>
+            </form>
+          </div>
+          <div class="identity-copy">
+            <p class="identity-kicker">Archival Passport</p>
+            <h1 class="identity-name">{{ profile.name or user.name }}</h1>
+            <p class="identity-email">{{ profile.email or user.email }}</p>
+            <div class="identity-meta">
+              <span class="meta-chip">📍 {{ profile.location or 'Maharashtra, India' }}</span>
+              <span class="meta-chip">🏛️ Explorer since {{ member_since }}</span>
+              <span class="meta-chip badge-explorer">🛡️ Verified Heritage Explorer</span>
+            </div>
+          </div>
+        </div>
+        <div class="identity-actions">
+          <button class="btn-heritage-secondary" type="button" data-modal-open="edit-modal">
+            ✏️ Edit Profile
+          </button>
+          <a class="btn-heritage-primary" href="{{ url_for('ar.experience') }}">
+            🥽 Launch AR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ PROFILE INFORMATION SUMMARY ============ -->
+    <section class="profile-info-strip" aria-label="Profile Details" data-reveal>
+      <div class="info-item">
+        <span class="info-icon">👤</span>
+        <div class="info-content">
+          <span class="info-label">Full Name</span>
+          <span class="info-value">{{ profile.name or user.name }}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📧</span>
+        <div class="info-content">
+          <span class="info-label">Email</span>
+          <span class="info-value" title="{{ profile.email or user.email }}">{{ profile.email or user.email }}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📍</span>
+        <div class="info-content">
+          <span class="info-label">Favorite Place</span>
+          <span class="info-value">{{ profile.location or 'India' }}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">❤️</span>
+        <div class="info-content">
+          <span class="info-label">Heritage Sanctuary</span>
+          <span class="info-value">{{ profile.favoritePlace.site if (profile.favoritePlace and profile.favoritePlace.site) else 'Raigad Fort' }}</span>
+        </div>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🗺️</span>
+        <div class="info-content">
+          <span class="info-label">Places Visited</span>
+          <span class="info-value">{{ profile.visitedPlaces | length }} Explored</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRAVEL & HERITAGE DASHBOARD ============ -->
+    <section class="stats-row" aria-label="Travel statistics" data-reveal>
+      {% set visited_count = profile.visitedPlaces | length %}
+      {% set wishlist_count = profile.wishlist | length %}
+      {% set fav_count = 1 if (profile.favoritePlace and profile.favoritePlace.site) else 0 %}
+      {% set ar_count = profile.stats.arExperiences if (profile.stats and profile.stats.arExperiences) else 3 %}
+
+      <article class="stat-card">
+        <div class="stat-icon-wrap">🗺️</div>
+        <strong class="stat-number" data-count="{{ visited_count }}" data-stat="visited">0</strong>
+        <span class="stat-label">Places Visited</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon-wrap">❤️</div>
+        <strong class="stat-number" data-count="{{ wishlist_count }}" data-stat="wishlist">0</strong>
+        <span class="stat-label">Wishlist</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon-wrap">⭐</div>
+        <strong class="stat-number" data-count="{{ fav_count }}">0</strong>
+        <span class="stat-label">Favorite Places</span>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-icon-wrap">🥽</div>
+        <strong class="stat-number" data-count="{{ ar_count }}">0</strong>
+        <span class="stat-label">AR Experiences</span>
+      </article>
+    </section>
+
+    <!-- ============ SPOTLIGHT: FAVORITE PLACE + MY HERITAGE JOURNEY ============ -->
+    <section class="journey-grid" data-reveal>
+      <!-- Dedicated Favorite Place Card -->
+      <article class="panel favorite-panel">
+        <div class="panel-header">
+          <p class="panel-kicker">⭐ Favorite Place</p>
+          {% if profile.favoritePlace and profile.favoritePlace.site %}
+            <span class="badge-favorite">❤️ Favourite Sanctuary</span>
+          {% endif %}
+        </div>
+
+        {% if profile.favoritePlace and profile.favoritePlace.site %}
+          <div class="favorite-media-box">
+            <img
+              class="favorite-media-img"
+              src="{{ profile.favoritePlace.image or url_for('static', filename='images/heritage/raigad-hero.jpg') }}"
+              alt="{{ profile.favoritePlace.site }}"
+            />
+          </div>
+          <h2 class="favorite-title">{{ profile.favoritePlace.site }}</h2>
+          <p class="favorite-location">📍 {{ profile.favoritePlace.location or 'Maharashtra, India' }}</p>
+          <p class="favorite-desc">
+            {{ profile.favoritePlace.description or 'Your personal sanctuary among India\'s most treasured monuments.' }}
+          </p>
+          <div class="favorite-actions">
+            <a class="btn-heritage-primary" href="{{ url_for('ar.experience') }}">
+              Explore in AR →
+            </a>
+            <a class="btn-heritage-secondary" href="{{ url_for('timeline.timeline') }}">
+              View History
+            </a>
+          </div>
+        {% else %}
+          <div class="favorite-empty-state">
+            <p>You haven't chosen a favourite sanctuary yet. Choose the monument closest to your heart.</p>
+            <form action="{{ url_for('profile.set_favorite') }}" method="post" class="favorite-set-form">
+              <select name="site" class="heritage-select" required style="margin-bottom: 1rem; width: 100%;">
+                <option value="" disabled selected>Choose a heritage site…</option>
+                {% for s in available_sites %}
+                  <option value="{{ s.name }}">{{ s.name }} ({{ s.location }})</option>
+                {% endfor %}
+              </select>
+              <button class="btn-heritage-primary" type="submit" style="width: 100%;">
+                Set as Favourite
+              </button>
+            </form>
+          </div>
+        {% endif %}
+      </article>
+
+      <!-- My Heritage Journey Checklist -->
+      <article class="panel journey-panel">
+        <div class="panel-header">
+          <p class="panel-kicker">🗺️ My Heritage Journey</p>
+          <span class="meta-chip">{{ profile.visitedPlaces | length }} Logged</span>
+        </div>
+
+        {% if profile.visitedPlaces %}
+          <ul class="journey-list">
+            {% for place in profile.visitedPlaces[:5] %}
+              <li class="journey-item">
+                <div class="journey-item-left">
+                  <span class="journey-check">✓</span>
+                  <div class="journey-item-info">
+                    <strong>{{ place.site }}</strong>
+                    <small>{{ place.location }}{% if place.date %} · {{ place.date }}{% endif %}</small>
+                  </div>
+                </div>
+                <form action="{{ url_for('profile.remove_visited') }}" method="post">
+                  <input type="hidden" name="site" value="{{ place.site }}" />
+                  <button
+                    class="journey-remove-btn"
+                    type="submit"
+                    data-site="{{ place.site }}"
+                    aria-label="Remove {{ place.site }}"
+                    title="Remove from journey"
+                  >
+                    ×
+                  </button>
+                </form>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p style="color: var(--paper-muted); font-size: 0.92rem; margin-bottom: 1.5rem;">
+            Your journey awaits. Every historical sanctuary and fortress you explore will be recorded here.
+          </p>
+        {% endif %}
+
+        <form action="{{ url_for('profile.add_visited') }}" method="post" class="journey-add-form">
+          <select name="site" class="heritage-select" required aria-label="Select site to log">
+            <option value="" disabled selected>+ Log a visited site…</option>
+            {% for s in available_sites %}
+              <option value="{{ s.name }}">{{ s.name }} ({{ s.location }})</option>
+            {% endfor %}
+          </select>
+          <button class="btn-heritage-secondary" type="submit">
+            + Log Visit
+          </button>
+        </form>
+      </article>
+    </section>
+
+    <!-- ============ VISITED PLACES GALLERY ============ -->
+    <section class="visited-section" data-reveal>
+      <header class="section-header">
+        <p class="section-eyebrow">Where you have walked</p>
+        <h2 class="section-title">Visited Places</h2>
+        <div class="section-rule"><span class="section-rule-motif">❖</span></div>
+      </header>
+
+      {% if profile.visitedPlaces %}
+        <div class="card-grid">
+          {% for place in profile.visitedPlaces %}
+            <article class="place-card" data-site-card="{{ place.site }}">
+              <div class="card-media">
+                <img
+                  class="card-img"
+                  src="{{ place.image or url_for('static', filename='images/heritage/raigad-hero.jpg') }}"
+                  alt="{{ place.site }}"
+                  loading="lazy"
+                />
+                <span class="badge-visited">✓ Visited</span>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">{{ place.site }}</h3>
+                <p class="card-location">📍 {{ place.location }}</p>
+                {% if place.date %}
+                  <p class="card-date">🗓️ Visited {{ place.date }}</p>
+                {% endif %}
+                <p class="card-desc">{{ place.description or 'A landmark of timeless Indian heritage, etched into history.' }}</p>
+                <div class="card-actions">
+                  <a class="btn-heritage-secondary" href="{{ url_for('timeline.timeline') }}">
+                    View Details
+                  </a>
+                  <a class="btn-heritage-primary" href="{{ url_for('ar.experience') }}">
+                    AR View
+                  </a>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-card">
+          <div class="empty-card-icon">🗺️</div>
+          <h3>No Expeditions Logged Yet</h3>
+          <p>Begin documenting your pilgrimage across India's sacred temples, mighty hillforts, and ancient universities.</p>
+          <button class="btn-heritage-primary" type="button" data-modal-open="edit-modal">
+            Log Your First Site
+          </button>
+        </div>
+      {% endif %}
+    </section>
+
+    <!-- ============ WISHLIST SECTION ============ -->
+    <section class="wishlist-section" data-reveal>
+      <header class="section-header">
+        <p class="section-eyebrow">Dreaming of the past</p>
+        <h2 class="section-title">My Wishlist</h2>
+        <div class="section-rule"><span class="section-rule-motif">❖</span></div>
+      </header>
+
+      {% if profile.wishlist %}
+        <div class="card-grid">
+          {% for place in profile.wishlist %}
+            <article class="place-card">
+              <div class="card-media">
+                <img
+                  class="card-img"
+                  src="{{ place.image or url_for('static', filename='images/timeline/virupaksha.jpg') }}"
+                  alt="{{ place.site }}"
+                  loading="lazy"
+                />
+                <form action="{{ url_for('profile.wishlist_toggle') }}" method="post">
+                  <input type="hidden" name="site" value="{{ place.site }}" />
+                  <input type="hidden" name="location" value="{{ place.location }}" />
+                  <button
+                    class="btn-wishlist-heart is-active"
+                    type="submit"
+                    data-site="{{ place.site }}"
+                    data-location="{{ place.location }}"
+                    aria-label="Remove {{ place.site }} from wishlist"
+                    title="Toggle wishlist"
+                  >
+                    ❤️
+                  </button>
+                </form>
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">{{ place.site }}</h3>
+                <p class="card-location">📍 {{ place.location }}</p>
+                <p class="card-desc">{{ place.description or 'A future destination waiting on your horizon of heritage exploration.' }}</p>
+                <div class="card-actions">
+                  <a class="btn-heritage-primary" href="{{ url_for('ar.experience') }}">
+                    View in AR
+                  </a>
+                  <a class="btn-heritage-secondary" href="{{ url_for('map.heritage_map') }}">
+                    Explore
+                  </a>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-card">
+          <div class="empty-card-icon">❤️</div>
+          <h3>Your Wishlist is Empty</h3>
+          <p>Bookmark monuments and historical sanctuaries you plan to explore in augmented reality.</p>
+          <a class="btn-heritage-primary" href="{{ url_for('map.heritage_map') }}">
+            Explore Heritage Map
+          </a>
+        </div>
+      {% endif %}
+    </section>
+  </div>
+
+  <!-- ============ EDIT PROFILE MODAL ============ -->
+  <div class="modal-backdrop" id="edit-modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+      <button class="modal-close-btn" type="button" data-modal-close aria-label="Close modal">×</button>
+      <p class="modal-kicker">Heritage Passport</p>
+      <h2 class="modal-title" id="edit-title">Edit Profile Details</h2>
+      <form action="{{ url_for('profile.update') }}" method="post" class="modal-form">
+        <div class="form-group">
+          <label for="name-input">Full Name</label>
+          <input
+            id="name-input"
+            name="name"
+            type="text"
+            class="form-input"
+            value="{{ profile.name or user.name }}"
+            required
+            placeholder="e.g. Prajwal Jadhav"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="location-input">Location / Region</label>
+          <input
+            id="location-input"
+            name="location"
+            type="text"
+            class="form-input"
+            value="{{ profile.location or 'Maharashtra, India' }}"
+            placeholder="e.g. Maharashtra, India"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="fav-site-select">Favorite Heritage Site</label>
+          <select id="fav-site-select" name="favorite_site" class="heritage-select" style="padding: 0.75rem 1rem;">
+            <option value="" disabled>Choose your favorite site…</option>
+            {% for s in available_sites %}
+              <option value="{{ s.name }}" {% if profile.favoritePlace and profile.favoritePlace.site == s.name %}selected{% endif %}>
+                {{ s.name }} ({{ s.location }})
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="email-readonly">Email Address (Managed via Firebase)</label>
+          <input
+            id="email-readonly"
+            type="email"
+            class="form-input"
+            value="{{ profile.email or user.email }}"
+            disabled
+          />
+        </div>
+
+        <button class="modal-submit-btn" type="submit">
+          Save Changes
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="profile-toast" role="status" aria-live="polite"></div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}
+
