@@ -48,3 +48,91 @@
 .register-link:hover,.register-link:focus-visible{background:#f1c476;transform:translateY(-2px)}
 @media(max-width:700px){.register-link{font-size:.62rem;padding:.6rem .75rem}.home-nav{display:none}}
 @media(min-width:701px) and (max-width:1100px){.home-nav{gap:0}.home-nav a{font-size:.6rem;padding:.55rem .45rem}.home-actions{gap:.65rem}.profile-link,.register-link{font-size:.6rem;padding:.55rem .7rem}}
+
+/* Interactive Slide Actions & HD Landscape Visuals */
+.slide-actions {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.slide-sub-link {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.92);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  gap: 0.45rem;
+  letter-spacing: 0.07em;
+  padding: 0.85rem 1.35rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.22s cubic-bezier(0.2, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.slide-sub-link:hover {
+  background: rgba(224, 166, 75, 0.22);
+  border-color: #f1c476;
+  color: #f1c476;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.heritage-slide {
+  background-position: center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+.story-deck {
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.story-card {
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.2, 0.75, 0.25, 1), filter 0.35s ease, border-color 0.3s ease, box-shadow 0.35s ease;
+}
+
+.story-card:hover {
+  border-color: #f1c476 !important;
+  box-shadow: 0 1.2rem 3rem rgba(0, 0, 0, 0.45), 0 0 1.2rem rgba(241, 196, 118, 0.25) !important;
+  filter: brightness(1.12) !important;
+  transform: translateY(-8px) scale(1.03) !important;
+}
+
+.story-card.is-current {
+  border-color: #f1c476 !important;
+  box-shadow: 0 1.2rem 2.8rem rgba(0, 0, 0, 0.4), 0 0 1.5rem rgba(224, 166, 75, 0.4) !important;
+  filter: brightness(1.02) !important;
+  transform: translateY(-4px) !important;
+}
+
+.rail-dot {
+  transition: all 0.25s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.rail-dot:hover {
+  background: #f1c476;
+  transform: scale(1.3);
+}
+
+@media (max-width: 640px) {
+  .slide-actions {
+    gap: 0.6rem;
+  }
+  .slide-sub-link {
+    font-size: 0.65rem;
+    padding: 0.6rem 0.95rem;
+  }
+}
+

@@ -35,42 +35,152 @@
 
     <div class="slide-rail" aria-label="Choose a featured story">
       <span class="rail-line" aria-hidden="true"></span>
-      <button class="rail-dot is-active" type="button" data-go-to="0" aria-label="Show Raigad Fort"></button>
-      <button class="rail-dot" type="button" data-go-to="1" aria-label="Show Hampi"></button>
-      <button class="rail-dot" type="button" data-go-to="2" aria-label="Show the Coronation"></button>
-      <button class="rail-dot" type="button" data-go-to="3" aria-label="Show the reconstruction"></button>
-      <button class="rail-dot" type="button" data-go-to="4" aria-label="Show Raigad today"></button>
-      <span class="rail-count">01 / 05</span>
+      <button class="rail-dot is-active" type="button" data-go-to="0" aria-label="Show Raigad Fort" title="Raigad Fort"></button>
+      <button class="rail-dot" type="button" data-go-to="1" aria-label="Show Hampi" title="Hampi"></button>
+      <button class="rail-dot" type="button" data-go-to="2" aria-label="Show Konark Sun Temple" title="Konark Sun Temple"></button>
+      <button class="rail-dot" type="button" data-go-to="3" aria-label="Show Martand Sun Temple" title="Martand Sun Temple"></button>
+      <button class="rail-dot" type="button" data-go-to="4" aria-label="Show Meenakshi Temple" title="Meenakshi Temple"></button>
+      <button class="rail-dot" type="button" data-go-to="5" aria-label="Show Hoysaleshwara Temple" title="Hoysaleshwara Temple"></button>
+      <button class="rail-dot" type="button" data-go-to="6" aria-label="Show Nalanda Mahavihara" title="Nalanda Mahavihara"></button>
+      <span class="rail-count">01 / 07</span>
     </div>
 
     <section class="heritage-slides" aria-live="polite">
+      <!-- 01: Raigad Fort -->
       <article class="heritage-slide is-active" data-slide data-title="Raigad Fort" style="--slide-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Maharashtra, India</p><h1>RAIGAD<br />FORT</h1><p>Walk through the mountain capital where the Maratha Empire rose. Discover its gates, halls and stories in a new dimension.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Explore the fort <span aria-hidden="true">→</span></a></div>
+        <div class="slide-copy">
+          <p class="slide-kicker">Maharashtra, India</p>
+          <h1>RAIGAD<br />FORT</h1>
+          <p>Walk through the mountain capital where the Maratha Empire rose. Discover its towering gates, coronation durbar, and living legends in spatial 3D.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='raigad') }}">Explore the fort <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('ar.experience') }}"><span aria-hidden="true">🥽</span> Launch AR</a>
+          </div>
+        </div>
       </article>
+
+      <!-- 02: Hampi -->
       <article class="heritage-slide" data-slide data-title="Hampi" style="--slide-image: url('{{ url_for('static', filename='images/timeline/virupaksha.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Karnataka, India</p><h1>HAMPI</h1><p>Wander the ruined capital of the Vijayanagara Empire — temples, stables and stone chariots scattered among the boulders of the Tungabhadra.</p><a class="explore-button" href="{{ url_for('timeline.timeline', site='hampi') }}">Explore Hampi <span aria-hidden="true">→</span></a></div>
+        <div class="slide-copy">
+          <p class="slide-kicker">Karnataka, India</p>
+          <h1>HAMPI</h1>
+          <p>Wander the ruined capital of the Vijayanagara Empire — monumental temples, royal elephant stables, and iconic stone chariots scattered among sacred boulders.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='hampi') }}">Explore Hampi <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('map.heritage_map') }}"><span aria-hidden="true">🗺️</span> View on Map</a>
+          </div>
+        </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="The Coronation" style="--slide-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">6 June 1674</p><h1>THE<br />CORONATION</h1><p>Return to the defining moment when Chhatrapati Shivaji Maharaj was crowned at Raigad and a sovereign kingdom was born.</p><a class="explore-button" href="{{ url_for('timeline.timeline') }}">View the timeline <span aria-hidden="true">→</span></a></div>
+
+      <!-- 03: Konark Sun Temple -->
+      <article class="heritage-slide" data-slide data-title="Konark Sun Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/konark-07.png') }}');">
+        <div class="slide-copy">
+          <p class="slide-kicker">Odisha, India</p>
+          <h1>KONARK<br />SUN TEMPLE</h1>
+          <p>Marvel at the 13th-century stone chariot of Surya, sculpted with 24 monumental solar wheels and galloping stallions along the shores of the Bay of Bengal.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='konark') }}">Explore Konark <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('map.heritage_map') }}"><span aria-hidden="true">☀️</span> Sun Chariot</a>
+          </div>
+        </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="Reconstructed Raigad" style="--slide-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Digital reconstruction</p><h1>RAIGAD,<br />REIMAGINED</h1><p>See a lost world take shape again through researched reconstruction, immersive detail and augmented reality.</p><a class="explore-button" href="{{ url_for('ar.experience') }}">Open AR Experience <span aria-hidden="true">→</span></a></div>
+
+      <!-- 04: Martand Sun Temple -->
+      <article class="heritage-slide" data-slide data-title="Martand Sun Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/martand-02.jpg') }}');">
+        <div class="slide-copy">
+          <p class="slide-kicker">Jammu & Kashmir, India</p>
+          <h1>MARTAND<br />SUN TEMPLE</h1>
+          <p>Stand amid majestic 8th-century colonnaded stone arches and sacred courtyards, built by Emperor Lalitaditya against the breathtaking peaks of the Kashmir Valley.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='martand') }}">Explore Martand <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('map.heritage_map') }}"><span aria-hidden="true">🏔️</span> Kashmir Valley</a>
+          </div>
+        </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="Raigad Today" style="--slide-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Living heritage</p><h1>THE FORT<br />TODAY</h1><p>Stand in the present and uncover what remains—then use HeritageAR to reveal the layers of history around you.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Plan your visit <span aria-hidden="true">→</span></a></div>
+
+      <!-- 05: Meenakshi Temple -->
+      <article class="heritage-slide" data-slide data-title="Meenakshi Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/meenakshi-aerial.jpg') }}');">
+        <div class="slide-copy">
+          <p class="slide-kicker">Madurai, Tamil Nadu</p>
+          <h1>MEENAKSHI<br />TEMPLE</h1>
+          <p>Immerse yourself in one of India's greatest living temples, famed for fourteen soaring multicolored gopurams, the thousand-pillar hall, and sacred golden lotus pond.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='meenakshi') }}">Explore Madurai <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('home.world') }}"><span aria-hidden="true">🌐</span> 3D World</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 06: Hoysaleshwara Temple -->
+      <article class="heritage-slide" data-slide data-title="Hoysaleshwara Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/halebidu-entrance.jpg') }}');">
+        <div class="slide-copy">
+          <p class="slide-kicker">Halebidu, Karnataka</p>
+          <h1>HOYSALESHWARA<br />TEMPLE</h1>
+          <p>Discover exquisite 12th-century star-shaped shrines in soft soapstone, adorned with intricate relief friezes of celestial dancers, deities, and epic tales.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='hoysaleshwara') }}">Explore Halebidu <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('map.heritage_map') }}"><span aria-hidden="true">🏛️</span> UNESCO Site</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 07: Nalanda Mahavihara -->
+      <article class="heritage-slide" data-slide data-title="Nalanda Mahavihara" style="--slide-image: url('{{ url_for('static', filename='images/timeline/nalanda-ruins.jpg') }}');">
+        <div class="slide-copy">
+          <p class="slide-kicker">Bihar, India</p>
+          <h1>NALANDA<br />MAHAVIHARA</h1>
+          <p>Journey into the ancient world's premier monastic university, where scholars from across Asia gathered to study philosophy, astronomy, mathematics, and science.</p>
+          <div class="slide-actions">
+            <a class="explore-button" href="{{ url_for('timeline.timeline', site='nalanda') }}">Explore Nalanda <span aria-hidden="true">→</span></a>
+            <a class="slide-sub-link" href="{{ url_for('assistant.assistant') }}"><span aria-hidden="true">🤖</span> AI Guide</a>
+          </div>
+        </div>
       </article>
     </section>
 
     <aside class="story-deck" aria-label="Featured heritage stories">
-      <button class="story-card is-current" type="button" data-go-to="0" style="--card-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');"><span class="story-label">Raigad Fort</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="1" style="--card-image: url('{{ url_for('static', filename='images/timeline/virupaksha.jpg') }}');"><span class="story-label">Hampi</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="2" style="--card-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');"><span class="story-label">The Coronation</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="3" style="--card-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');"><span class="story-label">Reimagined Raigad</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="4" style="--card-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');"><span class="story-label">Raigad Today</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
+      <button class="story-card is-current" type="button" data-go-to="0" style="--card-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');">
+        <span class="story-label">Raigad Fort</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="1" style="--card-image: url('{{ url_for('static', filename='images/timeline/virupaksha.jpg') }}');">
+        <span class="story-label">Hampi</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="2" style="--card-image: url('{{ url_for('static', filename='images/timeline/konark-07.png') }}');">
+        <span class="story-label">Konark</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="3" style="--card-image: url('{{ url_for('static', filename='images/timeline/martand-02.jpg') }}');">
+        <span class="story-label">Martand</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="4" style="--card-image: url('{{ url_for('static', filename='images/timeline/meenakshi-aerial.jpg') }}');">
+        <span class="story-label">Meenakshi</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="5" style="--card-image: url('{{ url_for('static', filename='images/timeline/halebidu-entrance.jpg') }}');">
+        <span class="story-label">Hoysaleshwara</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
+      <button class="story-card" type="button" data-go-to="6" style="--card-image: url('{{ url_for('static', filename='images/timeline/nalanda-ruins.jpg') }}');">
+        <span class="story-label">Nalanda</span>
+        <span class="story-progress" aria-hidden="true"></span>
+        <span class="bookmark" aria-hidden="true">⌑</span>
+      </button>
     </aside>
 
-    <div class="carousel-controls"><button type="button" data-previous aria-label="Previous story">←</button><button type="button" data-next aria-label="Next story">→</button></div>
-    <p class="home-pagination"><span data-current-slide>01</span><i></i>05</p>
+    <div class="carousel-controls">
+      <button type="button" data-previous aria-label="Previous story">←</button>
+      <button type="button" data-next aria-label="Next story">→</button>
+    </div>
+    <p class="home-pagination"><span data-current-slide>01</span><i></i><span data-total-slides>07</span></p>
   </div>
 </main>
 {% endblock %}
