@@ -4,7 +4,9 @@ endblock %} {% block styles %}<link
   href="{{ url_for('static', filename='css/auth.css') }}"
 />{% endblock %} {% block content %}
 <main class="auth-page auth-register">
-  <a class="auth-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
+  <a class="auth-wordmark" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+    <img class="brand-logo-gold" src="{{ url_for('static', filename='images/logo/logo-gold-banner.png') }}" alt="HeritageAR" />
+  </a>
   <section class="auth-layout">
     <div class="auth-visual" data-auth-visual>
       <span class="auth-visual-label">Begin your archive</span>

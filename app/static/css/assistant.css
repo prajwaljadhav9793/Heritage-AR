@@ -53,6 +53,20 @@ body {
   color: #f0b84e;
   font-size: 1.9rem;
   line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.assistant-emblem-img {
+  height: 3.6rem;
+  width: 3.6rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 14px rgba(240, 184, 78, 0.4));
+  transition: transform 0.3s ease;
+}
+.assistant-emblem-img:hover {
+  transform: scale(1.08) rotate(-3deg);
 }
 .assistant-kicker {
   color: #dec7ad;

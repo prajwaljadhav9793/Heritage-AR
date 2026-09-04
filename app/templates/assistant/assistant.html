@@ -4,9 +4,9 @@
   href="{{ url_for('static', filename='css/assistant.css') }}"
 />{% endblock %} {% block content %}
 <header class="assistant-header">
-  <a class="assistant-wordmark" href="{{ url_for('home.index') }}"
-    >HeritageAR</a
-  >
+  <a class="assistant-wordmark" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+    <img class="brand-logo-dark" src="{{ url_for('static', filename='images/logo/logo-banner.png') }}" alt="HeritageAR" />
+  </a>
   <nav aria-label="Primary navigation">
     <a href="{{ url_for('home.index') }}">Home</a>
     <a href="{{ url_for('map.heritage_map') }}">Explore</a>
@@ -25,7 +25,7 @@
 
 <main class="assistant-page">
   <section class="assistant-intro">
-    <div class="assistant-emblem">⌂</div>
+    <div class="assistant-emblem"><img class="assistant-emblem-img" src="{{ url_for('static', filename='images/logo/logo-icon.png') }}" alt="HeritageAR" /></div>
     <p class="assistant-kicker">Your personal guide to India's past</p>
     <h1>Heritage AI</h1>
   </section>

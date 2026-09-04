@@ -657,3 +657,42 @@ h3 {
     text-align: left;
   }
 }
+
+/* ==========================================================================
+   Global Brand Logo Styling
+   ========================================================================== */
+.brand-logo-gold {
+  height: clamp(2.1rem, 2.9vw, 2.85rem);
+  width: auto;
+  max-width: 14.5rem;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand-logo-dark {
+  height: clamp(2.1rem, 2.8vw, 2.75rem);
+  width: auto;
+  max-width: 14rem;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.brand-logo-icon {
+  height: 2.2rem;
+  width: 2.2rem;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+a:hover > .brand-logo-gold {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 10px rgba(241, 196, 118, 0.45));
+}
+
+a:hover > .brand-logo-dark {
+  transform: scale(1.03);
+  filter: drop-shadow(0 0 8px rgba(189, 129, 36, 0.35));
+}

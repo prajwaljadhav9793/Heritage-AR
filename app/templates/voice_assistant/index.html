@@ -4,7 +4,9 @@
 {% block content %}
 <main class="voice-page" data-voice-assistant>
   <header class="voice-header">
-    <a class="voice-brand" href="{{ url_for('home.index') }}"><span>H</span> HeritageAR</a>
+    <a class="voice-brand" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+      <img class="brand-logo-gold" src="{{ url_for('static', filename='images/logo/logo-gold-banner.png') }}" alt="HeritageAR" />
+    </a>
     <nav aria-label="Primary navigation">
       <a href="{{ url_for('home.index') }}">Home</a>
       <a href="{{ url_for('map.heritage_map') }}">Explore</a>

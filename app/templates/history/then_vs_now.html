@@ -5,7 +5,9 @@
 {% endblock %}
 {% block content %}
 <header class="history-header">
-  <a class="history-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
+  <a class="history-wordmark" href="{{ url_for('home.index') }}" aria-label="HeritageAR home">
+    <img class="brand-logo-gold" src="{{ url_for('static', filename='images/logo/logo-gold-banner.png') }}" alt="HeritageAR" />
+  </a>
   <nav aria-label="Primary navigation">
     <a href="{{ url_for('home.index') }}">Discover</a>
     <a href="{{ url_for('map.heritage_map') }}">Explore</a>
