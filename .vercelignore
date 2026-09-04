@@ -1,8 +1,26 @@
+# Development and tests
 scripts/
 tests/
 __pycache__/
 *.pyc
 .pytest_cache/
 .env
+.env.*
 .git/
+.gitignore
+requirements-dev.txt
+
+# Heavy offline data and duplicate 3D models (saves ~190 MB)
+data/documents/
+data/vector_db/
+3d models/
+*.docx
+*.log
+dbcheck.txt
+ingest_err.txt
+ingest_log.txt
+ingest_out.txt
+README.md
+docs/
+
 

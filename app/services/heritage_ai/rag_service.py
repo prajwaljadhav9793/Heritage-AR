@@ -6,40 +6,38 @@ import threading
 from functools import lru_cache
 from pathlib import Path
 
-import chromadb
-import ollama
-
-
 # ==========================================================
 # CONFIGURATION
 # ==========================================================
 
 VECTOR_DB_PATH = str(Path(__file__).resolve().parents[3] / "data" / "vector_db")
 CHUNKS_PATH = Path(__file__).resolve().parents[3] / "data" / "heritage_chunks.json"
-
-# Based on your actual retrieval tests.
-# Genuine questions can reach around 0.92,
-# while the clearly unrelated favorite-food question
-# was above 1.03.
 MAX_DISTANCE = 1.55
 
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://127.0.0.1:11434")
 MODEL_NAME = os.getenv("OLLAMA_MODEL", "qwen2.5:0.5b")
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT", "4"))
-ollama_client = ollama.Client(host=OLLAMA_HOST, timeout=OLLAMA_TIMEOUT)
+
+try:
+    import ollama
+    ollama_client = ollama.Client(host=OLLAMA_HOST, timeout=OLLAMA_TIMEOUT)
+except Exception:
+    ollama = None
+    ollama_client = None
 
 
 # ==========================================================
-# CHROMADB
+# CHROMADB (OPTIONAL AT RUNTIME)
 # ==========================================================
 
-chroma_client = chromadb.PersistentClient(
-    path=VECTOR_DB_PATH
-)
-
-collection = chroma_client.get_collection(
-    name="heritage_knowledge"
-)
+try:
+    import chromadb
+    chroma_client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
+    collection = chroma_client.get_collection(name="heritage_knowledge")
+except Exception:
+    chromadb = None
+    chroma_client = None
+    collection = None
 
 
 # ==========================================================
@@ -353,6 +351,9 @@ def build_context_fallback(question, retrieved):
 
 def _warm_up_model():
     """Pre-load the Ollama model in the background so user questions are fast."""
+    if not ollama_client:
+        return
+
     def warm():
         try:
             ollama_client.chat(
@@ -375,7 +376,7 @@ _LLM_RETRY_SECONDS = 60.0
 
 
 def _llm_available():
-    return _llm_state["healthy"] or time.time() >= _llm_state["retry_after"]
+    return ollama_client is not None and (_llm_state["healthy"] or time.time() >= _llm_state["retry_after"])
 
 
 def _mark_llm_unhealthy():
