@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded",()=>{const c=document.querySelector("[data-heritage-carousel]");if(!c)return;const s=[...c.querySelectorAll("[data-slide]")],a=[...c.querySelectorAll(".story-card")],d=[...c.querySelectorAll(".rail-dot")],l=c.querySelector("[data-current-slide]"),r=matchMedia("(prefers-reduced-motion: reduce)").matches;let n=0,t;const show=i=>{n=(i+s.length)%s.length;s.forEach((x,j)=>x.classList.toggle("is-active",j===n));a.forEach((x,j)=>x.classList.toggle("is-current",j===n));d.forEach((x,j)=>x.classList.toggle("is-active",j===n));l.textContent=String(n+1).padStart(2,"0")},start=()=>{clearInterval(t);if(!r)t=setInterval(()=>show(n+1),6500)};c.querySelectorAll("[data-go-to]").forEach(x=>x.addEventListener("click",()=>{show(Number(x.dataset.goTo));start()}));c.querySelector("[data-next]").addEventListener("click",()=>{show(n+1);start()});c.querySelector("[data-previous]").addEventListener("click",()=>{show(n-1);start()});c.addEventListener("mouseenter",()=>clearInterval(t));c.addEventListener("mouseleave",start);start()});
 document.addEventListener("DOMContentLoaded", () => {
   const carousel = document.querySelector("[data-heritage-carousel]");
   if (!carousel) return;
@@ -43,11 +44,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (railCountEl) railCountEl.textContent = `${currentFormatted} / ${totalFormatted}`;
 
     // Smoothly shift the story deck so the current card is always visible
+    // Smoothly scroll the story deck so the current card is nicely centered
     if (storyDeck && cards[currentIndex]) {
       const cardWidth = cards[0].offsetWidth || 180;
       const gap = 16;
       const shift = Math.max(0, currentIndex - 1) * (cardWidth + gap);
       storyDeck.style.transform = `translateX(-${shift}px)`;
+      const card = cards[currentIndex];
+      const deckWidth = storyDeck.clientWidth;
+      const cardLeft = card.offsetLeft;
+      const cardWidth = card.offsetWidth;
+      storyDeck.scrollTo({
+        left: cardLeft - (deckWidth / 2) + (cardWidth / 2),
+        behavior: "smooth"
+      });
     }
   };
 
