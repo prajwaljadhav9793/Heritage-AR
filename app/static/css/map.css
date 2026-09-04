@@ -320,6 +320,14 @@ body {
   z-index: 4;
 }
 
+.map-overlay-logo {
+  height: 1.45rem;
+  width: auto;
+  display: block;
+  margin-bottom: 0.35rem;
+  object-fit: contain;
+}
+
 .map-overlay-title span {
   color: #9e6415;
   display: block;
