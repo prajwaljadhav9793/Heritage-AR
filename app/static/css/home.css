@@ -394,18 +394,18 @@
    ========================================================================== */
 .story-deck {
   align-items: flex-end;
-  bottom: 3.4rem;
+  top: clamp(10.5rem, 28vh, 16.5rem);
+  bottom: auto;
   display: flex;
-  gap: 1.15rem;
+  gap: 1.2rem;
   left: auto;
-  max-width: min(48vw, 42rem);
+  max-width: min(48vw, 44rem);
   overflow-x: auto;
   overflow-y: visible;
-  padding: 2.2rem 0.5rem 0.6rem;
+  padding: 2.2rem 0.6rem 0.8rem;
   position: absolute;
   right: clamp(1.5rem, 4.5vw, 5rem);
   scrollbar-width: none;
-  top: auto;
   z-index: 4;
 }
 
@@ -422,9 +422,9 @@
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
   color: #fff;
   cursor: pointer;
-  flex: 0 0 clamp(9rem, 11vw, 11rem);
+  flex: 0 0 clamp(9.5rem, 11.8vw, 11.8rem);
   flex-shrink: 0;
-  height: clamp(12.8rem, 16vw, 15.2rem);
+  height: clamp(13.8rem, 17.5vw, 16.5rem);
   padding: 0;
   position: relative;
   text-align: left;
@@ -616,8 +616,15 @@
     max-width: min(34rem, 50vw);
   }
   .story-deck {
-    max-width: 38vw;
+    top: clamp(9.5rem, 25vh, 14rem);
+    bottom: auto;
+    max-width: 40vw;
     right: 1.5rem;
+  }
+  .story-card,
+  .story-card:nth-child(n) {
+    flex-basis: 9.2rem;
+    height: 13.2rem;
   }
   .carousel-controls {
     right: 13rem;
