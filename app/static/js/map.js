@@ -1,29 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const locations = {
-    ajanta: {
-      name: "Ajanta Caves",
-      label: "Ajanta Caves",
-      category: "UNESCO Heritage",
-      rating: "4.8",
-      reviews: "18.4k",
-      hours: "9:00 AM – 5:00 PM",
-      image: "/static/images/historical/then-fort.jpg",
-      coordinates: [20.5519, 75.7033],
-      directionsDestination: "Ajanta Caves, Maharashtra, India",
-      description: "Buddhist rock-cut caves",
-    },
-    ellora: {
-      name: "Ellora Caves",
-      label: "Ellora Caves",
-      category: "UNESCO Heritage",
-      rating: "4.9",
-      reviews: "21.7k",
-      hours: "6:00 AM – 6:00 PM",
-      image: "/static/images/historical/now-fort.jpg",
-      coordinates: [20.0268, 75.1782],
-      directionsDestination: "Ellora Caves, Maharashtra, India",
-      description: "Monolithic temple complex",
-    },
     raigad: {
       name: "Raigad Fort",
       label: "Raigad Fort",

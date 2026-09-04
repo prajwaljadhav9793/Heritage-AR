@@ -23,9 +23,11 @@ def test_heritage_map_renders():
     assert "data-wishlist" in html
     assert "map-toast" in html
 
-    # Verify all heritage sites are in the list
-    assert "Ajanta Caves" in html
-    assert "Ellora Caves" in html
+    # Verify Ajanta and Ellora removed from explore section
+    assert "Ajanta Caves" not in html
+    assert "Ellora Caves" not in html
+
+    # Verify active heritage sites are in the list
     assert "Raigad Fort" in html
     assert "Hampi" in html
     assert "Nalanda" in html

@@ -251,14 +251,6 @@ body {
   width: 3.1rem;
 }
 
-.thumb-ajanta {
-  background-image: url("/static/images/historical/then-fort.jpg");
-}
-
-.thumb-ellora {
-  background-image: url("/static/images/historical/now-fort.jpg");
-}
-
 .thumb-raigad {
   background-image: url("/static/images/heritage/discover-fort.jpg");
 }
