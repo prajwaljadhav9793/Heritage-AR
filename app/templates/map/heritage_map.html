@@ -1,11 +1,16 @@
-{% extends "base.html" %} {% block title %}Heritage Map | HeritageAR{% endblock
-%} {% block styles %}
+{% extends "base.html" %}
+
+{% block title %}Heritage Map | HeritageAR{% endblock %}
+
+{% block styles %}
 <link
   rel="stylesheet"
   href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}" />
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <header class="map-header">
   <a class="map-wordmark" href="{{ url_for('home.index') }}">HeritageAR</a>
   <nav class="map-nav" aria-label="Primary navigation">
@@ -13,76 +18,240 @@
     <a class="is-current" href="{{ url_for('map.heritage_map') }}">Explore</a>
     <a href="{{ url_for('timeline.timeline') }}">Timeline</a>
     <a href="{{ url_for('home.world') }}">3D World</a>
+    <a href="{{ url_for('ar.experience') }}">AR Experience</a>
   </nav>
   <div class="map-actions">
-    <button type="button">Language</button>
-    <button type="button" aria-label="Open profile">◉</button>
-    <a class="start-button" href="{{ url_for('home.index') }}#experience"
-      >Start Exploring</a
-    >
+    {% if session.get('user') %}
+      <a class="map-profile-btn" href="{{ url_for('profile.view_profile') }}">
+        👤 {{ session['user'].get('name', 'Profile') }}
+      </a>
+      <a class="map-signout-btn" href="{{ url_for('auth.logout') }}">Sign out</a>
+    {% else %}
+      <a class="map-profile-btn" href="{{ url_for('auth.login') }}">Sign in</a>
+      <a class="map-signout-btn" href="{{ url_for('auth.register') }}">Register</a>
+    {% endif %}
+    <a class="start-button" href="{{ url_for('ar.experience') }}">Launch AR</a>
   </div>
 </header>
 
 <main class="map-page">
-  <aside class="heritage-panel" aria-label="Nearby heritage sites">
-    <p class="panel-kicker">Nearby heritage</p>
-    <p class="panel-region">Exploring Maharashtra Region</p>
-    <div class="panel-rule"></div>
-    <button class="site-item" data-site="ajanta" type="button">
-      <span class="site-thumb thumb-ajanta"></span
-      ><span class="site-details"
-        ><strong>Ajanta Caves</strong><small>Buddhist Rock-cut</small></span
-      ><em>142 km</em>
-    </button>
-    <button class="site-item" data-site="ellora" type="button">
-      <span class="site-thumb thumb-ellora"></span
-      ><span class="site-details"
-        ><strong>Ellora Caves</strong><small>Monolithic Temple</small></span
-      ><em>165 km</em>
-    </button>
-    <button class="site-item is-selected" data-site="raigad" type="button">
-      <span class="site-thumb thumb-raigad"></span
-      ><span class="site-details"
-        ><strong>Raigad Fort</strong><small>Hill Fortress</small></span
-      ><em>Selected</em>
-    </button>
-    <button class="site-item" data-site="hampi" type="button">
-      <span class="site-thumb thumb-hampi"></span
-      ><span class="site-details"
-        ><strong>Hampi</strong><small>Vijayanagara Ruins</small></span
-      ><em>315 km</em>
-    </button>
-    <button class="site-item" data-site="nalanda" type="button">
-      <span class="site-thumb thumb-nalanda"></span
-      ><span class="site-details"
-        ><strong>Nalanda</strong><small>Buddhist Heritage</small></span
-      ><em>Bihar</em>
-    </button>
-    <button class="site-item" data-site="konark" type="button">
-      <span class="site-thumb thumb-konark"></span
-      ><span class="site-details"
-        ><strong>Konark Sun Temple</strong><small>UNESCO Heritage</small></span
-      ><em>Odisha</em>
-    </button>
-    <button class="site-item" data-site="martand" type="button">
-      <span class="site-thumb thumb-martand"></span
-      ><span class="site-details"
-        ><strong>Martand Sun Temple</strong><small>Kashmir Heritage</small></span
-      ><em>Kashmir</em>
-    </button>
-    <button class="site-item" data-site="meenakshi" type="button">
-      <span class="site-thumb thumb-meenakshi"></span
-      ><span class="site-details"
-        ><strong>Meenakshi Temple</strong><small>Tamil Heritage</small></span
-      ><em>Madurai</em>
-    </button>
-    <button class="site-item" data-site="hoysaleshwara" type="button">
-      <span class="site-thumb thumb-hoysaleshwara"></span
-      ><span class="site-details"
-        ><strong>Hoysaleshwara Temple</strong><small>Hoysala Heritage</small></span
-      ><em>Halebidu</em>
-    </button>
+  <aside class="heritage-panel" aria-label="Nearby heritage sites" data-wishlist='{{ wishlist_sites | tojson }}'>
+    <div class="panel-header">
+      <p class="panel-kicker">Nearby heritage</p>
+      <p class="panel-region">Exploring Heritage Sites of India</p>
+      <div class="panel-rule"></div>
+    </div>
+    
+    <div class="heritage-panel-list" aria-label="Scrollable list of heritage sites">
+      <div class="site-card-wrapper" data-site-key="ajanta">
+        <button class="site-item" data-site="ajanta" type="button">
+          <span class="site-thumb thumb-ajanta"></span>
+          <span class="site-details">
+            <strong>Ajanta Caves</strong>
+            <small>Buddhist Rock-cut</small>
+          </span>
+          <em>142 km</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Ajanta Caves' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Ajanta Caves"
+          data-location="Maharashtra, India"
+          aria-label="Add Ajanta Caves to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="ellora">
+        <button class="site-item" data-site="ellora" type="button">
+          <span class="site-thumb thumb-ellora"></span>
+          <span class="site-details">
+            <strong>Ellora Caves</strong>
+            <small>Monolithic Temple</small>
+          </span>
+          <em>165 km</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Ellora Caves' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Ellora Caves"
+          data-location="Maharashtra, India"
+          aria-label="Add Ellora Caves to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="raigad">
+        <button class="site-item is-selected" data-site="raigad" type="button">
+          <span class="site-thumb thumb-raigad"></span>
+          <span class="site-details">
+            <strong>Raigad Fort</strong>
+            <small>Hill Fortress</small>
+          </span>
+          <em>Selected</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Raigad Fort' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Raigad Fort"
+          data-location="Maharashtra, India"
+          aria-label="Add Raigad Fort to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="hampi">
+        <button class="site-item" data-site="hampi" type="button">
+          <span class="site-thumb thumb-hampi"></span>
+          <span class="site-details">
+            <strong>Hampi</strong>
+            <small>Vijayanagara Ruins</small>
+          </span>
+          <em>315 km</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Hampi' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Hampi"
+          data-location="Karnataka, India"
+          aria-label="Add Hampi to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="nalanda">
+        <button class="site-item" data-site="nalanda" type="button">
+          <span class="site-thumb thumb-nalanda"></span>
+          <span class="site-details">
+            <strong>Nalanda</strong>
+            <small>Buddhist Heritage</small>
+          </span>
+          <em>Bihar</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Nalanda' in wishlist_sites or 'Nalanda Mahavihara' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Nalanda"
+          data-location="Bihar, India"
+          aria-label="Add Nalanda to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="konark">
+        <button class="site-item" data-site="konark" type="button">
+          <span class="site-thumb thumb-konark"></span>
+          <span class="site-details">
+            <strong>Konark Sun Temple</strong>
+            <small>UNESCO Heritage</small>
+          </span>
+          <em>Odisha</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Konark Sun Temple' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Konark Sun Temple"
+          data-location="Odisha, India"
+          aria-label="Add Konark Sun Temple to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="martand">
+        <button class="site-item" data-site="martand" type="button">
+          <span class="site-thumb thumb-martand"></span>
+          <span class="site-details">
+            <strong>Martand Sun Temple</strong>
+            <small>Kashmir Heritage</small>
+          </span>
+          <em>Kashmir</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Martand Sun Temple' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Martand Sun Temple"
+          data-location="Jammu & Kashmir, India"
+          aria-label="Add Martand Sun Temple to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="meenakshi">
+        <button class="site-item" data-site="meenakshi" type="button">
+          <span class="site-thumb thumb-meenakshi"></span>
+          <span class="site-details">
+            <strong>Meenakshi Temple</strong>
+            <small>Tamil Heritage</small>
+          </span>
+          <em>Madurai</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Meenakshi Temple' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Meenakshi Temple"
+          data-location="Tamil Nadu, India"
+          aria-label="Add Meenakshi Temple to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="site-card-wrapper" data-site-key="hoysaleshwara">
+        <button class="site-item" data-site="hoysaleshwara" type="button">
+          <span class="site-thumb thumb-hoysaleshwara"></span>
+          <span class="site-details">
+            <strong>Hoysaleshwara Temple</strong>
+            <small>Hoysala Heritage</small>
+          </span>
+          <em>Halebidu</em>
+        </button>
+        <button
+          class="site-fav-btn {% if 'Hoysaleshwara Temple' in wishlist_sites or 'Halebidu' in wishlist_sites %}is-active{% endif %}"
+          type="button"
+          data-site="Hoysaleshwara Temple"
+          data-location="Karnataka, India"
+          aria-label="Add Hoysaleshwara Temple to favorites"
+          title="Add to Favorites"
+        >
+          <svg class="heart-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
   </aside>
+
   <section
     class="map-canvas"
     aria-label="Interactive Maharashtra heritage map"
@@ -97,8 +266,13 @@
       <span class="legend-line"></span> Region explored
     </div>
   </section>
+
+  <!-- Toast notification element -->
+  <div class="map-toast" role="status" aria-live="polite"></div>
 </main>
-{% endblock %} {% block scripts %}
+{% endblock %}
+
+{% block scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 {% endblock %}

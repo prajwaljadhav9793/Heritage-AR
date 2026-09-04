@@ -144,6 +144,109 @@ document.addEventListener("DOMContentLoaded", () => {
     iconAnchor: [19, 19],
   });
 
+  // Wishlist and Favorites Handling
+  let wishlistSites = [];
+  try {
+    const panelEl = document.querySelector(".heritage-panel");
+    if (panelEl && panelEl.dataset.wishlist) {
+      wishlistSites = JSON.parse(panelEl.dataset.wishlist);
+    }
+  } catch (err) {
+    wishlistSites = [];
+  }
+
+  const isSiteInWishlist = (siteName) => {
+    if (!siteName) return false;
+    const nameLower = siteName.trim().toLowerCase();
+    return wishlistSites.some((s) => {
+      const wLower = (s || "").trim().toLowerCase();
+      return wLower === nameLower || wLower.includes(nameLower) || nameLower.includes(wLower);
+    });
+  };
+
+  const toastEl = document.querySelector(".map-toast");
+  let toastTimer;
+  const showToast = (message, icon = "❤️") => {
+    if (!toastEl) return;
+    window.clearTimeout(toastTimer);
+    toastEl.innerHTML = `<span aria-hidden="true">${icon}</span><span>${message}</span>`;
+    toastEl.classList.add("show");
+    toastTimer = window.setTimeout(() => {
+      toastEl.classList.remove("show");
+    }, 2800);
+  };
+
+  const toggleFavorite = async (siteName, locationName, clickedBtn) => {
+    if (clickedBtn) {
+      clickedBtn.classList.add("heart-beat");
+      setTimeout(() => clickedBtn.classList.remove("heart-beat"), 400);
+    }
+
+    try {
+      const response = await fetch("/profile/wishlist/toggle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify({
+          site: siteName,
+          location: locationName || "",
+        }),
+      });
+
+      if (response.status === 401) {
+        showToast("Please sign in to save heritage places to your favorites.", "🔒");
+        return;
+      }
+
+      if (!response.ok) {
+        showToast("Could not update favorites. Please try again.", "⚠️");
+        return;
+      }
+
+      const result = await response.json();
+      if (result.success) {
+        const added = result.added;
+        if (added) {
+          if (!wishlistSites.includes(siteName)) {
+            wishlistSites.push(siteName);
+          }
+          showToast(`${siteName} added to your favorites!`, "❤️");
+        } else {
+          wishlistSites = wishlistSites.filter(
+            (s) => (s || "").trim().toLowerCase() !== siteName.trim().toLowerCase()
+          );
+          showToast(`${siteName} removed from favorites.`, "🤍");
+        }
+
+        // Synchronize all matching favorite buttons across sidebar and popups
+        const normName = siteName.trim().toLowerCase();
+        document.querySelectorAll(".site-fav-btn, .site-popup-fav-btn").forEach((btn) => {
+          const btnSite = (btn.dataset.site || "").trim().toLowerCase();
+          if (btnSite === normName || btnSite.includes(normName) || normName.includes(btnSite)) {
+            btn.classList.toggle("is-active", added);
+            btn.setAttribute("title", added ? "Remove from Favorites" : "Add to Favorites");
+            btn.setAttribute("aria-label", `${added ? "Remove" : "Add"} ${siteName} to favorites`);
+          }
+        });
+      }
+    } catch (err) {
+      console.error("Favorite toggle error:", err);
+      showToast("Unable to connect. Please check your connection.", "⚠️");
+    }
+  };
+
+  // Attach favorite button click handler on sidebar
+  document.querySelectorAll(".site-fav-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const siteName = btn.dataset.site;
+      const siteLocation = btn.dataset.location || "";
+      toggleFavorite(siteName, siteLocation, btn);
+    });
+  });
+
   const markers = {};
   Object.entries(locations).forEach(([id, site]) => {
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(site.directionsDestination)}`;
@@ -151,12 +254,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const siteLink = id === "raigad" || id === "hampi" || id === "nalanda" || id === "konark" || id === "martand" || id === "meenakshi" || id === "hoysaleshwara"
       ? `<a class="site-popup-link" href="${timelineUrl}${timelineUrl.includes("?") ? "&" : "?"}site=${id}">View more info <span aria-hidden="true">&rarr;</span></a>`
       : "";
+    const isFav = isSiteInWishlist(site.name);
     const popupContent = `
       <article class="site-popup ${id === "raigad" ? "site-popup-raigad" : ""}">
         <img class="site-popup-image" src="${site.image}" alt="${site.name}" />
         <div class="site-popup-heading">
           <span class="site-popup-eyebrow">${site.category}</span>
-          <button class="site-popup-close" type="button" aria-label="Close details">&times;</button>
+          <div class="site-popup-controls">
+            <button
+              class="site-popup-fav-btn ${isFav ? "is-active" : ""}"
+              type="button"
+              data-site="${site.name}"
+              data-location="${site.directionsDestination}"
+              aria-label="${isFav ? "Remove" : "Add"} ${site.name} to favorites"
+              title="${isFav ? "Remove from Favorites" : "Add to Favorites"}"
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+            </button>
+            <button class="site-popup-close" type="button" aria-label="Close details">&times;</button>
+          </div>
         </div>
         <h2>${site.name}</h2>
         <p class="site-popup-type">${site.description}</p>
@@ -191,7 +309,22 @@ document.addEventListener("DOMContentLoaded", () => {
       popupElement.addEventListener("mouseenter", keepPopupOpen);
       popupElement.addEventListener("mouseleave", closeOnHoverEnd);
       const closeButton = popupElement.querySelector(".site-popup-close");
-      closeButton.addEventListener("click", () => marker.closePopup());
+      if (closeButton) {
+        closeButton.addEventListener("click", () => marker.closePopup());
+      }
+      const popupFavBtn = popupElement.querySelector(".site-popup-fav-btn");
+      if (popupFavBtn) {
+        // Sync active status on open
+        const currentlyFav = isSiteInWishlist(site.name);
+        popupFavBtn.classList.toggle("is-active", currentlyFav);
+        popupFavBtn.setAttribute("title", currentlyFav ? "Remove from Favorites" : "Add to Favorites");
+        popupFavBtn.setAttribute("aria-label", `${currentlyFav ? "Remove" : "Add"} ${site.name} to favorites`);
+
+        popupFavBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggleFavorite(site.name, site.directionsDestination, popupFavBtn);
+        });
+      }
     });
     marker.on("click", () => selectSite(id, false));
     markers[id] = marker;
