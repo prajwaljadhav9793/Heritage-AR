@@ -2,6 +2,8 @@ from app import create_app
 
 app = create_app()
 client = app.test_client()
+test_app = create_app()
+client = test_app.test_client()
 html = client.get("/").get_data(as_text=True)
 
 checks = {

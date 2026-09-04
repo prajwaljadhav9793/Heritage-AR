@@ -2,6 +2,8 @@ from app import create_app
 
 app = create_app()
 client = app.test_client()
+test_app = create_app()
+client = test_app.test_client()
 
 r1 = client.get("/timeline/")
 t1 = r1.get_data(as_text=True)
