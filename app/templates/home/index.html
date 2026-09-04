@@ -35,12 +35,6 @@
 
     <div class="slide-rail" aria-label="Choose a featured story">
       <span class="rail-line" aria-hidden="true"></span>
-      <button class="rail-dot is-active" type="button" data-go-to="0" aria-label="Show Raigad Fort"></button>
-      <button class="rail-dot" type="button" data-go-to="1" aria-label="Show Hampi"></button>
-      <button class="rail-dot" type="button" data-go-to="2" aria-label="Show the Coronation"></button>
-      <button class="rail-dot" type="button" data-go-to="3" aria-label="Show the reconstruction"></button>
-      <button class="rail-dot" type="button" data-go-to="4" aria-label="Show Raigad today"></button>
-      <span class="rail-count">01 / 05</span>
       <button class="rail-dot is-active" type="button" data-go-to="0" aria-label="Show Raigad Fort" title="Raigad Fort"></button>
       <button class="rail-dot" type="button" data-go-to="1" aria-label="Show Hampi" title="Hampi"></button>
       <button class="rail-dot" type="button" data-go-to="2" aria-label="Show Konark Sun Temple" title="Konark Sun Temple"></button>
@@ -54,7 +48,6 @@
     <section class="heritage-slides" aria-live="polite">
       <!-- 01: Raigad Fort -->
       <article class="heritage-slide is-active" data-slide data-title="Raigad Fort" style="--slide-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Maharashtra, India</p><h1>RAIGAD<br />FORT</h1><p>Walk through the mountain capital where the Maratha Empire rose. Discover its gates, halls and stories in a new dimension.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Explore the fort <span aria-hidden="true">→</span></a></div>
         <div class="slide-copy">
           <p class="slide-kicker">Maharashtra, India</p>
           <h1>RAIGAD<br />FORT</h1>
@@ -68,7 +61,6 @@
 
       <!-- 02: Hampi -->
       <article class="heritage-slide" data-slide data-title="Hampi" style="--slide-image: url('{{ url_for('static', filename='images/timeline/virupaksha.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Karnataka, India</p><h1>HAMPI</h1><p>Wander the ruined capital of the Vijayanagara Empire — temples, stables and stone chariots scattered among the boulders of the Tungabhadra.</p><a class="explore-button" href="{{ url_for('timeline.timeline', site='hampi') }}">Explore Hampi <span aria-hidden="true">→</span></a></div>
         <div class="slide-copy">
           <p class="slide-kicker">Karnataka, India</p>
           <h1>HAMPI</h1>
@@ -79,8 +71,6 @@
           </div>
         </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="The Coronation" style="--slide-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">6 June 1674</p><h1>THE<br />CORONATION</h1><p>Return to the defining moment when Chhatrapati Shivaji Maharaj was crowned at Raigad and a sovereign kingdom was born.</p><a class="explore-button" href="{{ url_for('timeline.timeline') }}">View the timeline <span aria-hidden="true">→</span></a></div>
 
       <!-- 03: Konark Sun Temple -->
       <article class="heritage-slide" data-slide data-title="Konark Sun Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/konark-07.png') }}');">
@@ -94,8 +84,6 @@
           </div>
         </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="Reconstructed Raigad" style="--slide-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Digital reconstruction</p><h1>RAIGAD,<br />REIMAGINED</h1><p>See a lost world take shape again through researched reconstruction, immersive detail and augmented reality.</p><a class="explore-button" href="{{ url_for('ar.experience') }}">Open AR Experience <span aria-hidden="true">→</span></a></div>
 
       <!-- 04: Martand Sun Temple -->
       <article class="heritage-slide" data-slide data-title="Martand Sun Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/martand-02.jpg') }}');">
@@ -109,8 +97,6 @@
           </div>
         </div>
       </article>
-      <article class="heritage-slide" data-slide data-title="Raigad Today" style="--slide-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');">
-        <div class="slide-copy"><p class="slide-kicker">Living heritage</p><h1>THE FORT<br />TODAY</h1><p>Stand in the present and uncover what remains—then use HeritageAR to reveal the layers of history around you.</p><a class="explore-button" href="{{ url_for('map.heritage_map') }}">Plan your visit <span aria-hidden="true">→</span></a></div>
 
       <!-- 05: Meenakshi Temple -->
       <article class="heritage-slide" data-slide data-title="Meenakshi Temple" style="--slide-image: url('{{ url_for('static', filename='images/timeline/meenakshi-aerial.jpg') }}');">
@@ -153,11 +139,6 @@
     </section>
 
     <aside class="story-deck" aria-label="Featured heritage stories">
-      <button class="story-card is-current" type="button" data-go-to="0" style="--card-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');"><span class="story-label">Raigad Fort</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="1" style="--card-image: url('{{ url_for('static', filename='images/timeline/virupaksha.jpg') }}');"><span class="story-label">Hampi</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="2" style="--card-image: url('{{ url_for('static', filename='images/historical/raigad-coronation.jpg') }}');"><span class="story-label">The Coronation</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="3" style="--card-image: url('{{ url_for('static', filename='images/heritage/reconstruct.png') }}');"><span class="story-label">Reimagined Raigad</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
-      <button class="story-card" type="button" data-go-to="4" style="--card-image: url('{{ url_for('static', filename='images/historical/now-fort.jpg') }}');"><span class="story-label">Raigad Today</span><span class="story-progress" aria-hidden="true"></span><span class="bookmark" aria-hidden="true">⌑</span></button>
       <button class="story-card is-current" type="button" data-go-to="0" style="--card-image: url('{{ url_for('static', filename='images/heritage/raigad-hero.jpg') }}');">
         <span class="story-label">Raigad Fort</span>
         <span class="story-progress" aria-hidden="true"></span>
@@ -195,8 +176,6 @@
       </button>
     </aside>
 
-    <div class="carousel-controls"><button type="button" data-previous aria-label="Previous story">←</button><button type="button" data-next aria-label="Next story">→</button></div>
-    <p class="home-pagination"><span data-current-slide>01</span><i></i>05</p>
     <div class="carousel-controls">
       <button type="button" data-previous aria-label="Previous story">←</button>
       <button type="button" data-next aria-label="Next story">→</button>
@@ -206,7 +185,6 @@
 </main>
 {% endblock %}
 
-{% block scripts %}<script src="{{ url_for('static', filename='js/home.js') }}"></script>{% endblock %}
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 {% endblock %}
