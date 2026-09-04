@@ -14,3 +14,24 @@ def test_home_uses_ar_experience_nav_instead_of_then_vs_now():
     assert 'href="/ar/"' in html
     assert "Then vs Now" not in html
     assert 'href="/history/then-vs-now"' not in html
+
+
+def test_home_navbar_anonymous():
+    client = create_app().test_client()
+    html = client.get("/").get_data(as_text=True)
+    assert html.count('href="/login"') == 1
+    assert html.count('href="/register"') == 1
+    assert "Sign out" not in html
+    assert 'href="/profile/"' not in html
+
+
+def test_home_navbar_authenticated():
+    client = create_app().test_client()
+    with client.session_transaction() as sess:
+        sess["user"] = {"uid": "user-123", "name": "Prajwal", "email": "p@test.com"}
+    html = client.get("/").get_data(as_text=True)
+    assert 'href="/login"' not in html
+    assert 'href="/register"' not in html
+    assert "Sign out" in html
+    assert 'href="/profile/"' in html
+    assert "Prajwal" in html

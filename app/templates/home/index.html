@@ -22,8 +22,7 @@
       </nav>
       <div class="home-actions">
         <a class="search-button" href="{{ url_for('map.heritage_map') }}" aria-label="Search heritage sites"><span aria-hidden="true"></span></a>
-        <a class="profile-link" href="{{ url_for('auth.login') }}">Sign in</a>
-        <a class="register-link" href="{{ url_for('auth.register') }}">Register</a>
+
         {% if session.get('user') %}
           <a class="profile-link" href="{{ url_for('profile.view_profile') }}">👤 {{ session['user'].get('name', 'Profile') }}</a>
           <a class="register-link" href="{{ url_for('auth.logout') }}">Sign out</a>
