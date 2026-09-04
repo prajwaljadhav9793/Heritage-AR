@@ -8,3 +8,6 @@ venv/
 .vscode/
 *.log
 __pycache__/
+
+firebase-service-account.json
+*-firebase-adminsdk-*.json
