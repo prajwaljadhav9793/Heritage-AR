@@ -394,18 +394,18 @@
    ========================================================================== */
 .story-deck {
   align-items: flex-end;
-  top: clamp(10.5rem, 28vh, 16.5rem);
-  bottom: auto;
   display: flex;
-  gap: 1.2rem;
+  gap: 1.25rem;
   left: auto;
   max-width: min(48vw, 44rem);
   overflow-x: auto;
   overflow-y: visible;
-  padding: 2.2rem 0.6rem 0.8rem;
+  padding: 2.4rem 0.6rem 0.8rem;
   position: absolute;
   right: clamp(1.5rem, 4.5vw, 5rem);
   scrollbar-width: none;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 4;
 }
 
@@ -422,7 +422,7 @@
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
   color: #fff;
   cursor: pointer;
-  flex: 0 0 clamp(9.5rem, 11.8vw, 11.8rem);
+  flex: 0 0 clamp(9.5rem, 12vw, 12rem);
   flex-shrink: 0;
   height: clamp(13.8rem, 17.5vw, 16.5rem);
   padding: 0;
@@ -616,10 +616,11 @@
     max-width: min(34rem, 50vw);
   }
   .story-deck {
-    top: clamp(9.5rem, 25vh, 14rem);
     bottom: auto;
     max-width: 40vw;
     right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .story-card,
   .story-card:nth-child(n) {
@@ -676,6 +677,8 @@
   }
   .story-deck {
     bottom: 1.6rem;
+    top: auto;
+    transform: none;
     gap: 0.7rem;
     left: 2.2rem;
     max-width: calc(100% - 7rem);
