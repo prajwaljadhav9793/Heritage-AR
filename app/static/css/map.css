@@ -93,15 +93,20 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid #eadfd3;
+  box-shadow: 0 8px 24px rgba(54, 35, 20, 0.16);
   border-radius: 14px;
   box-shadow: 0 8px 30px rgba(54, 35, 20, 0.16);
   color: #231b16;
   left: 1.5rem;
+  min-height: 42rem;
+  padding: 1.4rem 0.8rem;
   top: 1.2rem;
   max-height: calc(100vh - 5.8rem);
   width: 17.5rem;
   padding: 1.3rem 0.8rem 1rem;
   position: absolute;
+  top: 1.5rem;
+  width: 15rem;
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -178,10 +183,12 @@ body {
   align-items: center;
   background: none;
   border: 1px solid transparent;
+  border-bottom-color: #f0e6dc;
   cursor: pointer;
   display: grid;
   gap: 0.65rem;
   grid-template-columns: 3.1rem 1fr auto;
+  padding: 1rem 0.45rem;
   padding: 0.85rem 0.45rem;
   text-align: left;
   width: 100%;
@@ -232,6 +239,8 @@ body {
 
 .site-item:hover,
 .site-item.is-selected {
+  background: #fcf3e9;
+  border-color: #e6c99f;
   background: transparent;
 }
 

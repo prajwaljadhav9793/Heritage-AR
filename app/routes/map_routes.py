@@ -12,12 +12,17 @@ def heritage_map():
     if user and user.get("uid"):
         prof = profile_service.get_user_profile(user["uid"], session_user=user)
         wishlist_sites = [item.get("site") for item in prof.get("wishlist", []) if item.get("site")]
-        if prof.get("favoritePlace") and prof["favoritePlace"].get("site"):
-            if prof["favoritePlace"]["site"] not in wishlist_sites:
-                wishlist_sites.append(prof["favoritePlace"]["site"])
+        fav_place = prof.get("favoritePlace")
+        if isinstance(fav_place, dict) and fav_place.get("site"):
+            if fav_place["site"] not in wishlist_sites:
+                wishlist_sites.append(fav_place["site"])
+        elif isinstance(fav_place, str) and fav_place:
+            if fav_place not in wishlist_sites:
+                wishlist_sites.append(fav_place)
 
     return render_template(
         "map/heritage_map.html",
         user=user,
         wishlist_sites=wishlist_sites,
     )
+

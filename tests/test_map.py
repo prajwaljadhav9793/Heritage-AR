@@ -1,3 +1,5 @@
+def test_map_placeholder():
+    assert True
 from app import create_app
 from app.services import profile_service
 

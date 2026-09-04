@@ -260,6 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <img class="site-popup-image" src="${site.image}" alt="${site.name}" />
         <div class="site-popup-heading">
           <span class="site-popup-eyebrow">${site.category}</span>
+          <button class="site-popup-close" type="button" aria-label="Close details">&times;</button>
           <div class="site-popup-controls">
             <button
               class="site-popup-fav-btn ${isFav ? "is-active" : ""}"
@@ -309,6 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
       popupElement.addEventListener("mouseenter", keepPopupOpen);
       popupElement.addEventListener("mouseleave", closeOnHoverEnd);
       const closeButton = popupElement.querySelector(".site-popup-close");
+      closeButton.addEventListener("click", () => marker.closePopup());
       if (closeButton) {
         closeButton.addEventListener("click", () => marker.closePopup());
       }
