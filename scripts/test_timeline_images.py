@@ -1,7 +1,5 @@
 from app import create_app
 
-app = create_app()
-client = app.test_client()
 test_app = create_app()
 client = test_app.test_client()
 html = client.get("/timeline/?site=hampi").get_data(as_text=True)
