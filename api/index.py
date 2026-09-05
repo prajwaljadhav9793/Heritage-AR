@@ -37,6 +37,13 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
 
 
+@app.route("/api/index")
+@app.route("/api/index.py")
+def api_index_handler():
+    from app.routes.home_routes import index
+    return index()
+
+
 @app.route("/test-ping")
 def test_ping():
     return "TEST_PING_OK_200", 200
