@@ -37,3 +37,22 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 app.wsgi_app = VercelPathMiddleware(app.wsgi_app)
 
 
+@app.route("/test-ping")
+def test_ping():
+    return "TEST_PING_OK_200", 200
+
+
+@app.errorhandler(404)
+def debug_404(e):
+    from flask import request
+    return (
+        f"DEBUG_VERCEL_REQUEST:\n"
+        f"request.path: {request.path}\n"
+        f"environ.PATH_INFO: {request.environ.get('PATH_INFO')}\n"
+        f"environ.SCRIPT_NAME: {request.environ.get('SCRIPT_NAME')}\n"
+        f"request.url: {request.url}\n"
+        f"headers: {dict(request.headers)}\n"
+    ), 200
+
+
+
