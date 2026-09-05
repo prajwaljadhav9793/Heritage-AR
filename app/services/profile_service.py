@@ -12,9 +12,10 @@ Degrades gracefully to an in-memory fallback when Firestore is unavailable or di
 import os
 from datetime import datetime
 from functools import lru_cache
-from pathlib import Path
-
-from firebase_admin import firestore
+try:
+    from firebase_admin import firestore
+except Exception:
+    firestore = None
 
 from app.services import firebase_service
 

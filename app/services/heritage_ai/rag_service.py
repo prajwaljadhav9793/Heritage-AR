@@ -351,6 +351,8 @@ def build_context_fallback(question, retrieved):
 
 def _warm_up_model():
     """Pre-load the Ollama model in the background so user questions are fast."""
+    if os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        return
     if not ollama_client:
         return
 
